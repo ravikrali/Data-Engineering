@@ -55,9 +55,9 @@ in it once and the form is live from then on.
 
 ## Related
 
-- [The Enterprise AI Strategy](https://ravikrali.github.com/blogAIStrategy)
-- [The AI Investment Guide](https://ravikrali.github.com/blogAIInvestmentGuide)
-- [The AI-Native MDM Thesis](https://ravikrali.github.com/MDM-AI-Strategy)
+- [The Enterprise AI Strategy](https://ravikrali.github.io/blogAIStrategy)
+- [The AI Investment Guide](https://ravikrali.github.io/blogAIInvestmentGuide)
+- [The AI-Native MDM Thesis](https://ravikrali.github.io/MDM-AI-Strategy)
 
 ---
 

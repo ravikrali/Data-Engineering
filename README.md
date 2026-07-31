@@ -49,9 +49,10 @@ opening `index.html` from the filesystem will work but PWA install will not.
 ## Contact form
 
 The consultation form posts to [FormSubmit](https://formsubmit.co) at
-`https://formsubmit.co/ajax/contact@r2digital.com`. **On first deploy**, the very first
-submission triggers a one-time activation email to `contact@r2digital.com` — click the link
-in it once and the form is live from then on.
+`https://formsubmit.co/ajax/contact@r2dw.com`. FormSubmit activates per recipient address,
+not per site — this address was already activated for the AI-Native MDM post, so the form
+should work immediately. If a submission ever fails, check `contact@r2dw.com` for a
+one-time activation email and click the link in it.
 
 ## Related
 
@@ -61,4 +62,4 @@ in it once and the form is live from then on.
 
 ---
 
-© 2026 R2 Digital LLC · Written by Ravi Rali · contact@r2digital.com
+© 2026 R2 Digital LLC · Written by Ravi Rali · contact@r2dw.com

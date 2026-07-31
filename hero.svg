@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520" width="640" height="520" role="img" aria-labelledby="heroTitle heroDesc">
+<title id="heroTitle">AI-powered data engineering</title>
+<desc id="heroDesc">Structured tables, documents and event streams converge into a governed context core, orbited by autonomous data engineering agents, and served out to analytics, applications and AI agents.</desc>
+<defs>
+  <linearGradient id="hCore" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#2DD4BF"/><stop offset="55%" stop-color="#5B9BFF"/><stop offset="100%" stop-color="#A78BFA"/>
+  </linearGradient>
+  <linearGradient id="hIn" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#5B9BFF" stop-opacity=".15"/><stop offset="100%" stop-color="#2DD4BF" stop-opacity=".9"/>
+  </linearGradient>
+  <linearGradient id="hOut" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#2DD4BF" stop-opacity=".9"/><stop offset="100%" stop-color="#A78BFA" stop-opacity=".2"/>
+  </linearGradient>
+  <radialGradient id="hGlow" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#2DD4BF" stop-opacity=".30"/><stop offset="100%" stop-color="#2DD4BF" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="hBlur" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="9"/>
+  </filter>
+  <pattern id="hGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+    <path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity=".035" stroke-width="1"/>
+  </pattern>
+</defs>
+
+<style>
+  .lbl{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;letter-spacing:1.5px;fill:#5E7191}
+  .lbl-b{font-family:"Space Grotesk","IBM Plex Sans",system-ui,sans-serif;font-size:14px;font-weight:600;fill:#C3D0E2}
+  .core-t{font-family:"Space Grotesk","IBM Plex Sans",system-ui,sans-serif;font-size:19px;font-weight:700;fill:#061018}
+  .stream{fill:none;stroke-width:1.6;stroke-linecap:round}
+  .fl{stroke-dasharray:6 8;animation:hflow 2.2s linear infinite}
+  .fl2{stroke-dasharray:2 7;animation:hflow 1.5s linear infinite}
+  .fl3{stroke-dasharray:10 9;animation:hflow 3s linear infinite}
+  @keyframes hflow{to{stroke-dashoffset:-28}}
+  .orbit{animation:hspin 46s linear infinite;transform-origin:352px 252px}
+  @keyframes hspin{to{transform:rotate(360deg)}}
+  .pulse{animation:hpulse 3.2s ease-in-out infinite}
+  .pulse2{animation:hpulse 3.2s ease-in-out infinite;animation-delay:1.1s}
+  @keyframes hpulse{0%,100%{opacity:.35}50%{opacity:1}}
+  @media (prefers-reduced-motion:reduce){
+    .fl,.fl2,.fl3,.orbit,.pulse,.pulse2{animation:none}
+  }
+</style>
+
+<rect width="640" height="520" fill="url(#hGrid)" opacity=".8"/>
+<ellipse cx="352" cy="252" rx="190" ry="170" fill="url(#hGlow)" filter="url(#hBlur)"/>
+
+<!-- ============ SOURCES ============ -->
+<g>
+  <!-- structured -->
+  <rect x="30" y="96" width="58" height="48" rx="10" fill="#141E31" stroke="rgba(91,155,255,.4)"/>
+  <g stroke="#5B9BFF" stroke-width="1.4" opacity=".85">
+    <line x1="42" y1="112" x2="76" y2="112"/><line x1="42" y1="120" x2="76" y2="120"/>
+    <line x1="42" y1="128" x2="76" y2="128"/><line x1="53" y1="106" x2="53" y2="134"/><line x1="65" y1="106" x2="65" y2="134"/>
+  </g>
+  <text class="lbl" x="30" y="162">TABLES · CDC</text>
+
+  <!-- documents -->
+  <rect x="30" y="228" width="58" height="48" rx="10" fill="#141E31" stroke="rgba(167,139,250,.4)"/>
+  <g fill="none" stroke="#A78BFA" stroke-width="1.4" opacity=".85">
+    <path d="M50 240h20l8 8v24H50z"/><path d="M70 240v8h8"/>
+    <line x1="55" y1="256" x2="73" y2="256"/><line x1="55" y1="263" x2="73" y2="263"/>
+  </g>
+  <text class="lbl" x="30" y="294">DOCUMENTS</text>
+
+  <!-- events -->
+  <rect x="30" y="360" width="58" height="48" rx="10" fill="#141E31" stroke="rgba(45,212,191,.4)"/>
+  <path d="M40 384h8l5-11 7 22 6-15 5 4h12" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+  <text class="lbl" x="30" y="426">EVENTS · IOT</text>
+</g>
+
+<!-- ============ INBOUND STREAMS ============ -->
+<g class="stream" stroke="url(#hIn)">
+  <path class="fl"  d="M92 120C176 120 208 196 274 236"/>
+  <path class="fl3" d="M92 252C176 252 214 252 274 252"/>
+  <path class="fl2" d="M92 384C176 384 208 308 274 268"/>
+</g>
+
+<!-- ============ CORE ============ -->
+<g>
+  <polygon points="428,252 390,317.8 314,317.8 276,252 314,186.2 390,186.2" fill="url(#hCore)" opacity=".18"/>
+  <polygon points="428,252 390,317.8 314,317.8 276,252 314,186.2 390,186.2" fill="none" stroke="url(#hCore)" stroke-width="2"/>
+  <polygon points="404,252 378,297 326,297 300,252 326,207 378,207" fill="url(#hCore)"/>
+  <text class="core-t" x="352" y="259" text-anchor="middle">CONTEXT</text>
+  <text class="lbl" x="352" y="334" text-anchor="middle" fill="#2DD4BF" opacity=".8">SEMANTICS · POLICY</text>
+</g>
+
+<!-- ============ AGENT ORBIT ============ -->
+<g class="orbit">
+  <circle cx="352" cy="252" r="124" fill="none" stroke="rgba(167,139,250,.42)" stroke-width="1.2" stroke-dasharray="4 7"/>
+  <g fill="#0E1523" stroke="#A78BFA" stroke-width="1.6">
+    <circle cx="476" cy="252" r="9"/>
+    <circle cx="390.3" cy="369.9" r="9"/>
+    <circle cx="251.7" cy="324.9" r="9"/>
+    <circle cx="251.7" cy="179.1" r="9"/>
+    <circle cx="390.3" cy="134.1" r="9"/>
+  </g>
+  <g fill="#A78BFA">
+    <circle cx="476" cy="252" r="3.4"/>
+    <circle cx="390.3" cy="369.9" r="3.4"/>
+    <circle cx="251.7" cy="324.9" r="3.4"/>
+    <circle cx="251.7" cy="179.1" r="3.4"/>
+    <circle cx="390.3" cy="134.1" r="3.4"/>
+  </g>
+</g>
+<text class="lbl" x="352" y="410" text-anchor="middle" fill="#A78BFA" opacity=".85">AGENT CONTROL PLANE</text>
+
+<!-- ============ OUTBOUND ============ -->
+<g class="stream" stroke="url(#hOut)">
+  <path class="fl"  d="M428 240C482 226 502 172 546 156"/>
+  <path class="fl3" d="M428 252C482 252 502 252 546 252"/>
+  <path class="fl2" d="M428 264C482 278 502 332 546 348"/>
+</g>
+
+<g>
+  <!-- analytics -->
+  <rect x="552" y="132" width="58" height="48" rx="10" fill="#141E31" stroke="rgba(45,212,191,.4)"/>
+  <g fill="#2DD4BF" opacity=".9">
+    <rect x="563" y="158" width="7" height="12" rx="2"/><rect x="574" y="150" width="7" height="20" rx="2"/>
+    <rect x="585" y="143" width="7" height="27" rx="2"/>
+  </g>
+  <text class="lbl" x="610" y="198" text-anchor="end">ANALYTICS</text>
+
+  <!-- applications -->
+  <rect x="552" y="228" width="58" height="48" rx="10" fill="#141E31" stroke="rgba(91,155,255,.4)"/>
+  <g fill="none" stroke="#5B9BFF" stroke-width="1.4" opacity=".9">
+    <rect x="563" y="240" width="36" height="24" rx="3"/><line x1="563" y1="248" x2="599" y2="248"/>
+    <circle cx="568" cy="244" r="1.4" fill="#5B9BFF"/>
+  </g>
+  <text class="lbl" x="610" y="294" text-anchor="end">APPLICATIONS</text>
+
+  <!-- agents -->
+  <rect x="552" y="324" width="58" height="48" rx="10" fill="#141E31" stroke="rgba(167,139,250,.45)"/>
+  <polygon points="595,348 588.5,359.3 575.5,359.3 569,348 575.5,336.7 588.5,336.7" fill="none" stroke="#A78BFA" stroke-width="1.5"/>
+  <circle cx="582" cy="348" r="3.2" fill="#A78BFA" class="pulse"/>
+  <text class="lbl" x="610" y="390" text-anchor="end">AI AGENTS</text>
+</g>
+
+<!-- ============ TRUST RAIL ============ -->
+<rect x="30" y="456" width="580" height="34" rx="9" fill="rgba(45,212,191,.06)" stroke="rgba(45,212,191,.32)"/>
+<circle cx="50" cy="473" r="4" fill="#2DD4BF" class="pulse2"/>
+<text class="lbl-b" x="64" y="477">Trust plane</text>
+<text class="lbl" x="152" y="477">LINEAGE · OBSERVABILITY · EVALS · POLICY · COST</text>
+</svg>

@@ -26,6 +26,8 @@ AI-first enterprise data architecture.
 
 ```
 index.html              the entire app (HTML, CSS, JS, inline SVG diagrams)
+hero.svg                hero illustration — standalone, animated, self-contained
+hero.png                raster hero (1280x1040) for LinkedIn and slide decks
 manifest.webmanifest    PWA manifest
 sw.js                   service worker — network-first pages, cache-first assets
 icon-192.png            PWA icon

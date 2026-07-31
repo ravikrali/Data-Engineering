@@ -1,0 +1,17 @@
+{
+  "name": "Data Engineering, Rebuilt by AI — R2 Digital LLC",
+  "short_name": "AI Data Eng",
+  "description": "How AI is transforming Data Engineering: gaps in traditional DE, competencies and tooling, an AI-powered reference architecture, and a phased migration roadmap.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#070B14",
+  "theme_color": "#070B14",
+  "categories": ["business", "productivity", "education"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Data Engineering, Rebuilt by AI — R2 Digital LLC</title>
+<meta name="description" content="How AI is transforming Data Engineering: the gaps in traditional DE, the competencies and tooling map, an AI-powered DE reference architecture for the AI-first enterprise, and a phased migration roadmap. A point of view from R2 Digital LLC.">
+<meta name="author" content="Ravi Rali · R2 Digital LLC">
+<meta name="theme-color" content="#070B14">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="canonical" href="https://ravikrali.github.io/Data-Engineering/">
+<meta property="og:title" content="Data Engineering, Rebuilt by AI — R2 Digital LLC">
+<meta property="og:description" content="From pipelines you write to pipelines you specify. The gaps in traditional DE, an AI-powered reference architecture, and a migration roadmap.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ravikrali.github.io/Data-Engineering/">
+<meta property="og:image" content="https://ravikrali.github.io/Data-Engineering/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Data Engineering, Rebuilt by AI — R2 Digital LLC">
+<meta name="twitter:image" content="https://ravikrali.github.io/Data-Engineering/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg:#070B14; --bg-2:#0A0F1C;
+  --surface:#0E1523; --surface-2:#141E31; --surface-3:#1B2740;
+  --line:rgba(255,255,255,.085); --line-2:rgba(255,255,255,.16);
+  --ink:#E9EFF8; --ink-2:#C3D0E2; --muted:#8397B4; --faint:#5E7191;
+  --teal:#2DD4BF; --blue:#5B9BFF; --amber:#F5B544; --rose:#FF6B7A; --violet:#A78BFA;
+  --ok:#34D399;
+  --r-s:8px; --r-m:14px; --r-l:22px;
+  --nav-h:64px;
+  --maxw:1240px;
+  --f-xs:clamp(.70rem,.66rem + .18vw,.79rem);
+  --f-s:clamp(.80rem,.75rem + .22vw,.92rem);
+  --f-b:clamp(.94rem,.88rem + .28vw,1.06rem);
+  --f-l:clamp(1.06rem,.98rem + .42vw,1.28rem);
+  --f-h3:clamp(1.16rem,1.0rem + .8vw,1.6rem);
+  --f-h2:clamp(1.6rem,1.15rem + 2.1vw,3.0rem);
+  --f-h1:clamp(2.1rem,1.3rem + 3.9vw,4.6rem);
+  --sp:clamp(1rem,.6rem + 1.6vw,2rem);
+  --sec-y:clamp(3.5rem,2rem + 7vw,7.5rem);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:var(--nav-h);-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  font-size:var(--f-b);line-height:1.65;font-weight:300;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(900px 620px at 78% -8%,rgba(45,212,191,.10),transparent 62%),
+    radial-gradient(760px 520px at 4% 12%,rgba(91,155,255,.10),transparent 60%),
+    radial-gradient(700px 500px at 50% 108%,rgba(167,139,250,.07),transparent 60%);
+}
+h1,h2,h3,h4,h5{font-family:"Space Grotesk",sans-serif;font-weight:600;line-height:1.1;letter-spacing:-.02em;margin:0}
+p{margin:0 0 1em}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+.mono{font-family:"IBM Plex Mono",monospace}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+
+/* ============ LAYOUT ============ */
+.wrap{width:min(100% - 2*var(--sp),var(--maxw));margin-inline:auto;position:relative;z-index:1}
+section{padding-block:var(--sec-y);position:relative;z-index:1}
+.sec-head{max-width:76ch;margin-bottom:clamp(2rem,1rem + 3vw,3.5rem)}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;font-size:var(--f-xs);letter-spacing:.20em;
+  text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:.7rem;margin-bottom:1.1rem;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--teal);opacity:.7;flex:none}
+h2{font-size:var(--f-h2);margin-bottom:.85rem}
+.lede{font-size:var(--f-l);color:var(--ink-2);font-weight:300;line-height:1.55}
+.sub{color:var(--muted);font-size:var(--f-s)}
+
+/* ============ NAV ============ */
+.nav{
+  position:sticky;top:0;z-index:100;height:var(--nav-h);
+  background:rgba(7,11,20,.72);backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{height:100%;display:flex;align-items:center;gap:1.2rem}
+.brand{display:flex;align-items:center;gap:.65rem;flex:none;text-decoration:none;color:var(--ink)}
+.brand:hover{text-decoration:none}
+.brand-mark{
+  width:32px;height:32px;border-radius:9px;flex:none;
+  background:linear-gradient(135deg,var(--teal),var(--blue));
+  display:grid;place-items:center;font-family:"Space Grotesk",sans-serif;
+  font-weight:700;font-size:.85rem;color:#06121A;letter-spacing:-.04em;
+  box-shadow:0 0 0 1px rgba(45,212,191,.3),0 6px 20px -6px rgba(45,212,191,.5);
+}
+.brand-txt{display:flex;flex-direction:column;line-height:1.1}
+.brand-txt b{font-family:"Space Grotesk",sans-serif;font-size:.95rem;font-weight:600;letter-spacing:-.01em}
+.brand-txt span{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.16em;color:var(--faint);text-transform:uppercase}
+
+.nav-links{display:flex;gap:.15rem;margin-left:auto;overflow-x:auto;scrollbar-width:none;mask-image:linear-gradient(90deg,transparent,#000 12px,#000 calc(100% - 12px),transparent)}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{
+  font-size:.76rem;color:var(--muted);padding:.42rem .55rem;border-radius:7px;white-space:nowrap;
+  transition:color .2s,background .2s;font-weight:400;
+}
+.nav-links a:hover{color:var(--ink);background:rgba(255,255,255,.05);text-decoration:none}
+.nav-links a.on{color:var(--teal);background:rgba(45,212,191,.11)}
+.nav-cta{flex:none;margin-left:.4rem}
+@media(max-width:1180px){.nav-links{display:none}}
+@media(max-width:720px){.btn.nav-cta{display:none}}
+@media(max-width:400px){.brand-txt span{display:none}.brand-txt b{font-size:.88rem}}
+
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;border:0;cursor:pointer;
+  font-family:"IBM Plex Sans",sans-serif;font-size:.83rem;font-weight:500;
+  padding:.62rem 1.05rem;border-radius:9px;transition:transform .18s,box-shadow .18s,background .18s;
+  background:linear-gradient(135deg,var(--teal),#22B8A6);color:#04161B;white-space:nowrap;
+  box-shadow:0 6px 22px -10px rgba(45,212,191,.85);
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 30px -10px rgba(45,212,191,.95);text-decoration:none}
+.btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line-2);box-shadow:none}
+.btn.ghost:hover{background:rgba(255,255,255,.05);color:var(--ink)}
+.btn.lg{font-size:.95rem;padding:.85rem 1.5rem}
+
+.burger{display:none;margin-left:auto;background:transparent;border:1px solid var(--line-2);border-radius:8px;width:38px;height:34px;cursor:pointer;color:var(--ink-2);align-items:center;justify-content:center}
+@media(max-width:1180px){.burger{display:flex}}
+.drawer{
+  position:fixed;inset:var(--nav-h) 0 0 0;z-index:99;background:rgba(7,11,20,.97);
+  backdrop-filter:blur(20px);padding:1.5rem var(--sp);overflow-y:auto;
+  transform:translateY(-8px);opacity:0;pointer-events:none;transition:.25s;
+}
+.drawer.open{transform:none;opacity:1;pointer-events:auto}
+.drawer a{display:block;padding:.8rem 0;border-bottom:1px solid var(--line);color:var(--ink-2);font-size:1rem}
+.drawer a:hover{color:var(--teal);text-decoration:none}
+.prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal),var(--blue));z-index:101;width:0}
+
+/* ============ HERO ============ */
+.hero{padding-top:clamp(3rem,2rem + 6vw,6.5rem);padding-bottom:clamp(3rem,2rem + 5vw,6rem);min-height:calc(100svh - var(--nav-h));display:flex;align-items:center}
+.hero-grid{display:grid;gap:clamp(2rem,1rem + 4vw,4rem);grid-template-columns:1fr}
+@media(min-width:1000px){.hero-grid{grid-template-columns:1.1fr .9fr;align-items:center}}
+.tag{
+  display:inline-flex;align-items:center;gap:.55rem;font-family:"IBM Plex Mono",monospace;
+  font-size:var(--f-xs);letter-spacing:.13em;text-transform:uppercase;color:var(--teal);
+  border:1px solid rgba(45,212,191,.32);background:rgba(45,212,191,.07);
+  padding:.36rem .8rem;border-radius:999px;margin-bottom:1.5rem;
+}
+.tag .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(45,212,191,.5)}50%{opacity:.6;box-shadow:0 0 0 6px rgba(45,212,191,0)}}
+h1{font-size:var(--f-h1);letter-spacing:-.035em;margin-bottom:1.25rem}
+h1 .g{background:linear-gradient(120deg,var(--teal) 10%,var(--blue) 55%,var(--violet) 95%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lede{max-width:60ch;margin-bottom:1.8rem}
+.byline{display:flex;align-items:center;gap:.7rem;margin:-.2rem 0 1.5rem}
+.by-av{width:34px;height:34px;border-radius:50%;flex:none;background:linear-gradient(135deg,var(--blue),var(--violet));display:grid;place-items:center;font-family:"Space Grotesk";font-weight:700;font-size:.8rem;color:#0A0F1C}
+.by-txt{font-size:.85rem;color:var(--muted)}
+.by-txt b{color:var(--ink);font-weight:500}
+.hero-cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:2.2rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden}
+.stat{background:var(--surface);padding:1.05rem .95rem}
+.stat b{display:block;font-family:"Space Grotesk",sans-serif;font-size:clamp(1.35rem,1rem + 1.5vw,2rem);font-weight:700;color:var(--teal);letter-spacing:-.03em;line-height:1}
+.stat span{display:block;font-size:.71rem;color:var(--muted);margin-top:.45rem;line-height:1.35}
+.stat cite{display:block;font-family:"IBM Plex Mono",monospace;font-size:.58rem;color:var(--faint);font-style:normal;margin-top:.35rem;letter-spacing:.04em}
+
+/* hero visual — animated pipeline */
+.hero-viz{
+  border:1px solid var(--line);border-radius:var(--r-l);
+  background:linear-gradient(160deg,var(--surface),rgba(14,21,35,.4));
+  padding:1.3rem;position:relative;overflow:hidden;
+}
+.hero-viz::after{content:"";position:absolute;inset:0;background:radial-gradient(400px 300px at 100% 0,rgba(45,212,191,.10),transparent 65%);pointer-events:none}
+.viz-title{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center}
+.viz-title em{font-style:normal;color:var(--teal)}
+.layer{
+  border:1px solid var(--line);border-radius:11px;padding:.66rem .8rem;margin-bottom:.42rem;
+  background:var(--surface-2);display:flex;align-items:center;gap:.7rem;
+  transition:transform .25s,border-color .25s;
+}
+.layer:hover{transform:translateX(4px);border-color:var(--line-2)}
+.layer .ic{width:26px;height:26px;border-radius:7px;flex:none;display:grid;place-items:center;font-size:.68rem;font-family:"IBM Plex Mono",monospace;font-weight:500}
+.layer b{font-family:"Space Grotesk",sans-serif;font-size:.82rem;font-weight:600;display:block}
+.layer small{color:var(--muted);font-size:.69rem;display:block;line-height:1.4}
+.c-teal{background:rgba(45,212,191,.13);color:var(--teal);border:1px solid rgba(45,212,191,.28)}
+.c-blue{background:rgba(91,155,255,.13);color:var(--blue);border:1px solid rgba(91,155,255,.28)}
+.c-amber{background:rgba(245,181,68,.13);color:var(--amber);border:1px solid rgba(245,181,68,.28)}
+.c-violet{background:rgba(167,139,250,.13);color:var(--violet);border:1px solid rgba(167,139,250,.28)}
+.c-rose{background:rgba(255,107,122,.13);color:var(--rose);border:1px solid rgba(255,107,122,.28)}
+.flowdot{text-align:center;color:var(--faint);font-size:.72rem;line-height:1;margin:.1rem 0;animation:drip 2.6s infinite}
+@keyframes drip{0%,100%{opacity:.25}50%{opacity:1}}
+.agentrail{
+  margin-top:.7rem;border:1px dashed rgba(167,139,250,.4);border-radius:11px;padding:.6rem .8rem;
+  background:rgba(167,139,250,.06);display:flex;align-items:center;gap:.6rem;
+}
+.agentrail b{font-family:"Space Grotesk";font-size:.76rem;color:var(--violet)}
+.agentrail small{color:var(--muted);font-size:.67rem;line-height:1.35}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(167,139,250,.25);border-top-color:var(--violet);animation:sp 1.4s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ============ CARDS / GRIDS ============ */
+.grid{display:grid;gap:1rem}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,215px),1fr))}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-m);
+  padding:clamp(1.15rem,.8rem + 1vw,1.6rem);position:relative;overflow:hidden;
+  transition:border-color .25s,transform .25s,background .25s;
+}
+.card:hover{border-color:var(--line-2);transform:translateY(-3px);background:var(--surface-2)}
+.card h3{font-size:var(--f-h3);margin-bottom:.6rem}
+.card h4{font-size:1rem;margin-bottom:.5rem}
+.card p{color:var(--ink-2);font-size:var(--f-s);margin-bottom:0}
+.card p + p{margin-top:.7rem}
+.num{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.14em;color:var(--faint);display:block;margin-bottom:.7rem}
+.card .bar{position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--teal);opacity:.65}
+.card.b-blue .bar{background:var(--blue)} .card.b-amber .bar{background:var(--amber)}
+.card.b-rose .bar{background:var(--rose)} .card.b-violet .bar{background:var(--violet)}
+.card .ev{margin-top:.85rem;padding-top:.7rem;border-top:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:.65rem;color:var(--faint);line-height:1.5}
+.card .ev b{color:var(--amber);font-weight:500}
+
+ul.tick{list-style:none;padding:0;margin:.8rem 0 0;font-size:var(--f-s);color:var(--ink-2)}
+ul.tick li{padding-left:1.3rem;position:relative;margin-bottom:.45rem;line-height:1.5}
+ul.tick li::before{content:"▸";position:absolute;left:0;color:var(--teal);font-size:.8rem;top:.05rem}
+ul.tick.bad li::before{content:"✕";color:var(--rose);font-size:.7rem;top:.1rem}
+
+.sev{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.08em;padding:.16rem .45rem;border-radius:5px;white-space:nowrap;display:inline-block}
+.s-hi{background:rgba(255,107,122,.14);color:var(--rose);border:1px solid rgba(255,107,122,.3)}
+.s-md{background:rgba(245,181,68,.14);color:var(--amber);border:1px solid rgba(245,181,68,.3)}
+.s-lo{background:rgba(52,211,153,.13);color:var(--ok);border:1px solid rgba(52,211,153,.28)}
+
+/* tool chips */
+.chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.8rem}
+.chip{
+  font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.02em;
+  padding:.2rem .48rem;border-radius:5px;background:rgba(255,255,255,.045);
+  border:1px solid var(--line);color:var(--muted);white-space:nowrap;
+}
+.chip.ai{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.28);color:#C9B8FF}
+
+/* ============ TABLE ============ */
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:940px;font-size:.8rem}
+th,td{text-align:left;padding:.8rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{
+  background:var(--surface-2);font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.76rem;
+  color:var(--ink);position:sticky;top:0;z-index:2;border-bottom:1px solid var(--line-2);
+}
+tbody tr:hover{background:rgba(255,255,255,.022)}
+td:first-child,th:first-child{position:sticky;left:0;background:var(--surface);z-index:1;border-right:1px solid var(--line);min-width:180px}
+thead th:first-child{background:var(--surface-2);z-index:3}
+tbody tr:hover td:first-child{background:var(--surface-2)}
+td strong{font-weight:500;color:var(--ink)}
+td small{color:var(--muted);display:block;font-size:.72rem;line-height:1.45}
+.scrollhint{font-family:"IBM Plex Mono",monospace;font-size:.62rem;color:var(--faint);margin-top:.6rem;letter-spacing:.08em}
+
+/* ============ FROM → TO ============ */
+.fromto-head{display:grid;grid-template-columns:1fr 34px 1fr;align-items:center;margin-bottom:.55rem}
+.ft-lbl{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;padding:.2rem .55rem;border-radius:5px;justify-self:start}
+.ft-from{color:var(--rose);background:rgba(255,107,122,.12);border:1px solid rgba(255,107,122,.3)}
+.ft-to{color:var(--teal);background:rgba(45,212,191,.12);border:1px solid rgba(45,212,191,.3)}
+.fromto{display:grid;grid-template-columns:1fr 34px 1fr;align-items:stretch;margin-bottom:.55rem}
+.node{
+  min-width:0;border:1px solid var(--line);border-radius:10px;padding:.65rem .7rem;
+  background:var(--surface-2);display:flex;flex-direction:column;gap:.28rem;transition:transform .22s,border-color .22s;
+}
+.node.n-rose{background:rgba(255,107,122,.05);border-color:rgba(255,107,122,.18)}
+.node.n-teal{background:rgba(45,212,191,.055);border-color:rgba(45,212,191,.2)}
+.node:hover{transform:translateY(-2px)}
+.node.n-rose:hover{border-color:rgba(255,107,122,.42)}
+.node.n-teal:hover{border-color:rgba(45,212,191,.42)}
+.node b{font-family:"Space Grotesk",sans-serif;font-size:.8rem;font-weight:600;line-height:1.22}
+.node.n-rose b{color:#FFD3D8}
+.node.n-teal b{color:#BFF3EC}
+.node small{color:var(--muted);font-size:.66rem;line-height:1.4}
+.tarrow{align-self:center;justify-self:center;color:var(--teal);font-size:1.05rem;font-weight:700}
+@media(max-width:600px){
+  .fromto-head{display:none}
+  .fromto{grid-template-columns:1fr;gap:.3rem}
+  .tarrow{transform:rotate(90deg);margin:.1rem 0}
+}
+
+/* ============ ARCH STACK ============ */
+.arch{border:1px solid var(--line);border-radius:var(--r-l);background:linear-gradient(170deg,var(--surface),rgba(10,15,28,.6));padding:clamp(1rem,.6rem + 1.4vw,1.7rem);overflow:hidden}
+.plane{border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);margin-bottom:.5rem;overflow:hidden;transition:border-color .25s}
+.plane:hover{border-color:var(--line-2)}
+.plane-hd{display:flex;align-items:center;gap:.7rem;padding:.7rem .9rem;background:var(--surface-2);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.plane-hd .pn{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;padding:.18rem .45rem;border-radius:5px}
+.plane-hd b{font-family:"Space Grotesk";font-size:.9rem;font-weight:600}
+.plane-hd small{color:var(--muted);font-size:.7rem;margin-left:auto;text-align:right}
+.blocks{display:grid;gap:.42rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,175px),1fr));padding:.7rem}
+.blk{border:1px solid var(--line);border-radius:9px;background:var(--surface-2);padding:.55rem .65rem;transition:transform .2s,border-color .2s}
+.blk:hover{transform:translateY(-2px);border-color:var(--line-2)}
+.blk b{display:block;font-family:"Space Grotesk";font-size:.76rem;font-weight:600;margin-bottom:.15rem}
+.blk small{color:var(--muted);font-size:.65rem;line-height:1.4;display:block}
+.arch-arrow{text-align:center;color:var(--faint);font-size:.85rem;line-height:1;margin:.05rem 0 .45rem;animation:drip 3s infinite}
+.rail{
+  border:1px dashed rgba(167,139,250,.42);border-radius:var(--r-m);background:rgba(167,139,250,.05);
+  padding:.7rem .9rem;margin-bottom:.5rem;
+}
+.rail-hd{display:flex;align-items:center;gap:.6rem;margin-bottom:.55rem;flex-wrap:wrap}
+.rail-hd b{font-family:"Space Grotesk";font-size:.86rem;color:var(--violet)}
+.rail-hd small{color:var(--muted);font-size:.68rem}
+.rail-items{display:grid;gap:.4rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
+.ragent{border:1px solid rgba(167,139,250,.22);border-radius:8px;background:rgba(167,139,250,.06);padding:.45rem .55rem;transition:transform .2s}
+.ragent:hover{transform:translateY(-2px)}
+.ragent b{display:block;font-family:"Space Grotesk";font-size:.72rem;color:#D6C9FF;font-weight:600}
+.ragent small{display:block;color:var(--muted);font-size:.62rem;line-height:1.35}
+
+/* ============ ACCORDION ============ */
+.acc{border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;background:var(--surface)}
+.acc-item{border-bottom:1px solid var(--line)}
+.acc-item:last-child{border-bottom:0}
+.acc-btn{
+  width:100%;background:transparent;border:0;cursor:pointer;text-align:left;color:var(--ink);
+  padding:1rem 1.1rem;display:flex;align-items:center;gap:.8rem;font-family:"Space Grotesk",sans-serif;
+  font-size:.98rem;font-weight:600;transition:background .2s;
+}
+.acc-btn:hover{background:var(--surface-2)}
+.acc-btn .n{font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:var(--faint);flex:none;letter-spacing:.1em}
+.acc-btn .cv{margin-left:auto;flex:none;transition:transform .25s;color:var(--teal);font-size:1.1rem;line-height:1}
+.acc-item.open .acc-btn{background:var(--surface-2)}
+.acc-item.open .cv{transform:rotate(45deg)}
+.acc-body{display:none;padding:0 1.1rem 1.25rem}
+.acc-item.open .acc-body{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.vs{display:grid;gap:.7rem;grid-template-columns:1fr}
+@media(min-width:760px){.vs{grid-template-columns:1fr 1fr}}
+.vs .t{border:1px solid var(--line);border-radius:10px;padding:.85rem .9rem;background:var(--bg-2)}
+.vs .t.old{border-color:rgba(255,107,122,.2);background:rgba(255,107,122,.04)}
+.vs .t.new{border-color:rgba(45,212,191,.22);background:rgba(45,212,191,.05)}
+.vs h5{margin:0 0 .5rem;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+.vs .t.old h5{color:var(--rose)} .vs .t.new h5{color:var(--teal)}
+.vs ul{margin:0;padding-left:1.05rem;font-size:.81rem;color:var(--ink-2);line-height:1.55}
+.vs li{margin-bottom:.35rem}
+.impact{margin-top:.75rem;border-left:2px solid var(--amber);padding:.6rem .85rem;background:rgba(245,181,68,.05);border-radius:0 8px 8px 0;font-size:.81rem;color:var(--ink-2)}
+.impact b{color:var(--amber);font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:.25rem}
+
+/* ============ ROADMAP ============ */
+.phases{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr))}
+.phase{border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);padding:1.1rem;position:relative;transition:transform .25s,border-color .25s;overflow:hidden}
+.phase:hover{border-color:var(--line-2);transform:translateY(-3px)}
+.phase::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--teal);opacity:.7}
+.phase.p2::before{background:var(--blue)} .phase.p3::before{background:var(--amber)} .phase.p4::before{background:var(--violet)}
+.phase .ph{font-family:"IBM Plex Mono",monospace;font-size:.61rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.5rem;color:var(--teal)}
+.phase.p2 .ph{color:var(--blue)} .phase.p3 .ph{color:var(--amber)} .phase.p4 .ph{color:var(--violet)}
+.phase h4{font-size:1rem;margin-bottom:.45rem}
+.phase p{font-size:.79rem;color:var(--ink-2);margin-bottom:.6rem}
+.phase .out{border-top:1px solid var(--line);padding-top:.6rem;margin-top:.6rem;font-size:.74rem;color:var(--muted);line-height:1.5}
+.phase .out b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.57rem;letter-spacing:.13em;text-transform:uppercase;color:var(--teal);margin-bottom:.25rem}
+.phase.p2 .out b{color:var(--blue)} .phase.p3 .out b{color:var(--amber)} .phase.p4 .out b{color:var(--violet)}
+
+/* timeline strip */
+.tstrip{position:relative;margin:0 0 1.4rem;border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,132px),1fr));overflow:hidden}
+.tseg{min-width:0;display:grid;place-items:center;text-align:center;padding:.8rem .5rem;font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-right:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;transition:color .25s,background .25s}
+.tseg:last-child{border-right:0}
+@media(min-width:820px){.tstrip{border-radius:999px}.tseg{border-bottom:0}}
+.tseg::before{content:"";position:absolute;inset:0;opacity:.1;transition:opacity .25s}
+.tseg:nth-child(1)::before{background:var(--teal)} .tseg:nth-child(2)::before{background:var(--teal)}
+.tseg:nth-child(3)::before{background:var(--blue)} .tseg:nth-child(4)::before{background:var(--amber)}
+.tseg:nth-child(5)::before{background:var(--violet)}
+.tseg:hover{color:var(--ink)} .tseg:hover::before{opacity:.22}
+
+/* ============ MISC ============ */
+.caveat{border:1px solid rgba(245,181,68,.24);background:rgba(245,181,68,.05);border-radius:var(--r-m);padding:1rem 1.15rem;font-size:.8rem;color:var(--ink-2);line-height:1.6;margin-top:1.4rem}
+.caveat b{color:var(--amber);font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:.4rem}
+.kpi{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.kpi div{background:var(--surface);padding:.95rem}
+.kpi b{display:block;font-family:"Space Grotesk";font-size:1.35rem;color:var(--teal);letter-spacing:-.02em;line-height:1}
+.kpi span{display:block;font-size:.7rem;color:var(--muted);margin-top:.4rem;line-height:1.4}
+
+/* references */
+.refs{display:grid;gap:.5rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
+.ref{display:flex;gap:.7rem;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:.65rem .8rem;background:var(--surface);transition:border-color .2s,transform .2s;color:var(--ink-2)}
+.ref:hover{border-color:var(--line-2);transform:translateX(3px);text-decoration:none}
+.ref .n{font-family:"IBM Plex Mono",monospace;font-size:.62rem;color:var(--faint);flex:none;padding-top:.15rem}
+.ref b{display:block;font-family:"IBM Plex Sans";font-weight:400;font-size:.79rem;color:var(--ink-2);line-height:1.4}
+.ref small{display:block;font-family:"IBM Plex Mono",monospace;font-size:.62rem;color:var(--faint);margin-top:.2rem}
+
+/* related posts */
+.related{display:grid;gap:.8rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.rel{border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);padding:1.1rem;transition:transform .25s,border-color .25s;display:block;color:var(--ink)}
+.rel:hover{transform:translateY(-3px);border-color:rgba(45,212,191,.4);text-decoration:none;background:var(--surface-2)}
+.rel .k{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem;display:block}
+.rel h4{font-size:.98rem;margin-bottom:.4rem}
+.rel p{font-size:.76rem;color:var(--muted);margin:0}
+.rel .go{font-family:"IBM Plex Mono",monospace;font-size:.65rem;color:var(--teal);margin-top:.7rem;display:block}
+
+/* CTA band */
+.cta-band{border:1px solid rgba(45,212,191,.26);border-radius:var(--r-l);background:linear-gradient(135deg,rgba(45,212,191,.09),rgba(91,155,255,.06));padding:clamp(1.6rem,1rem + 3vw,3.2rem);text-align:center;position:relative;overflow:hidden}
+.cta-band::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 300px at 50% 0,rgba(45,212,191,.14),transparent 70%);pointer-events:none}
+.cta-band h2{margin-bottom:.7rem}
+.cta-band p{max-width:62ch;margin-inline:auto;color:var(--ink-2)}
+.cta-actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;position:relative}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:2.5rem 0 3rem;position:relative;z-index:1}
+.foot{display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;justify-content:space-between}
+.foot-links{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.8rem}
+.foot-links a{color:var(--muted)}
+.foot-links a:hover{color:var(--teal)}
+.foot small{color:var(--faint);font-size:.72rem;display:block;line-height:1.6}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:200;display:none;place-items:center;padding:var(--sp);background:rgba(4,7,13,.78);backdrop-filter:blur(8px)}
+.modal.open{display:grid}
+.modal-in{width:min(100%,560px);max-height:90svh;overflow-y:auto;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-l);padding:clamp(1.3rem,1rem + 1.6vw,2.1rem);position:relative;animation:pop .3s cubic-bezier(.2,.9,.3,1.1)}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.modal-x{position:absolute;top:.9rem;right:.9rem;background:transparent;border:1px solid var(--line);color:var(--muted);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1rem;line-height:1}
+.modal-x:hover{color:var(--ink);border-color:var(--line-2)}
+.field{margin-bottom:1rem}
+label{display:block;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+input,textarea{width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:9px;padding:.7rem .8rem;color:var(--ink);font-family:inherit;font-size:.9rem;font-weight:300;transition:border-color .2s}
+input:focus,textarea:focus{outline:0;border-color:var(--teal)}
+textarea{min-height:140px;resize:vertical;line-height:1.6}
+.counter{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.63rem;color:var(--faint);margin-top:.35rem}
+.counter.over{color:var(--rose)}
+.formnote{font-size:.71rem;color:var(--faint);margin-top:1rem;line-height:1.55}
+.ok-msg,.err-msg{display:none;border-radius:9px;padding:.7rem .85rem;font-size:.82rem;margin-bottom:1rem}
+.ok-msg{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);color:#8FEBC8}
+.err-msg{background:rgba(255,107,122,.1);border:1px solid rgba(255,107,122,.3);color:#FFC0C7}
+.ok-msg.show,.err-msg.show{display:block}
+.btn[disabled]{opacity:.6;cursor:default;transform:none;box-shadow:none}
+
+/* toast */
+.toast{
+  position:fixed;left:50%;bottom:26px;z-index:300;transform:translate(-50%,140%);
+  background:var(--surface-2);border:1px solid rgba(45,212,191,.4);color:var(--ink);
+  padding:.85rem 1.2rem;border-radius:11px;font-size:.85rem;max-width:min(92vw,520px);
+  box-shadow:0 20px 50px -20px rgba(0,0,0,.9);opacity:0;pointer-events:none;
+  transition:transform .5s cubic-bezier(.2,.9,.3,1.1),opacity .4s;
+}
+.toast.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+
+/* reveal — only hidden when JS is present and able to reveal it again */
+.js .rv{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.2,.7,.3,1),transform .6s cubic-bezier(.2,.7,.3,1)}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none}}
+
+/* svg helpers */
+.dash{stroke-dasharray:5 6;animation:flow 1.6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-22}}
+svg text{font-family:"IBM Plex Sans",sans-serif}
+.svgwrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);padding:1rem}
+.svgwrap svg{display:block;min-width:680px;width:100%;height:auto}
+</style>
+<script>document.documentElement.className+=" js";</script>
+</head>
+<body>
+
+<div class="prog" id="prog"></div>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <span class="brand-mark">R2</span>
+      <span class="brand-txt"><b>R2 Digital LLC</b><span>Data · AI · Transformation</span></span>
+    </a>
+    <div class="nav-links" id="navlinks">
+      <a href="#signal">Signal</a>
+      <a href="#summary">Executive Summary</a>
+      <a href="#gaps">Gaps</a>
+      <a href="#competencies">Competencies</a>
+      <a href="#projects">Project Map</a>
+      <a href="#field">From the Field</a>
+      <a href="#leverage">AI Leverage</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#redesign">Redesign</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#references">References</a>
+    </div>
+    <button class="btn nav-cta" data-open-modal>Free consultation</button>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">☰</button>
+  </div>
+</nav>
+
+<div class="drawer" id="drawer">
+  <a href="#signal">01 — The Signal</a>
+  <a href="#summary">02 — Executive Summary</a>
+  <a href="#gaps">03 — Gaps in Traditional DE</a>
+  <a href="#competencies">04 — Competencies &amp; Tooling</a>
+  <a href="#projects">05 — Project Archetype Map</a>
+  <a href="#field">06 — From the Field</a>
+  <a href="#leverage">07 — Where AI Attaches</a>
+  <a href="#architecture">08 — Target Architecture</a>
+  <a href="#redesign">09 — Concept-by-Concept Redesign</a>
+  <a href="#roadmap">10 — Migration Roadmap</a>
+  <a href="#references">References &amp; Reading</a>
+  <button class="btn lg" data-open-modal style="width:100%;justify-content:center;margin-top:1.2rem">Free consultation</button>
+</div>
+
+<header id="top" class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="tag"><span class="dot"></span>Point of View · July 2026</div>
+      <h1>Data Engineering,<br><span class="g">rebuilt by AI</span></h1>
+      <div class="byline">
+        <span class="by-av">RR</span>
+        <span class="by-txt"><b>Ravi Rali</b> · Founder, R2 Digital LLC<br>Data &amp; AI architecture · enterprise transformation</span>
+      </div>
+      <p class="lede">For twenty years data engineering optimised one thing: moving rows reliably from systems of record to dashboards. That job is now the smaller half. AI has changed both what we build pipelines <em>with</em> and what we build them <em>for</em> — and the discipline is being rebuilt from the connector up.</p>
+      <div class="hero-cta">
+        <a class="btn lg" href="#summary">Read the thesis</a>
+        <button class="btn ghost lg" data-open-modal>Book a free consultation</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>53%</b><span>of data-team capacity spent maintaining and troubleshooting existing pipelines</span><cite>Fivetran / dbt Labs 2026, secondary analysis</cite></div>
+        <div class="stat"><b>7%</b><span>of companies qualify as data "reinventors" — genuinely ready to scale advanced AI</span><cite>Accenture, AI-Ready Data</cite></div>
+        <div class="stat"><b>72 / 24</b><span>prioritise AI-assisted coding vs. AI-assisted pipeline management</span><cite>dbt Labs, State of AE 2026</cite></div>
+        <div class="stat"><b>30%</b><span>more market share for vendors that re-architect for agentic, machine-to-machine data access by 2027</span><cite>Gartner</cite></div>
+      </div>
+    </div>
+
+    <div class="hero-viz rv">
+      <div class="viz-title"><span>The new stack</span><em>live</em></div>
+      <div class="layer"><span class="ic c-blue">01</span><span><b>Declarative intent</b><small>Contracts, semantics and SLAs — not procedural code</small></span></div>
+      <div class="flowdot" style="animation-delay:0s">▼</div>
+      <div class="layer"><span class="ic c-teal">02</span><span><b>Agentic build &amp; repair</b><small>Agents author, test, deploy and fix pipelines</small></span></div>
+      <div class="flowdot" style="animation-delay:.3s">▼</div>
+      <div class="layer"><span class="ic c-violet">03</span><span><b>Multimodal lakehouse</b><small>Tables · documents · vectors · graph, one open format</small></span></div>
+      <div class="flowdot" style="animation-delay:.6s">▼</div>
+      <div class="layer"><span class="ic c-amber">04</span><span><b>Context &amp; semantic layer</b><small>Meaning, metrics and policy the agents can read</small></span></div>
+      <div class="flowdot" style="animation-delay:.9s">▼</div>
+      <div class="layer"><span class="ic c-teal">05</span><span><b>Agent-ready serving</b><small>SQL · APIs · tools/MCP · retrieval · features</small></span></div>
+      <div class="agentrail">
+        <span class="spin"></span>
+        <span><b>Trust plane — always on</b><small>Lineage · evals · observability · cost · audit</small></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= 01 SIGNAL ================= -->
+<section id="signal">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">01 — The Signal</div>
+      <h2>What the last six months actually changed</h2>
+      <p class="lede">Not opinion — the published record. Between February and July 2026 the analyst houses and the platform vendors converged on the same conclusion from opposite directions: the data platform is no longer being designed for human consumption, and the pipeline is no longer being designed to be written by hand.</p>
+    </div>
+
+    <div class="grid g2">
+      <article class="card b-teal rv"><div class="bar"></div><span class="num">SIGNAL 01</span>
+        <h3>Agents became the primary data consumer</h3>
+        <p>Gartner now frames "agent-ready data" as a market-share event: providers that re-architect data management systems for agentic, machine-to-machine workflows can capture up to <strong>30% more market share by 2027</strong>. At the 2026 D&amp;A Summit the firm separated a <em>context layer</em> — ontology, schema, metrics, policy-as-code — from an <em>intelligence layer</em> above it. That is an architecture instruction, not a trend note.</p>
+        <div class="ev"><b>Implication</b> The consumer of your pipeline no longer reads a dashboard. It reads metadata, and it acts.</div>
+      </article>
+
+      <article class="card b-violet rv"><div class="bar"></div><span class="num">SIGNAL 02</span>
+        <h3>The platforms shipped agentic data engineering</h3>
+        <p>Databricks positioned <strong>Lakeflow</strong> (June 2026) as "agentic data engineering" — agents that not only build but <em>operate</em> pipelines, with a background ZeroOps agent doing failure detection, root-cause analysis and sandbox-validated fixes. Snowflake's June 2026 release put smart pipelines, natively-hosted dbt projects, column-level lineage in Horizon and a specialised coding agent into the same workflow. Microsoft anchored Fabric on a reframed context layer with agent-authorable Data Factory skills.</p>
+        <div class="ev"><b>Implication</b> Agentic DE is now a product category with GA features, not a lab demo.</div>
+      </article>
+
+      <article class="card b-rose rv"><div class="bar"></div><span class="num">SIGNAL 03</span>
+        <h3>Acceleration outpaced trust</h3>
+        <p>dbt Labs' <em>State of Analytics Engineering 2026</em> (363 respondents) found <strong>72% prioritise AI-assisted coding but only 24% prioritise AI-assisted pipeline management</strong> — testing, observability, quality. Meanwhile <strong>71%</strong> name incorrect or hallucinated outputs reaching stakeholders as a top concern, and trust as an organisational objective jumped from 66% to 83% year over year.</p>
+        <div class="ev"><b>Implication</b> Teams bought the accelerator and skipped the brakes. This is the defining 2026 risk.</div>
+      </article>
+
+      <article class="card b-amber rv"><div class="bar"></div><span class="num">SIGNAL 04</span>
+        <h3>The foundation is the constraint, not the model</h3>
+        <p>Accenture's AI-ready data research finds only <strong>7%</strong> of companies are "data reinventors" while 64% have already moved past pilots — and puts an estimated <strong>4.5 point EBIT margin advantage</strong> on closing that gap. Deloitte and McKinsey land in the same place: legacy data architecture cannot power real-time autonomous AI, and modernisation has to produce a living, organisation-wide backbone rather than another warehouse.</p>
+        <div class="ev"><b>Implication</b> The bottleneck moved from model access to data readiness — permanently.</div>
+      </article>
+
+      <article class="card b-blue rv"><div class="bar"></div><span class="num">SIGNAL 05</span>
+        <h3>Unstructured data entered the pipeline</h3>
+        <p>Forrester's Q1 2026 Data Quality Wave notes buyers now prioritise platforms that can profile and evaluate logs, images and documents — previously underexplored data types — and that static validation is losing to real-time monitoring and diagnostics. Data quality, observability, governance, privacy, metadata and lineage are consolidating into single platforms.</p>
+        <div class="ev"><b>Implication</b> "Data engineering" now includes content engineering. Most teams are not staffed for it.</div>
+      </article>
+
+      <article class="card b-rose rv"><div class="bar"></div><span class="num">SIGNAL 06</span>
+        <h3>The economics stopped working</h3>
+        <p>The 2026 practitioner surveys put the maintenance tax between roughly a quarter and half of capacity depending on how it is measured — a 1,101-respondent survey reports 26% of time simply fighting fires, with modelling pain (90%) driven by pressure to move fast (59%) and unclear ownership (51%). Secondary analysis of the Fivetran and dbt 2026 datasets converges on ~53% of engineering capacity going to maintaining and troubleshooting what already exists. Warehouse and compute spend rose for 57% of teams; team budgets rose for 36%.</p>
+        <div class="ev"><b>Implication</b> More headcount cannot close this gap. Only a different operating model can.</div>
+      </article>
+    </div>
+
+    <div class="caveat rv">
+      <b>On the evidence</b>
+      Figures are attributed to their source and reflect what was published between February and July 2026. Vendor-published benchmarks (latency, cost, token efficiency) are marketing artefacts measured on vendor-chosen workloads — directionally useful, not procurement-grade. The practitioner survey figures come from self-selecting samples of a few hundred to ~1,100 respondents. Where two sources disagree on the size of the maintenance tax, both ranges are shown rather than the more dramatic one.
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 EXECUTIVE SUMMARY ================= -->
+<section id="summary">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">02 — Executive Summary</div>
+      <h2>Six inversions that redefine the discipline</h2>
+      <p class="lede">AI does not make data engineering faster. It inverts six of its founding assumptions. Each inversion removes a constraint that shaped every architecture built between 2010 and 2024 — which is why incremental tuning of the existing stack does not get you there.</p>
+    </div>
+
+    <div class="rv" style="border:1px solid var(--line);border-radius:var(--r-l);background:linear-gradient(170deg,var(--surface),rgba(10,15,28,.5));padding:clamp(1rem,.6rem + 1.4vw,1.7rem)">
+      <div class="fromto-head">
+        <span class="ft-lbl ft-from">Traditional DE</span><span></span><span class="ft-lbl ft-to">AI-Native DE</span>
+      </div>
+
+      <div class="fromto">
+        <div class="node n-rose"><b>Pipelines you write</b><small>Imperative code, hand-tuned, one engineer deep per system</small></div>
+        <div class="tarrow">→</div>
+        <div class="node n-teal"><b>Pipelines you specify</b><small>Declarative intent plus contracts; agents generate, test and deploy the implementation</small></div>
+      </div>
+      <div class="fromto">
+        <div class="node n-rose"><b>Rules anticipated in advance</b><small>Every schema, mapping and validation encoded before the first record lands</small></div>
+        <div class="tarrow">→</div>
+        <div class="node n-teal"><b>Behaviour learned and adapted</b><small>Drift detected, classified and resolved in-flight; rules proposed from observed data, approved by humans</small></div>
+      </div>
+      <div class="fromto">
+        <div class="node n-rose"><b>Tables as the deliverable</b><small>Meaning lives in Confluence, tickets and the heads of three people</small></div>
+        <div class="tarrow">→</div>
+        <div class="node n-teal"><b>Context as the deliverable</b><small>Semantic layer, ontology and policy are executable artefacts consumed by machines</small></div>
+      </div>
+      <div class="fromto">
+        <div class="node n-rose"><b>Structured data only</b><small>Rows and columns; documents, images and audio routed around the platform</small></div>
+        <div class="tarrow">→</div>
+        <div class="node n-teal"><b>Multimodal by default</b><small>Extraction, classification and embedding are pipeline stages like any other</small></div>
+      </div>
+      <div class="fromto">
+        <div class="node n-rose"><b>Batch-anchored freshness</b><small>Nightly windows; real-time bolted on as an exception path</small></div>
+        <div class="tarrow">→</div>
+        <div class="node n-teal"><b>Continuous by default</b><small>Streaming ingest and incremental compute as the primary path; batch as an optimisation</small></div>
+      </div>
+      <div class="fromto" style="margin-bottom:0">
+        <div class="node n-rose"><b>Humans in every loop</b><small>Engineers on call for pipeline failures; stewards in an unbounded queue</small></div>
+        <div class="tarrow">→</div>
+        <div class="node n-teal"><b>Humans on the loop</b><small>Agents handle the routine; people set intent, adjudicate the ambiguous, own the outcome</small></div>
+      </div>
+    </div>
+
+    <div class="grid g3 rv" style="margin-top:1.4rem">
+      <article class="card b-teal"><div class="bar"></div>
+        <h4>What leadership should take away</h4>
+        <p>This is a capacity reallocation, not a cost-cutting exercise. Roughly half of data-engineering capacity is currently defensive. AI does not remove that work — it moves most of it below the human threshold, and the value comes entirely from what the freed capacity is pointed at next.</p>
+      </article>
+      <article class="card b-amber"><div class="bar"></div>
+        <h4>What the evidence warns</h4>
+        <p>The 2026 data says teams adopted AI for authoring far faster than for verification. Generating pipelines four times faster without a matching lift in testing, lineage and observability produces defects four times faster too. Sequence the trust plane <em>first</em>.</p>
+      </article>
+      <article class="card b-violet"><div class="bar"></div>
+        <h4>What does not change</h4>
+        <p>Ownership, stewardship, definitions, controls, authorised sources and change management. Every autonomous capability described on this page is only defensible because a governance framework sits under it. <strong>Modernise the engine; keep the governance.</strong></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 GAPS ================= -->
+<section id="gaps">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">03 — Gaps in Traditional DE</div>
+      <h2>Nine structural gaps, not nine bugs</h2>
+      <p class="lede">These are not implementation failures. They are the designed-in consequences of building data platforms for human analysts, batch windows and known schemas. Each one is now a direct blocker to AI at enterprise scale.</p>
+    </div>
+
+    <div class="grid g3">
+      <article class="card b-rose rv"><div class="bar"></div><span class="num">GAP 01 <span class="sev s-hi">Severe</span></span>
+        <h3>The maintenance tax</h3>
+        <p>Roughly half of capacity goes to keeping existing pipelines alive; schema drift alone is commonly the single largest maintenance category. Every new pipeline adds permanent liability, so throughput falls as the estate grows. Organisations past ~200 active pipelines report the steepest curve.</p>
+      </article>
+      <article class="card b-rose rv"><div class="bar"></div><span class="num">GAP 02 <span class="sev s-hi">Severe</span></span>
+        <h3>Brittleness by design</h3>
+        <p>Imperative pipelines encode assumptions about source structure that the source never agreed to. A renamed column, a changed enum, a new nested field — and the failure surfaces downstream, hours later, as a wrong number rather than an error.</p>
+      </article>
+      <article class="card b-amber rv"><div class="bar"></div><span class="num">GAP 03 <span class="sev s-md">High</span></span>
+        <h3>Quality as an afterthought</h3>
+        <p>Tests are written for the failures someone already imagined. Coverage clusters on primary keys and null checks; semantic errors — a plausible-looking but wrong value — pass every assertion and reach the stakeholder intact. 71% of practitioners now name exactly this as their top concern.</p>
+      </article>
+      <article class="card b-amber rv"><div class="bar"></div><span class="num">GAP 04 <span class="sev s-md">High</span></span>
+        <h3>Metadata that documents instead of executing</h3>
+        <p>Catalogs describe assets to humans who mostly do not read them. Lineage is partial and stale. Definitions live in a spreadsheet. None of it is machine-consumable at runtime, so an agent asking "what is net revenue and may I see it?" gets no reliable answer.</p>
+      </article>
+      <article class="card b-rose rv"><div class="bar"></div><span class="num">GAP 05 <span class="sev s-hi">Severe</span></span>
+        <h3>Blind to most enterprise information</h3>
+        <p>Contracts, tickets, emails, engineering drawings, call transcripts, policy documents — the majority of what an enterprise knows has never entered the data platform. Traditional DE has no primitive for it, so it was scoped out. AI use cases start there.</p>
+      </article>
+      <article class="card b-amber rv"><div class="bar"></div><span class="num">GAP 06 <span class="sev s-md">High</span></span>
+        <h3>Latency ceilings inherited from batch</h3>
+        <p>Nightly reload architectures cap freshness at 24 hours no matter how much real-time integration is layered on top. Agents that act — reprice, route, approve, escalate — cannot operate on yesterday's state, and the usual workaround is per-application caches that quietly create new copies of the truth.</p>
+      </article>
+      <article class="card b-amber rv"><div class="bar"></div><span class="num">GAP 07 <span class="sev s-md">High</span></span>
+        <h3>Cost that grows faster than value</h3>
+        <p>Consumption pricing plus unreviewed pipelines plus full refreshes equals compute spend rising for 57% of teams while budgets rise for 36%. Very few organisations can attribute warehouse spend to a business consumer, so optimisation becomes across-the-board throttling.</p>
+      </article>
+      <article class="card b-violet rv"><div class="bar"></div><span class="num">GAP 08 <span class="sev s-md">High</span></span>
+        <h3>Organisational gravity</h3>
+        <p>The 2026 practitioner data is blunt: organisational blockers — unclear ownership, absent leadership direction, poor upstream requirements — outweigh technical debt as the top constraint. No platform migration survives contact with an operating model that has no owner for the data.</p>
+      </article>
+      <article class="card b-blue rv"><div class="bar"></div><span class="num">GAP 09 <span class="sev s-md">High</span></span>
+        <h3>No context layer</h3>
+        <p>Between physical tables and business questions sits a translation layer that exists only in analysts' heads. Without it, both humans and agents reconstruct meaning per query — inconsistently. This is the single most common reason AI pilots pass a demo and fail production.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 COMPETENCIES ================= -->
+<section id="competencies">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">04 — Competencies &amp; Tooling</div>
+      <h2>The nine branches of data engineering</h2>
+      <p class="lede">Data engineering is not one skill. It is nine distinct competencies that most enterprises staff unevenly — heavy on ingestion and transformation, thin on semantics, observability and platform economics. Below: what each branch actually does, how organisations typically implement it, the tools in play, and where AI changes the work.</p>
+    </div>
+
+    <div class="grid g3">
+      <article class="card rv"><div class="bar"></div><span class="num">C1 · INGESTION &amp; INTEGRATION</span>
+        <h3>Getting data in</h3>
+        <p><strong>What it is:</strong> connectors, CDC, APIs, files, events — landing source data reliably with replay, idempotency and backfill.</p>
+        <p><strong>How it's implemented:</strong> managed connectors for SaaS; log-based CDC for OLTP; custom API extraction for the long tail; an integration pattern catalogue (batch extract, pub/sub, request-reply, two-way sync) governing which pattern a source is allowed to use.</p>
+        <div class="chips"><span class="chip">Fivetran</span><span class="chip">Airbyte</span><span class="chip">Debezium</span><span class="chip">Qlik Replicate</span><span class="chip">ADF</span><span class="chip">Lakeflow Connect</span><span class="chip">Snowflake Openflow</span><span class="chip ai">AI: schema-drift agents</span><span class="chip ai">AI: connector synthesis</span></div>
+      </article>
+
+      <article class="card b-blue rv"><div class="bar"></div><span class="num">C2 · STORAGE &amp; MODELING</span>
+        <h3>Where data lives and how it's shaped</h3>
+        <p><strong>What it is:</strong> lakehouse/warehouse design, open table formats, partitioning, and the modelling discipline — dimensional, Data Vault, One Big Table, medallion.</p>
+        <p><strong>How it's implemented:</strong> bronze/silver/gold zones over an open format; conformed dimensions for BI; Data Vault where source volatility and auditability dominate; increasingly a single storage tier serving BI, ML and retrieval.</p>
+        <div class="chips"><span class="chip">Snowflake</span><span class="chip">Databricks</span><span class="chip">BigQuery</span><span class="chip">Redshift</span><span class="chip">Fabric / OneLake</span><span class="chip">Apache Iceberg</span><span class="chip">Delta Lake</span><span class="chip ai">AI: model generation from profiles</span></div>
+      </article>
+
+      <article class="card b-violet rv"><div class="bar"></div><span class="num">C3 · TRANSFORMATION &amp; SEMANTICS</span>
+        <h3>Turning raw into meaning</h3>
+        <p><strong>What it is:</strong> business logic, conformance, derivations, metric definitions — plus the semantic layer that makes those definitions singular.</p>
+        <p><strong>How it's implemented:</strong> ELT in SQL/Python inside the warehouse, version-controlled with tests and CI; a metrics/semantic layer over the gold zone; historically a bespoke stored-procedure estate nobody wants to touch.</p>
+        <div class="chips"><span class="chip">dbt</span><span class="chip">Spark / PySpark</span><span class="chip">Snowpark</span><span class="chip">SQLMesh</span><span class="chip">Cube</span><span class="chip">AtScale</span><span class="chip">Coalesce</span><span class="chip ai">AI: NL → tested models</span><span class="chip ai">AI: legacy logic extraction</span></div>
+      </article>
+
+      <article class="card b-amber rv"><div class="bar"></div><span class="num">C4 · ORCHESTRATION</span>
+        <h3>Making it run, in order, on time</h3>
+        <p><strong>What it is:</strong> dependency graphs, scheduling, retries, backfills, SLAs and the on-call rota that sits behind them.</p>
+        <p><strong>How it's implemented:</strong> a DAG scheduler owning cross-system dependencies; data-aware triggers replacing cron where maturity allows; environment promotion via CI/CD. A fifth of teams still run with no orchestrator at all.</p>
+        <div class="chips"><span class="chip">Airflow</span><span class="chip">Dagster</span><span class="chip">Prefect</span><span class="chip">Lakeflow Jobs</span><span class="chip">ADF</span><span class="chip">Argo</span><span class="chip">Control-M</span><span class="chip ai">AI: ZeroOps repair agents</span></div>
+      </article>
+
+      <article class="card b-rose rv"><div class="bar"></div><span class="num">C5 · QUALITY &amp; OBSERVABILITY</span>
+        <h3>Knowing it's right — and knowing first</h3>
+        <p><strong>What it is:</strong> validation, profiling, freshness/volume/schema monitoring, incident management, reconciliation to source.</p>
+        <p><strong>How it's implemented:</strong> assertion tests in the transformation layer, an observability platform on top for anomaly detection and lineage-based triage, DQ scorecards for the business, and a severity/escalation model.</p>
+        <div class="chips"><span class="chip">Great Expectations</span><span class="chip">Soda</span><span class="chip">Monte Carlo</span><span class="chip">Anomalo</span><span class="chip">Bigeye</span><span class="chip">dbt tests</span><span class="chip">IDQ</span><span class="chip ai">AI: learned expectations</span><span class="chip ai">AI: semantic validation</span></div>
+      </article>
+
+      <article class="card b-blue rv"><div class="bar"></div><span class="num">C6 · GOVERNANCE, METADATA &amp; SECURITY</span>
+        <h3>Trust, control and provenance</h3>
+        <p><strong>What it is:</strong> catalog, lineage, glossary, ownership, access control, masking, retention, sovereignty and audit.</p>
+        <p><strong>How it's implemented:</strong> a catalog federated across platforms; RBAC/ABAC with tag-based policy; column masking and tokenisation for regulated attributes; a stewardship workflow with approval chains and impact analysis.</p>
+        <div class="chips"><span class="chip">Unity Catalog</span><span class="chip">Snowflake Horizon</span><span class="chip">Collibra</span><span class="chip">Alation</span><span class="chip">Purview</span><span class="chip">OpenMetadata</span><span class="chip">Immuta</span><span class="chip ai">AI: auto-classification</span><span class="chip ai">AI: policy-as-code</span></div>
+      </article>
+
+      <article class="card rv"><div class="bar"></div><span class="num">C7 · STREAMING &amp; REAL-TIME</span>
+        <h3>Data in motion</h3>
+        <p><strong>What it is:</strong> event backbones, stream processing, exactly-once semantics, windowing, late-arrival handling, materialised views on streams.</p>
+        <p><strong>How it's implemented:</strong> a Kafka-class log as the enterprise event spine; stream processing for enrichment and aggregation; a serving store for sub-second reads. Usually a separate team from batch — which is itself part of the problem.</p>
+        <div class="chips"><span class="chip">Kafka</span><span class="chip">Confluent</span><span class="chip">Flink</span><span class="chip">Kinesis</span><span class="chip">Pulsar</span><span class="chip">Materialize</span><span class="chip">Spark Structured Streaming</span><span class="chip ai">AI: streaming enrichment</span></div>
+      </article>
+
+      <article class="card b-violet rv"><div class="bar"></div><span class="num">C8 · AI &amp; UNSTRUCTURED DATA ENGINEERING</span>
+        <h3>The branch that barely existed in 2022</h3>
+        <p><strong>What it is:</strong> document parsing, chunking, embedding, vector indexing, retrieval evaluation, feature engineering and serving, prompt/context assembly, eval pipelines.</p>
+        <p><strong>How it's implemented:</strong> a parsing and extraction tier over the document estate; embeddings written to a vector index governed alongside tables; a feature store for online/offline parity; retrieval quality measured with the same rigour as pipeline SLAs.</p>
+        <div class="chips"><span class="chip">Feast</span><span class="chip">Tecton</span><span class="chip">pgvector</span><span class="chip">Pinecone</span><span class="chip">LanceDB</span><span class="chip">Ray</span><span class="chip">MLflow</span><span class="chip ai">AI: extraction &amp; classification</span><span class="chip ai">AI: eval harnesses</span></div>
+      </article>
+
+      <article class="card b-amber rv"><div class="bar"></div><span class="num">C9 · DATAOPS, PLATFORM &amp; FINOPS</span>
+        <h3>Running data engineering as a product</h3>
+        <p><strong>What it is:</strong> CI/CD, environments, IaC, testing strategy, release management, self-service enablement, cost attribution and unit economics.</p>
+        <p><strong>How it's implemented:</strong> Git-based promotion with automated tests; infrastructure as code; a golden-path template so domain teams ship without a platform ticket; showback/chargeback by consumer.</p>
+        <div class="chips"><span class="chip">GitHub Actions</span><span class="chip">Terraform</span><span class="chip">dbt CI</span><span class="chip">Backstage</span><span class="chip">Datafold</span><span class="chip">Select / Keebo</span><span class="chip ai">AI: cost &amp; query optimisation</span><span class="chip ai">AI: golden-path scaffolding</span></div>
+      </article>
+    </div>
+
+    <div class="caveat rv">
+      <b>The staffing reality</b>
+      In most enterprises C1–C4 are well staffed, C5–C6 are one person's side responsibility, C7 sits in a different org, C8 was assembled ad hoc for the first GenAI pilot, and C9 does not formally exist. AI compresses effort hardest in C1–C4 — exactly where capacity already exists — which is why the migration argument is fundamentally about <em>redeploying people into C5, C6, C8 and C9</em>, not about reducing headcount.
+    </div>
+  </div>
+</section>
+
+<!-- ================= 05 PROJECT MAP ================= -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">05 — Project Archetype Map</div>
+      <h2>Which projects use which concepts — and where AI lands</h2>
+      <p class="lede">Data engineering decisions are archetype-driven. A regulatory reporting build and a RAG assistant share a lakehouse and almost nothing else. This is the map we use in engagements to scope a platform against the portfolio of work it actually has to carry.</p>
+    </div>
+
+    <div class="tblwrap rv">
+      <table>
+        <thead>
+          <tr>
+            <th>Project archetype</th>
+            <th>Core DE concepts</th>
+            <th>Typical stack</th>
+            <th>Dominant pain</th>
+            <th>Where AI changes the game</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Enterprise DWH / BI modernisation</strong><small>Legacy EDW or ETL estate → cloud lakehouse</small></td>
+            <td>C2 modelling · C3 transformation · C4 orchestration · C9 platform<small>Dimensional models, medallion zones, SCD handling</small></td>
+            <td>Snowflake / Databricks / Fabric · dbt · Airflow · Power BI / Tableau</td>
+            <td>Thousands of undocumented legacy mappings; nobody knows what is still used <span class="sev s-hi">Severe</span></td>
+            <td><strong>Automated logic archaeology.</strong> Agents parse PowerCenter XML, SSIS DTSX and stored procedures, reconstruct business rules, generate equivalent dbt/Spark, and produce a usage-based decommission list.</td>
+          </tr>
+          <tr>
+            <td><strong>Customer 360 / MDM</strong><small>Golden records across CRM, billing, service, web</small></td>
+            <td>C1 integration · C5 quality · C6 governance · C3 conformance<small>Match/merge, survivorship, cross-reference, stewardship</small></td>
+            <td>Informatica MDM / Reltio / Profisee · IDQ · Collibra · CDC</td>
+            <td>Rule-tuning never converges; steward queue never empties <span class="sev s-hi">Severe</span></td>
+            <td><strong>Learned matching and survivorship.</strong> Embedding-based candidate generation with a trained classifier; steward decisions become labelled training data; active learning routes the most informative cases, not the least confident.</td>
+          </tr>
+          <tr>
+            <td><strong>Real-time operational analytics</strong><small>Fraud, pricing, logistics, personalisation</small></td>
+            <td>C7 streaming · C1 CDC · C8 features · C5 observability<small>Event backbone, windowing, online/offline parity</small></td>
+            <td>Kafka / Confluent · Flink · Materialize · feature store · low-latency serving</td>
+            <td>Two codebases for the same logic; training/serving skew <span class="sev s-md">High</span></td>
+            <td><strong>Unified declarative pipelines.</strong> One definition compiled to both streaming and batch execution; agents monitor skew and drift continuously rather than at retrain time.</td>
+          </tr>
+          <tr>
+            <td><strong>Regulatory, risk &amp; finance reporting</strong><small>BCBS 239, Solvency, IFRS 17, SOX, ESG</small></td>
+            <td>C6 governance · C5 reconciliation · C2 auditability<small>Lineage to source, versioning, controls evidence, sign-off</small></td>
+            <td>Data Vault · warehouse · Collibra / Purview · reconciliation frameworks</td>
+            <td>Proving lineage and control effectiveness to an auditor <span class="sev s-md">High</span></td>
+            <td><strong>Evidence generation.</strong> Column-level lineage assembled automatically; controls narrative and variance explanations drafted from actual execution metadata — reviewed, not written, by humans.</td>
+          </tr>
+          <tr>
+            <td><strong>IoT / telemetry / industrial</strong><small>Sensors, equipment, connected product</small></td>
+            <td>C7 streaming · C2 time-series storage · C8 ML<small>Edge buffering, downsampling, gap-filling, anomaly detection</small></td>
+            <td>MQTT / Kafka · time-series or lakehouse · Spark · edge runtimes</td>
+            <td>Volume vs. cost; sensor drift silently corrupts models <span class="sev s-md">High</span></td>
+            <td><strong>Adaptive retention and detection.</strong> Models decide what to keep at full fidelity; anomaly detection replaces static thresholds that nobody recalibrates.</td>
+          </tr>
+          <tr>
+            <td><strong>GenAI knowledge assistant / RAG</strong><small>Policy, contract, support, engineering knowledge</small></td>
+            <td>C8 unstructured · C6 access control · C5 eval<small>Parsing, chunking, embedding, retrieval, permission-aware serving</small></td>
+            <td>Lakehouse + vector index · embedding models · orchestration framework · eval harness</td>
+            <td>Retrieval quality and permission leakage <span class="sev s-hi">Severe</span></td>
+            <td><strong>AI is the pipeline.</strong> Extraction, classification, enrichment and evaluation are model-executed stages — but they must inherit the same lineage, access policy and SLA discipline as tables.</td>
+          </tr>
+          <tr>
+            <td><strong>Agentic AI applications</strong><small>Agents that act: approve, reprice, schedule, escalate</small></td>
+            <td>C3 semantics · C6 policy · C7 freshness · C5 observability<small>Context layer, tool/API surface, guardrails, audit trail</small></td>
+            <td>Semantic layer + knowledge graph · MCP/tool servers · policy engine · event backbone</td>
+            <td>Agents lack business context and act on stale or over-permissioned data <span class="sev s-hi">Severe</span></td>
+            <td><strong>This archetype only exists if DE is rebuilt.</strong> The context layer, machine-readable policy and sub-minute freshness are prerequisites, not enhancements.</td>
+          </tr>
+          <tr>
+            <td><strong>Data products &amp; monetisation</strong><small>Internal marketplace, partner sharing, embedded analytics</small></td>
+            <td>C9 productisation · C6 contracts · C2 sharing<small>SLAs, versioning, contracts, entitlement, usage metering</small></td>
+            <td>Data sharing / clean rooms · catalog · contract tooling · billing telemetry</td>
+            <td>No unit economics; consumers unknown <span class="sev s-md">High</span></td>
+            <td><strong>Autonomous product ops.</strong> Usage, cost and SLA telemetry per product; agents draft contract changes and flag consumers affected before a breaking change ships.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scrollhint rv">↔ scroll the table horizontally</div>
+  </div>
+</section>
+
+<!-- ================= 06 FROM THE FIELD ================= -->
+<section id="field">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">06 — From the Field</div>
+      <h2>What a well-built traditional platform looks like — and what it tells us</h2>
+      <p class="lede">The critique above is not theoretical. Below is an anonymised composite of enterprise data platforms R2 Digital has delivered — a multi-domain MDM and warehouse programme spanning customer, membership, certification and product data across roughly a dozen source systems. It was competently built and faithful to the vendor reference architecture. Its constraints are exactly the constraints of the era that produced it.</p>
+    </div>
+
+    <div class="arch rv" style="margin-bottom:1.5rem">
+      <div class="plane">
+        <div class="plane-hd"><span class="pn c-blue">AS-BUILT</span><b>Layered topology — Landing → Staging → Base Objects → Views</b><small>MDM / DQ suite on managed RDS · Collibra governance</small></div>
+        <div class="blocks">
+          <div class="blk"><b>Landing</b><small>Source-shaped tables · truncate &amp; load daily · zero transformation, by design</small></div>
+          <div class="blk"><b>Staging</b><small>Cleansing, DQ rules, reference lookups · 1-to-1 mappings</small></div>
+          <div class="blk"><b>Hub / base objects</b><small>3NF · daily incremental · tokenize → match → merge → best version of truth</small></div>
+          <div class="blk"><b>Data services views</b><small>Service &amp; extract layer for downstream consumption</small></div>
+          <div class="blk"><b>Governance tooling</b><small>Catalog, lineage and stewardship workflow</small></div>
+          <div class="blk"><b>DQ &amp; reporting</b><small>Scorecards, address standardisation, BI quality dashboards</small></div>
+        </div>
+      </div>
+      <div class="arch-arrow">▼</div>
+      <div class="plane">
+        <div class="plane-hd"><span class="pn c-amber">AS-BUILT</span><b>Eight enterprise integration patterns</b><small>Batch · real-time · asynchronous</small></div>
+        <div class="blocks">
+          <div class="blk"><b>1 · Source extracts</b><small>Batch daily — the workhorse</small></div>
+          <div class="blk"><b>2 · Downstream writes</b><small>Batch to warehouse &amp; marts</small></div>
+          <div class="blk"><b>3 · Publish out</b><small>Hub publishes to queue</small></div>
+          <div class="blk"><b>4 · App → hub sync</b><small>Real-time service call</small></div>
+          <div class="blk"><b>5 · Lookup / cross-ref</b><small>Real-time identity resolution</small></div>
+          <div class="blk"><b>6 · Two-way sync</b><small>Bidirectional, loopback-guarded</small></div>
+          <div class="blk"><b>7 · Hub → app push</b><small>Real-time propagation</small></div>
+          <div class="blk"><b>8 · Subscribe in</b><small>Apps publish, hub subscribes</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <article class="card b-rose rv"><div class="bar"></div><span class="num">TELL 01</span>
+        <h3>The cache fallback is the architecture confessing</h3>
+        <p>The design carried a documented alternative: if performance or availability became an issue, deploy a local data cache on every consuming application, refreshed at low latency. That is a correct engineering answer — and simultaneously an admission that a batch-anchored hub cannot reliably serve real-time reads at enterprise concurrency. In the AI-native design real-time resolution is the primary path, and the cache disappears along with the copies of truth it created.</p>
+      </article>
+      <article class="card b-rose rv"><div class="bar"></div><span class="num">TELL 02</span>
+        <h3>"Truncate and load daily" was deliberate — and it set the ceiling</h3>
+        <p>Full daily reloads in landing and staging kept the platform decoupled from volatile source systems. Entirely reasonable at the time. It also fixed the freshness ceiling at 24 hours regardless of how much real-time integration sat on top. Streaming CDC into an open table format removes the constraint without giving up the decoupling — this is the single highest-leverage change in most legacy estates.</p>
+      </article>
+      <article class="card b-amber rv"><div class="bar"></div><span class="num">TELL 03</span>
+        <h3>The trust framework was the right idea, statically configured</h3>
+        <p>Per-source, per-column trust factors were genuinely ahead of their time — the conceptual ancestor of learned survivorship. But the weights were set by hand in workshops and rarely revisited. The AI-native version keeps the concept and makes the weights <em>observed</em>: measured against outcomes, recalibrated continuously, explainable per attribute.</p>
+      </article>
+      <article class="card b-amber rv"><div class="bar"></div><span class="num">TELL 04</span>
+        <h3>Six tools, five consoles, one engineer</h3>
+        <p>Hub console, data director, DQ analyst, DQ developer, admin console, address standardisation — plus catalog and BI. Each is competent; collectively they demand a specialist per console and make cross-tool root-cause analysis a manual craft. A single agent-mediated cockpit over the same estate is an operating-model change, not a UI preference.</p>
+      </article>
+      <article class="card b-blue rv"><div class="bar"></div><span class="num">TELL 05</span>
+        <h3>The governance model survives intact</h3>
+        <p>Guiding principles, a target operating model spanning consumers, capabilities, technology, process, governance and roles, a versioned business-rules artefact with impact analysis, defined authorised sources, and a documented chain of accountability for change. None of this is made obsolete by AI. It is precisely the control framework that makes autonomous pipelines defensible to an auditor. <strong>Modernise the engine; keep the governance.</strong></p>
+      </article>
+      <article class="card b-violet rv"><div class="bar"></div><span class="num">TELL 06</span>
+        <h3>The delivery model was already right</h3>
+        <p>Domain-by-domain shippable increments, prioritised by business value, with a proof of concept preceding the MVP. That sequencing maps almost one-for-one onto the phased migration later on this page. Organisations that already run data work this way migrate fastest — the hard organisational muscle is already built.</p>
+      </article>
+    </div>
+
+    <div class="caveat rv">
+      <b>On this material</b>
+      Details are drawn from prior R2 Digital client engagements and presented in anonymised, generalised composite form. Client names, domains, source systems, volumes and identifying specifics have been removed. Nothing here criticises the client teams or the vendors — the architectures were appropriate and correctly built for their date. The point is narrower and more useful: the constraints that shaped them are no longer constraints, and an architecture optimised against removed constraints is by definition leaving value on the table.
+    </div>
+  </div>
+</section>
+
+<!-- ================= 07 AI LEVERAGE ================= -->
+<section id="leverage">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">07 — Where AI Attaches</div>
+      <h2>The leverage map</h2>
+      <p class="lede">AI is not applied to "data engineering" in general. It attaches at specific, identifiable failure points. Below, each stage of the lifecycle with the pain it generates today and the agent that removes it — plus the trust plane that has to exist underneath before any of it is safe to run unattended.</p>
+    </div>
+
+    <div class="svgwrap rv">
+      <svg viewBox="0 0 1000 460" role="img" aria-label="Leverage map: pipeline stages with AI agents above and pain points below, over a trust plane">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#5B9BFF"/><stop offset="50%" stop-color="#2DD4BF"/><stop offset="100%" stop-color="#A78BFA"/>
+          </linearGradient>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#2DD4BF"/>
+          </marker>
+        </defs>
+
+        <text x="16" y="26" fill="#8397B4" font-size="11" letter-spacing="2.4">AGENT CONTROL PLANE</text>
+        <rect x="14" y="36" width="972" height="74" rx="12" fill="rgba(167,139,250,.06)" stroke="rgba(167,139,250,.42)" stroke-dasharray="6 5"/>
+
+        <g font-size="11.5" fill="#D6C9FF" font-weight="500">
+          <rect x="30" y="52" width="172" height="42" rx="8" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
+          <text x="42" y="70">Connector agent</text><text x="42" y="86" fill="#8397B4" font-size="10">drift · backfill · new source</text>
+          <rect x="220" y="52" width="172" height="42" rx="8" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
+          <text x="232" y="70">Modelling agent</text><text x="232" y="86" fill="#8397B4" font-size="10">profile → schema → DDL</text>
+          <rect x="410" y="52" width="172" height="42" rx="8" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
+          <text x="422" y="70">Transformation agent</text><text x="422" y="86" fill="#8397B4" font-size="10">intent → tested SQL</text>
+          <rect x="600" y="52" width="172" height="42" rx="8" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
+          <text x="612" y="70">ZeroOps agent</text><text x="612" y="86" fill="#8397B4" font-size="10">detect · RCA · sandbox fix</text>
+          <rect x="790" y="52" width="176" height="42" rx="8" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
+          <text x="802" y="70">Context agent</text><text x="802" y="86" fill="#8397B4" font-size="10">semantics · policy · docs</text>
+        </g>
+
+        <g stroke="#A78BFA" stroke-width="1.2" opacity=".55" class="dash">
+          <line x1="116" y1="110" x2="116" y2="176"/><line x1="306" y1="110" x2="306" y2="176"/>
+          <line x1="496" y1="110" x2="496" y2="176"/><line x1="686" y1="110" x2="686" y2="176"/>
+          <line x1="878" y1="110" x2="878" y2="176"/>
+        </g>
+
+        <text x="16" y="166" fill="#8397B4" font-size="11" letter-spacing="2.4">PIPELINE</text>
+        <g>
+          <rect x="30" y="176" width="172" height="60" rx="10" fill="#141E31" stroke="rgba(255,255,255,.16)"/>
+          <text x="46" y="204" fill="#E9EFF8" font-size="13.5" font-weight="600">Ingest</text>
+          <text x="46" y="222" fill="#8397B4" font-size="10.5">CDC · API · files · events</text>
+          <rect x="220" y="176" width="172" height="60" rx="10" fill="#141E31" stroke="rgba(255,255,255,.16)"/>
+          <text x="236" y="204" fill="#E9EFF8" font-size="13.5" font-weight="600">Store &amp; model</text>
+          <text x="236" y="222" fill="#8397B4" font-size="10.5">open table format</text>
+          <rect x="410" y="176" width="172" height="60" rx="10" fill="#141E31" stroke="rgba(255,255,255,.16)"/>
+          <text x="426" y="204" fill="#E9EFF8" font-size="13.5" font-weight="600">Transform</text>
+          <text x="426" y="222" fill="#8397B4" font-size="10.5">conform · derive · enrich</text>
+          <rect x="600" y="176" width="172" height="60" rx="10" fill="#141E31" stroke="rgba(255,255,255,.16)"/>
+          <text x="616" y="204" fill="#E9EFF8" font-size="13.5" font-weight="600">Operate</text>
+          <text x="616" y="222" fill="#8397B4" font-size="10.5">schedule · SLA · incident</text>
+          <rect x="790" y="176" width="176" height="60" rx="10" fill="#141E31" stroke="rgba(255,255,255,.16)"/>
+          <text x="806" y="204" fill="#E9EFF8" font-size="13.5" font-weight="600">Serve</text>
+          <text x="806" y="222" fill="#8397B4" font-size="10.5">BI · API · tools · retrieval</text>
+        </g>
+        <g stroke="url(#lg1)" stroke-width="2" marker-end="url(#ah)" class="dash">
+          <line x1="202" y1="206" x2="214" y2="206"/><line x1="392" y1="206" x2="404" y2="206"/>
+          <line x1="582" y1="206" x2="594" y2="206"/><line x1="772" y1="206" x2="784" y2="206"/>
+        </g>
+
+        <g stroke="#FF6B7A" stroke-width="1.2" opacity=".45" stroke-dasharray="3 4">
+          <line x1="116" y1="236" x2="116" y2="286"/><line x1="306" y1="236" x2="306" y2="286"/>
+          <line x1="496" y1="236" x2="496" y2="286"/><line x1="686" y1="236" x2="686" y2="286"/>
+          <line x1="878" y1="236" x2="878" y2="286"/>
+        </g>
+
+        <text x="16" y="278" fill="#8397B4" font-size="11" letter-spacing="2.4">TODAY'S PAIN</text>
+        <g font-size="10.5" fill="#FFD3D8">
+          <rect x="30" y="286" width="172" height="56" rx="8" fill="rgba(255,107,122,.07)" stroke="rgba(255,107,122,.28)"/>
+          <text x="42" y="306">Schema drift breaks</text><text x="42" y="322">runs; backfills manual</text>
+          <rect x="220" y="286" width="172" height="56" rx="8" fill="rgba(255,107,122,.07)" stroke="rgba(255,107,122,.28)"/>
+          <text x="232" y="306">Modelling debt; no</text><text x="232" y="322">owner; slow to change</text>
+          <rect x="410" y="286" width="172" height="56" rx="8" fill="rgba(255,107,122,.07)" stroke="rgba(255,107,122,.28)"/>
+          <text x="422" y="306">Undocumented logic</text><text x="422" y="322">locked in legacy tools</text>
+          <rect x="600" y="286" width="172" height="56" rx="8" fill="rgba(255,107,122,.07)" stroke="rgba(255,107,122,.28)"/>
+          <text x="612" y="306">On-call firefighting;</text><text x="612" y="322">slow root-cause</text>
+          <rect x="790" y="286" width="176" height="56" rx="8" fill="rgba(255,107,122,.07)" stroke="rgba(255,107,122,.28)"/>
+          <text x="802" y="306">No shared meaning;</text><text x="802" y="322">agents misread data</text>
+        </g>
+
+        <rect x="14" y="366" width="972" height="70" rx="12" fill="rgba(45,212,191,.05)" stroke="rgba(45,212,191,.32)"/>
+        <text x="30" y="392" fill="#2DD4BF" font-size="12.5" font-weight="600">TRUST PLANE — the precondition, not the finishing touch</text>
+        <g font-size="10.8" fill="#8397B4">
+          <text x="30" y="414">Column-level lineage</text>
+          <text x="180" y="414">· Observability &amp; SLAs</text>
+          <text x="340" y="414">· Evals for every AI-executed step</text>
+          <text x="570" y="414">· Policy-as-code &amp; access control</text>
+          <text x="800" y="414">· Cost attribution &amp; audit</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="grid g3 rv" style="margin-top:1.4rem">
+      <article class="card b-violet"><div class="bar"></div><span class="num">HIGHEST LEVERAGE</span>
+        <h4>1 · Legacy logic archaeology</h4>
+        <p>Parsing decades of ETL metadata to recover business rules is the task AI does dramatically better than people, and it unblocks every modernisation programme. Vendors now ship migration agents converting 14+ legacy platforms into warehouse-native pipelines; the value is less the code generation than the <em>comprehension</em>.</p>
+      </article>
+      <article class="card b-violet"><div class="bar"></div><span class="num">HIGHEST LEVERAGE</span>
+        <h4>2 · Autonomous incident response</h4>
+        <p>Detection, correlation across lineage, hypothesis, sandbox-validated fix, human approval. This is where the maintenance tax actually lives, and it is the capability with the clearest published implementations today.</p>
+      </article>
+      <article class="card b-violet"><div class="bar"></div><span class="num">HIGHEST LEVERAGE</span>
+        <h4>3 · Unstructured-to-structured extraction</h4>
+        <p>Turning contracts, tickets and documents into governed tables and retrievable context creates data assets that simply did not exist before. It is the only item on this list that increases the surface area of the platform rather than reducing its cost.</p>
+      </article>
+      <article class="card b-amber"><div class="bar"></div><span class="num">LOWER LEVERAGE THAN CLAIMED</span>
+        <h4>Watch: pure code generation</h4>
+        <p>Generating SQL faster is the most adopted and least differentiating use. Writing the model was rarely the bottleneck — agreeing what it should mean and proving it is right were. Optimising the easy step magnifies the hard one.</p>
+      </article>
+      <article class="card b-amber"><div class="bar"></div><span class="num">LOWER LEVERAGE THAN CLAIMED</span>
+        <h4>Watch: NL-to-SQL over raw tables</h4>
+        <p>Ungrounded natural-language querying against a physical schema produces confident, wrong answers. It is only viable on top of a semantic layer — which is the actual investment.</p>
+      </article>
+      <article class="card b-rose"><div class="bar"></div><span class="num">GUARDRAIL</span>
+        <h4>Autonomy needs an approval boundary</h4>
+        <p>Define, per pipeline, what an agent may do unattended (retry, re-infer schema, re-run a partition), what needs approval (logic change, contract change, permission change), and what is never automated (data deletion, policy override, production access grants). Write it down before, not after.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 08 ARCHITECTURE ================= -->
+<section id="architecture">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">08 — Target Architecture</div>
+      <h2>What an AI-powered data engineering platform looks like</h2>
+      <p class="lede">Two structural differences from the modern data stack of 2022. First, an <strong>agent control plane</strong> runs horizontally across every layer — agents are not a feature inside a tool, they are how the platform is operated. Second, a <strong>context plane</strong> sits between storage and consumption, making meaning and policy machine-readable. Everything else is recognisable; these two are the change.</p>
+    </div>
+
+    <div class="arch rv">
+      <div class="rail">
+        <div class="rail-hd"><span class="spin"></span><b>Agent control plane</b><small>spans every layer · each agent scoped, permissioned, logged and evaluated</small></div>
+        <div class="rail-items">
+          <div class="ragent"><b>Builder</b><small>Intent → pipeline + tests</small></div>
+          <div class="ragent"><b>Migrator</b><small>Legacy logic → native code</small></div>
+          <div class="ragent"><b>Quality</b><small>Learned expectations, drift</small></div>
+          <div class="ragent"><b>ZeroOps</b><small>Detect · RCA · propose fix</small></div>
+          <div class="ragent"><b>Governance</b><small>Classify, tag, enforce policy</small></div>
+          <div class="ragent"><b>FinOps</b><small>Cost, pruning, right-sizing</small></div>
+          <div class="ragent"><b>Steward copilot</b><small>Exceptions with reasoning</small></div>
+        </div>
+      </div>
+
+      <div class="plane">
+        <div class="plane-hd"><span class="pn c-blue">L1</span><b>Source &amp; ingestion plane</b><small>continuous by default · batch as an optimisation</small></div>
+        <div class="blocks">
+          <div class="blk"><b>Log-based CDC</b><small>Operational databases, sub-minute</small></div>
+          <div class="blk"><b>Event streaming</b><small>Direct-to-lakehouse writes, seconds</small></div>
+          <div class="blk"><b>Managed connectors</b><small>SaaS estate, drift-aware</small></div>
+          <div class="blk"><b>Document &amp; media ingest</b><small>Contracts, tickets, images, audio</small></div>
+          <div class="blk"><b>Agent-authored connectors</b><small>Long-tail APIs specified, not coded</small></div>
+        </div>
+      </div>
+      <div class="arch-arrow">▼</div>
+
+      <div class="plane">
+        <div class="plane-hd"><span class="pn c-teal">L2</span><b>Multimodal storage plane</b><small>one open format · one governance boundary</small></div>
+        <div class="blocks">
+          <div class="blk"><b>Open table format</b><small>Iceberg / Delta — ACID, time travel, engine-neutral</small></div>
+          <div class="blk"><b>Object &amp; content store</b><small>Source documents retained with provenance</small></div>
+          <div class="blk"><b>Vector index</b><small>Embeddings governed like tables, not beside them</small></div>
+          <div class="blk"><b>Graph store</b><small>Entities and relationships for multi-hop reasoning</small></div>
+          <div class="blk"><b>Feature store</b><small>Online/offline parity for models and agents</small></div>
+        </div>
+      </div>
+      <div class="arch-arrow">▼</div>
+
+      <div class="plane">
+        <div class="plane-hd"><span class="pn c-violet">L3</span><b>Processing &amp; transformation plane</b><small>declarative · incremental · model-assisted</small></div>
+        <div class="blocks">
+          <div class="blk"><b>Declarative pipelines</b><small>Define the result; the engine plans the execution</small></div>
+          <div class="blk"><b>Unified batch + stream</b><small>One definition, two execution modes</small></div>
+          <div class="blk"><b>LLM stages in-pipeline</b><small>Extract, classify, summarise, enrich, embed</small></div>
+          <div class="blk"><b>Incremental compute</b><small>Recompute what changed, not the table</small></div>
+          <div class="blk"><b>Contract enforcement</b><small>Breaking changes fail at build, not in production</small></div>
+        </div>
+      </div>
+      <div class="arch-arrow">▼</div>
+
+      <div class="plane">
+        <div class="plane-hd"><span class="pn c-amber">L4</span><b>Context &amp; semantic plane</b><small>the layer most enterprises are missing</small></div>
+        <div class="blocks">
+          <div class="blk"><b>Semantic model</b><small>Entities, metrics, dimensions — one definition of "revenue"</small></div>
+          <div class="blk"><b>Ontology / knowledge graph</b><small>How things relate; supports multi-hop questions</small></div>
+          <div class="blk"><b>Data contracts</b><small>Schema, SLA, ownership, versioning as code</small></div>
+          <div class="blk"><b>Policy-as-code</b><small>Who and what may access which attribute, enforced at query</small></div>
+          <div class="blk"><b>Runtime metadata</b><small>Lineage, freshness, quality — queryable by machines</small></div>
+        </div>
+      </div>
+      <div class="arch-arrow">▼</div>
+
+      <div class="plane">
+        <div class="plane-hd"><span class="pn c-teal">L5</span><b>Serving plane</b><small>humans, applications and agents as first-class consumers</small></div>
+        <div class="blocks">
+          <div class="blk"><b>SQL &amp; BI</b><small>Governed metrics, not ad-hoc redefinition</small></div>
+          <div class="blk"><b>Data product APIs</b><small>Versioned, entitled, metered</small></div>
+          <div class="blk"><b>Tool / MCP surface</b><small>The typed, permissioned way agents call data</small></div>
+          <div class="blk"><b>Retrieval endpoints</b><small>Permission-aware hybrid search</small></div>
+          <div class="blk"><b>Feature &amp; inference serving</b><small>Low-latency reads for decisioning</small></div>
+        </div>
+      </div>
+
+      <div class="rail" style="border-color:rgba(45,212,191,.42);background:rgba(45,212,191,.05);margin-top:.5rem;margin-bottom:0">
+        <div class="rail-hd"><b style="color:var(--teal)">Trust plane</b><small>every layer emits evidence · nothing autonomous ships without it</small></div>
+        <div class="rail-items">
+          <div class="ragent" style="border-color:rgba(45,212,191,.22);background:rgba(45,212,191,.06)"><b style="color:#BFF3EC">Lineage</b><small>Column-level, end to end</small></div>
+          <div class="ragent" style="border-color:rgba(45,212,191,.22);background:rgba(45,212,191,.06)"><b style="color:#BFF3EC">Observability</b><small>Freshness, volume, schema, distribution</small></div>
+          <div class="ragent" style="border-color:rgba(45,212,191,.22);background:rgba(45,212,191,.06)"><b style="color:#BFF3EC">Evals</b><small>Accuracy of every AI-executed step</small></div>
+          <div class="ragent" style="border-color:rgba(45,212,191,.22);background:rgba(45,212,191,.06)"><b style="color:#BFF3EC">Audit</b><small>Who/what changed data, and why</small></div>
+          <div class="ragent" style="border-color:rgba(45,212,191,.22);background:rgba(45,212,191,.06)"><b style="color:#BFF3EC">Cost</b><small>Unit economics per data product</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-head rv" style="margin-top:clamp(2.5rem,1.5rem + 3vw,4.5rem)">
+      <h3 style="font-size:var(--f-h3);margin-bottom:.6rem">How it fits the AI-first enterprise data architecture</h3>
+      <p class="sub">The data engineering platform is not the whole picture — it is the bottom two thirds of it. The value of separating the context plane is that the intelligence layer above can change models, frameworks and vendors without the foundation moving.</p>
+    </div>
+
+    <div class="svgwrap rv">
+      <svg viewBox="0 0 1000 430" role="img" aria-label="AI-first enterprise data architecture: data foundation, context, intelligence and experience layers with a governance spine">
+        <defs>
+          <linearGradient id="lg2" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#5B9BFF" stop-opacity=".22"/><stop offset="100%" stop-color="#A78BFA" stop-opacity=".22"/>
+          </linearGradient>
+        </defs>
+
+        <rect x="14" y="14" width="150" height="402" rx="12" fill="rgba(245,181,68,.06)" stroke="rgba(245,181,68,.35)"/>
+        <text x="34" y="44" fill="#F5B544" font-size="12.5" font-weight="600">Governance</text>
+        <text x="34" y="62" fill="#F5B544" font-size="12.5" font-weight="600">spine</text>
+        <g fill="#8397B4" font-size="10.5">
+          <text x="34" y="96">Ownership &amp;</text><text x="34" y="112">stewardship</text>
+          <text x="34" y="144">Risk, privacy,</text><text x="34" y="160">sovereignty</text>
+          <text x="34" y="192">AI policy &amp;</text><text x="34" y="208">model risk</text>
+          <text x="34" y="240">Standards &amp;</text><text x="34" y="256">architecture</text>
+          <text x="34" y="288">Value tracking</text><text x="34" y="304">&amp; unit economics</text>
+          <text x="34" y="336">Change control</text><text x="34" y="352">&amp; audit</text>
+          <text x="34" y="384">Skills &amp;</text><text x="34" y="400">operating model</text>
+        </g>
+
+        <rect x="186" y="14" width="800" height="76" rx="12" fill="rgba(91,155,255,.08)" stroke="rgba(91,155,255,.35)"/>
+        <text x="206" y="40" fill="#5B9BFF" font-size="12.5" font-weight="600">EXPERIENCE LAYER</text>
+        <g fill="#C3D0E2" font-size="11">
+          <text x="206" y="62">Business apps</text><text x="330" y="62">· Copilots</text><text x="430" y="62">· Autonomous agents</text><text x="596" y="62">· BI &amp; analytics</text><text x="726" y="62">· Partner &amp; customer products</text>
+        </g>
+        <text x="206" y="80" fill="#5E7191" font-size="10">Where value is realised — and the only layer the business sees</text>
+
+        <rect x="186" y="102" width="800" height="80" rx="12" fill="url(#lg2)" stroke="rgba(167,139,250,.4)"/>
+        <text x="206" y="128" fill="#A78BFA" font-size="12.5" font-weight="600">INTELLIGENCE LAYER</text>
+        <g fill="#C3D0E2" font-size="11">
+          <text x="206" y="150">Foundation &amp; fine-tuned models</text><text x="430" y="150">· Agent orchestration</text><text x="588" y="150">· Reasoning &amp; planning</text><text x="748" y="150">· Guardrails &amp; evals</text>
+        </g>
+        <text x="206" y="170" fill="#5E7191" font-size="10">Swappable by design — this layer will re-platform every 18 months; nothing below it should</text>
+
+        <rect x="186" y="194" width="800" height="80" rx="12" fill="rgba(245,181,68,.08)" stroke="rgba(245,181,68,.45)"/>
+        <text x="206" y="220" fill="#F5B544" font-size="12.5" font-weight="600">CONTEXT LAYER — the strategic control point</text>
+        <g fill="#C3D0E2" font-size="11">
+          <text x="206" y="242">Semantic model</text><text x="330" y="242">· Ontology / knowledge graph</text><text x="540" y="242">· Data contracts</text><text x="664" y="242">· Policy-as-code</text><text x="800" y="242">· Runtime metadata</text>
+        </g>
+        <text x="206" y="262" fill="#5E7191" font-size="10">Owned by the enterprise, not the vendor. This is what makes agent answers consistent and auditable.</text>
+
+        <rect x="186" y="286" width="800" height="130" rx="12" fill="rgba(45,212,191,.07)" stroke="rgba(45,212,191,.42)"/>
+        <text x="206" y="312" fill="#2DD4BF" font-size="12.5" font-weight="600">DATA FOUNDATION — the AI-powered data engineering platform</text>
+        <g>
+          <rect x="206" y="324" width="172" height="40" rx="8" fill="#141E31" stroke="rgba(255,255,255,.14)"/>
+          <text x="220" y="342" fill="#E9EFF8" font-size="11" font-weight="600">Ingestion plane</text><text x="220" y="357" fill="#8397B4" font-size="9.6">CDC · streams · documents</text>
+          <rect x="392" y="324" width="172" height="40" rx="8" fill="#141E31" stroke="rgba(255,255,255,.14)"/>
+          <text x="406" y="342" fill="#E9EFF8" font-size="11" font-weight="600">Storage plane</text><text x="406" y="357" fill="#8397B4" font-size="9.6">tables · vectors · graph</text>
+          <rect x="578" y="324" width="172" height="40" rx="8" fill="#141E31" stroke="rgba(255,255,255,.14)"/>
+          <text x="592" y="342" fill="#E9EFF8" font-size="11" font-weight="600">Processing plane</text><text x="592" y="357" fill="#8397B4" font-size="9.6">declarative · incremental</text>
+          <rect x="764" y="324" width="200" height="40" rx="8" fill="#141E31" stroke="rgba(255,255,255,.14)"/>
+          <text x="778" y="342" fill="#E9EFF8" font-size="11" font-weight="600">Serving plane</text><text x="778" y="357" fill="#8397B4" font-size="9.6">SQL · APIs · tools · retrieval</text>
+        </g>
+        <rect x="206" y="374" width="758" height="30" rx="7" fill="rgba(167,139,250,.09)" stroke="rgba(167,139,250,.35)" stroke-dasharray="5 4"/>
+        <text x="220" y="393" fill="#D6C9FF" font-size="10.5">Agent control plane + trust plane — build, operate, prove</text>
+
+        <g stroke="#2DD4BF" stroke-width="1.4" opacity=".6" class="dash">
+          <line x1="586" y1="286" x2="586" y2="274"/><line x1="586" y1="194" x2="586" y2="182"/><line x1="586" y1="102" x2="586" y2="90"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="grid g3 rv" style="margin-top:1.4rem">
+      <article class="card"><div class="bar"></div>
+        <h4>Why the context layer is the control point</h4>
+        <p>Models will be replaced. Agent frameworks will be replaced. The semantic model, ontology and policy definitions are the assets that compound — and they are the only part of the stack a vendor cannot supply for you, because they encode how <em>your</em> business defines itself.</p>
+      </article>
+      <article class="card b-blue"><div class="bar"></div>
+        <h4>Why open formats matter more now</h4>
+        <p>When four engines — SQL, streaming, ML, retrieval — read the same data, engine-neutral storage stops being an ideological preference and becomes a cost and consistency requirement. It is also the cheapest available insurance against platform consolidation.</p>
+      </article>
+      <article class="card b-amber"><div class="bar"></div>
+        <h4>Why the trust plane comes first</h4>
+        <p>Every autonomy claim on this page depends on being able to answer: what did the agent change, on what evidence, and how do we know it was right? Build lineage, observability and evals before delegating anything. The 2026 data shows this is where most teams are underinvested.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 09 REDESIGN ================= -->
+<section id="redesign">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">09 — Concept-by-Concept Redesign</div>
+      <h2>Every core concept, reconfigured</h2>
+      <p class="lede">The useful question is not "where can we add AI?" but "which of these concepts would we design differently if we started today?" The answer is: nearly all of them. Nine core concepts below, each with what it looks like traditionally, what replaces it, and the honest operational impact.</p>
+    </div>
+
+    <div class="acc rv" id="acc">
+      <div class="acc-item">
+        <button class="acc-btn"><span class="n">01</span>Ingestion &amp; schema drift<span class="cv">+</span></button>
+        <div class="acc-body">
+          <div class="vs">
+            <div class="t old"><h5>Traditional</h5><ul>
+              <li>Connector per source, schema pinned at build time</li>
+              <li>Upstream change breaks the run — or worse, silently drops a column</li>
+              <li>Backfills are manual, risky and usually out of hours</li>
+              <li>Long-tail APIs never get connected because the business case per source is too small</li>
+            </ul></div>
+            <div class="t new"><h5>AI-native</h5><ul>
+              <li>Schema treated as observed state, versioned and diffed every run</li>
+              <li>Drift classified automatically: additive (absorb), renamed (map with confidence score), semantic change (escalate)</li>
+              <li>Agent proposes the mapping with evidence; a human approves anything ambiguous</li>
+              <li>Long-tail connectors specified in natural language against API docs and generated with tests</li>
+            </ul></div>
+          </div>
+          <div class="impact"><b>Operational impact</b>Schema drift is the single largest maintenance category in most estates. Moving it from "breaks the pipeline" to "raises a reviewable proposal" is the highest-return single change available — and it is the one to implement first because it is reversible and easy to measure.</div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn"><span class="n">02</span>Data modelling<span class="cv">+</span></button>
+        <div class="acc-body">
+          <div class="vs">
+            <div class="t old"><h5>Traditional</h5><ul>
+              <li>Weeks of workshops to agree a dimensional or Data Vault design</li>
+              <li>Model degrades as sources evolve; nobody re-runs the design</li>
+              <li>90% of practitioners report modelling pain — driven by speed pressure and unclear ownership</li>
+              <li>Documentation written once, at go-live</li>
+            </ul></div>
+            <div class="t new"><h5>AI-native</h5><ul>
+              <li>Agents profile sources, infer entities, keys, cardinality and candidate relationships</li>
+              <li>A first-draft model — dimensional or Vault — generated in hours, then argued over by humans</li>
+              <li>The model is continuously re-evaluated against actual data and query patterns</li>
+              <li>Documentation regenerated from the model on every change</li>
+            </ul></div>
+          </div>
+          <div class="impact"><b>Operational impact</b>The value is not speed of first draft — it is that modelling stops being a one-time event. Be clear-eyed: the agent proposes structure, but only the business can say which grain matters. Design authority stays human.</div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn"><span class="n">03</span>Transformation &amp; business logic<span class="cv">+</span></button>
+        <div class="acc-body">
+          <div class="vs">
+            <div class="t old"><h5>Traditional</h5><ul>
+              <li>Logic hand-written in SQL, stored procedures or a visual ETL tool</li>
+              <li>Legacy estates hold thousands of transformations whose intent is undocumented</li>
+              <li>Migration means reading mappings one by one — the true cost of every modernisation</li>
+              <li>Change impact assessed by grep and hope</li>
+            </ul></div>
+            <div class="t new"><h5>AI-native</h5><ul>
+              <li>Intent expressed declaratively; the agent generates implementation plus tests plus documentation as one unit</li>
+              <li>Legacy mapping XML, DTSX packages and procedures parsed to reconstruct business rules in plain language</li>
+              <li>Semantic diffing: does the new model produce the same numbers as the old one, on real data?</li>
+              <li>Impact analysis from column-level lineage, before merge</li>
+            </ul></div>
+          </div>
+          <div class="impact"><b>Operational impact</b>Generated code is only trustworthy with parity testing against production data. The rule we apply: no legacy pipeline is decommissioned until its replacement has matched output for a full business cycle, including period-end.</div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn"><span class="n">04</span>Data quality &amp; testing<span class="cv">+</span></button>
+        <div class="acc-body">
+          <div class="vs">
+            <div class="t old"><h5>Traditional</h5><ul>
+              <li>Hand-written assertions covering the failures someone already imagined</li>
+              <li>Coverage concentrated on keys and nulls; semantic errors pass cleanly</li>
+              <li>Thresholds set once and never recalibrated as the business changes</li>
+              <li>Quality discovered by the business, reported as a ticket</li>
+            </ul></div>
+            <div class="t new"><h5>AI-native</h5><ul>
+              <li>Expectations learned from historical distributions per column, per segment, per season</li>
+              <li>Anomaly detection on volume, freshness, distribution and inter-column relationships</li>
+              <li>Semantic validation: does this value make sense given everything else on the record?</li>
+              <li>New rules proposed from observed data and reviewed by a steward in plain language</li>
+            </ul></div>
+          </div>
+          <div class="impact"><b>Operational impact</b>Learned thresholds generate false positives early — budget for a tuning period and route alerts to a triage queue, not to on-call, for the first weeks. Teams that skip this stage disable the alerts within a month.</div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn"><span class="n">05</span>Orchestration &amp; incident response<span class="cv">+</span></button>
+        <div class="acc-body">
+          <div class="vs">
+            <div class="t old"><h5>Traditional</h5><ul>
+              <li>Cron-style schedules; dependencies encoded by hand and drifting from reality</li>
+              <li>Failure at 02:40 pages a human who reads logs across five consoles</li>
+              <li>Root-cause analysis is tribal knowledge; the same incident recurs</li>
+              <li>Backfill order worked out from memory</li>
+            </ul></div>
+            <div class="t new"><h5>AI-native</h5><ul>
+              <li>Data-aware triggers: pipelines run when their inputs are actually ready</li>
+              <li>Background agent detects the failure, correlates across lineage, forms a hypothesis</li>
+              <li>Fix validated in a sandbox against real data, then presented for approval — or applied automatically inside a pre-agreed boundary</li>
+              <li>Every incident and resolution becomes retrievable context for the next one</li>
+            </ul></div>
+          </div>
+          <div class="impact"><b>Operational impact</b>This is where the maintenance tax actually lives, and where the clearest vendor implementations exist today. Start with propose-only autonomy. Move a pipeline to auto-apply only after it has demonstrated a clean proposal record over a meaningful sample.</div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn"><span class="n">06</span>Metadata, catalog &amp; discovery<span class="cv">+</span></button>
+        <div class="acc-body">
+          <div class="vs">
+            <div class="t old"><h5>Traditional</h5><ul>
+              <li>A catalog populated in a project push, then abandoned</li>
+              <li>Descriptions written by whoever had least to do that sprint</li>
+              <li>Lineage partial, table-level, and out of date</li>
+              <li>Discovery happens by asking a colleague on Slack</li>
+            </ul></div>
+            <div class="t new"><h5>AI-native</h5><ul>
+              <li>Metadata harvested continuously from execution, not from documentation effort</li>
+              <li>Column-level lineage derived from parsed logic and query history</li>
+              <li>Descriptions, classifications and PII tags generated then human-confirmed</li>
+              <li>Discovery by natural-language question, answered from the graph with provenance</li>
+            </ul></div>
+          </div>
+          <div class="impact"><b>Operational impact</b>The shift that matters: metadata stops being documentation and becomes runtime infrastructure. If your catalog cannot be queried by a machine at execution time, it is a wiki with a search box.</div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn"><span class="n">07</span>Semantic layer &amp; metrics<span class="cv">+</span></button>
+        <div class="acc-body">
+          <div class="vs">
+            <div class="t old"><h5>Traditional</h5><ul>
+              <li>"Revenue" defined independently in the warehouse, three BI tools and a finance spreadsheet</li>
+              <li>Reconciliation meetings as a standing calendar item</li>
+              <li>Business logic duplicated into every dashboard</li>
+              <li>Natural-language querying over raw tables produces confident, wrong answers</li>
+            </ul></div>
+            <div class="t new"><h5>AI-native</h5><ul>
+              <li>One governed semantic model — entities, metrics, dimensions, time grain — compiled to SQL</li>
+              <li>An ontology above it capturing how entities relate, enabling multi-hop questions</li>
+              <li>Agents query the semantic layer, never the physical schema</li>
+              <li>Every answer traceable to a definition and a version</li>
+            </ul></div>
+          </div>
+          <div class="impact"><b>Operational impact</b>This is the least glamorous and most decisive investment on the page. Independent evaluations report materially higher agent accuracy when unified context is available versus semantic definitions alone. Without it, agentic analytics does not survive its first executive review.</div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn"><span class="n">08</span>Unstructured &amp; multimodal data<span class="cv">+</span></button>
+        <div class="acc-body">
+          <div class="vs">
+            <div class="t old"><h5>Traditional</h5><ul>
+              <li>Documents live in content management, outside the data platform entirely</li>
+              <li>Extraction handled by brittle OCR templates that break on layout changes</li>
+              <li>No lineage, no quality measurement, no access policy consistency</li>
+              <li>The majority of what the enterprise knows is simply out of scope</li>
+            </ul></div>
+            <div class="t new"><h5>AI-native</h5><ul>
+              <li>Parsing, extraction, classification and embedding as governed pipeline stages</li>
+              <li>Extracted fields land as tables with provenance back to the source page or clause</li>
+              <li>Vector indexes governed under the same catalog and access policy as tables</li>
+              <li>Retrieval quality measured with an eval set, monitored like any other SLA</li>
+            </ul></div>
+          </div>
+          <div class="impact"><b>Operational impact</b>This is the only redesign that expands what the platform can answer rather than reducing what it costs. It is also the most common source of permission leakage — inherit access control from the source document, always, and test it adversarially.</div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-btn"><span class="n">09</span>Cost, performance &amp; FinOps<span class="cv">+</span></button>
+        <div class="acc-body">
+          <div class="vs">
+            <div class="t old"><h5>Traditional</h5><ul>
+              <li>Compute spend grows with pipeline count; nobody owns the total</li>
+              <li>Full refreshes because incremental logic was too hard to write</li>
+              <li>Warehouses sized for the worst hour and running all day</li>
+              <li>Optimisation arrives as an across-the-board cut after a bad invoice</li>
+            </ul></div>
+            <div class="t new"><h5>AI-native</h5><ul>
+              <li>Cost attributed per pipeline, per data product, per consumer</li>
+              <li>Agents identify unused tables, redundant refreshes and expensive query patterns, and propose changes with an estimated saving</li>
+              <li>Incremental processing as the default because the engine plans it, not the engineer</li>
+              <li>Unused assets flagged for decommission with evidence of zero consumption</li>
+            </ul></div>
+          </div>
+          <div class="impact"><b>Operational impact</b>AI workloads add cost as well as remove it — inference in-pipeline, embedding regeneration, eval runs. Model both sides. A business case that counts only the savings will not survive month four.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 10 ROADMAP ================= -->
+<section id="roadmap">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">10 — Migration Roadmap</div>
+      <h2>What the migration actually involves</h2>
+      <p class="lede">Not a re-platforming project. A staged replacement of how data work is produced, verified and operated — run alongside the existing estate, domain by domain, with a committed decommission date attached to each. Indicative timings assume a mid-to-large enterprise with a few hundred pipelines; scale accordingly.</p>
+    </div>
+
+    <div class="tstrip rv">
+      <div class="tseg">Phase 0 · Wk 0–6</div>
+      <div class="tseg">Phase 1 · Mo 2–5</div>
+      <div class="tseg">Phase 2 · Mo 5–12</div>
+      <div class="tseg">Phase 3 · Mo 12–20</div>
+      <div class="tseg">Phase 4 · Ongoing</div>
+    </div>
+
+    <div class="phases rv">
+      <article class="phase">
+        <div class="ph">Phase 0 · Weeks 0–6</div>
+        <h4>Assess &amp; baseline</h4>
+        <p>Harvest metadata across the estate to build the real dependency graph — not the documented one. Establish what exists, what runs, what is consumed, and what nothing has read in a year. Quantify the maintenance tax and cost baseline. Rank domains by value and feasibility.</p>
+        <div class="out"><b>Exit criteria</b>A measured baseline (pipelines, incidents, cost, capacity split), a decommission candidate list, and one chosen lighthouse domain with a named business owner.</div>
+      </article>
+
+      <article class="phase p2">
+        <div class="ph">Phase 1 · Months 2–5</div>
+        <h4>Foundation &amp; lighthouse</h4>
+        <p>Stand up the open lakehouse, the trust plane and the agent control plane — in that order. Migrate one domain end to end with agent-assisted conversion, running in parallel with the legacy path. Prove numerical parity across a full business cycle including period-end.</p>
+        <div class="out"><b>Exit criteria</b>One domain live with column-level lineage, learned quality monitors, propose-only ZeroOps, and a signed-off parity report. Legacy path still running.</div>
+      </article>
+
+      <article class="phase p3">
+        <div class="ph">Phase 2 · Months 5–12</div>
+        <h4>Industrialise</h4>
+        <p>Turn the lighthouse into a factory: templated conversion, reusable contracts, a golden path domain teams can self-serve. Build the context layer for the migrated domains — semantic model first, ontology where multi-hop questions demand it. Extend to unstructured sources.</p>
+        <div class="out"><b>Exit criteria</b>Majority of mastered volume on the new platform; semantic layer serving BI and agents; decommission dates committed and diarised for every legacy pipeline.</div>
+      </article>
+
+      <article class="phase p4">
+        <div class="ph">Phase 3 · Months 12–20</div>
+        <h4>Agent-ready &amp; autonomous</h4>
+        <p>Expose the typed, permissioned tool surface agents consume. Graduate proven pipelines from propose-only to bounded auto-apply. Turn on FinOps agents. Execute the legacy exit — the phase most programmes quietly skip.</p>
+        <div class="out"><b>Exit criteria</b>Legacy platform switched off and licences released; autonomy boundaries documented per pipeline; agent consumption governed and metered.</div>
+      </article>
+
+      <article class="phase p4">
+        <div class="ph">Phase 4 · Ongoing</div>
+        <h4>Operating model</h4>
+        <p>The permanent change. Data engineers move from pipeline authors to platform and context owners. Stewards move from queue-clearing to adjudicating the genuinely ambiguous. Evals, cost and quality get a governance cadence with the same seriousness as financial close.</p>
+        <div class="out"><b>Exit criteria</b>Not a phase with an end — the point at which the platform is run as a product with named owners, published SLAs and unit economics.</div>
+      </article>
+    </div>
+
+    <div class="sec-head rv" style="margin-top:clamp(2.5rem,1.5rem + 3vw,4rem);margin-bottom:1.2rem">
+      <h3 style="font-size:var(--f-h3);margin-bottom:.6rem">The seven workstreams that run underneath</h3>
+      <p class="sub">Phases are the narrative; these are the actual work packages. Under-resourcing any one of them is the most reliable predictor of a stalled programme.</p>
+    </div>
+
+    <div class="grid g4 rv">
+      <article class="card"><div class="bar"></div><span class="num">WS 1</span><h4>Discovery &amp; inventory</h4><p>Automated harvesting of pipelines, schedules, dependencies, consumption and cost. Produces the graph everything else is planned against.</p></article>
+      <article class="card b-blue"><div class="bar"></div><span class="num">WS 2</span><h4>Platform &amp; landing zone</h4><p>Lakehouse, open table format, networking, identity, environments, IaC, CI/CD, golden-path templates.</p></article>
+      <article class="card b-violet"><div class="bar"></div><span class="num">WS 3</span><h4>Conversion factory</h4><p>Agent-assisted extraction of legacy logic, generation of native pipelines, and automated parity testing at scale.</p></article>
+      <article class="card b-amber"><div class="bar"></div><span class="num">WS 4</span><h4>Trust plane</h4><p>Lineage, observability, learned quality monitors, eval harnesses for every AI-executed step, audit logging.</p></article>
+      <article class="card"><div class="bar"></div><span class="num">WS 5</span><h4>Context layer</h4><p>Semantic model, ontology, data contracts, policy-as-code. Built domain by domain alongside migration — never as a separate later project.</p></article>
+      <article class="card b-rose"><div class="bar"></div><span class="num">WS 6</span><h4>Governance &amp; risk</h4><p>Autonomy boundaries, approval chains, model-risk treatment for AI-in-pipeline, privacy and sovereignty, audit evidence.</p></article>
+      <article class="card b-blue"><div class="bar"></div><span class="num">WS 7</span><h4>People &amp; operating model</h4><p>Role redefinition, skills uplift, incentives, and the decommission accountability that stops the estate doubling.</p></article>
+      <article class="card b-amber"><div class="bar"></div><span class="num">WS 8</span><h4>Value tracking</h4><p>Baseline, instrument and report the measures below monthly. Programmes without a published number lose their funding in year two.</p></article>
+    </div>
+
+    <div class="sec-head rv" style="margin-top:clamp(2.5rem,1.5rem + 3vw,4rem);margin-bottom:1.2rem">
+      <h3 style="font-size:var(--f-h3);margin-bottom:.6rem">What to measure</h3>
+      <p class="sub">Baseline these in Phase 0 or the business case is unfalsifiable. Targets shown are the direction we aim for, not a guarantee — outcomes depend heavily on estate condition and organisational readiness.</p>
+    </div>
+
+    <div class="kpi rv">
+      <div><b>↓ 50%</b><span>share of capacity spent on maintenance and firefighting</span></div>
+      <div><b>↓ 70%</b><span>mean time to detect a data incident</span></div>
+      <div><b>↓ 60%</b><span>mean time to resolve, via agent-proposed root cause</span></div>
+      <div><b>24h → &lt;15m</b><span>freshness for the domains that need to drive decisions</span></div>
+      <div><b>↑ 3×</b><span>share of the estate covered by column-level lineage</span></div>
+      <div><b>100%</b><span>of critical metrics defined once, in the semantic layer</span></div>
+      <div><b>↓ 25%</b><span>compute cost per data product, net of new AI workload</span></div>
+      <div><b>&gt; 90%</b><span>of AI-executed pipeline steps covered by an eval</span></div>
+    </div>
+
+    <div class="grid g2 rv" style="margin-top:1.4rem">
+      <article class="card b-rose"><div class="bar"></div><span class="num">FAILURE MODE 01</span>
+        <h4>The permanent hybrid</h4>
+        <p>Coexistence without a committed decommission date becomes two platforms, two cost lines and two versions of the truth — permanently. Set the legacy exit date in Phase 2, name an accountable executive, and defend it. This is the most common way these programmes fail, and it fails quietly.</p>
+      </article>
+      <article class="card b-rose"><div class="bar"></div><span class="num">FAILURE MODE 02</span>
+        <h4>Acceleration without verification</h4>
+        <p>The 2026 evidence is explicit: adoption of AI authoring is running roughly three times ahead of adoption of AI quality management. Shipping pipelines faster than you can prove them correct converts a productivity story into a trust incident — and trust, once lost with the CFO, takes a year to rebuild.</p>
+      </article>
+      <article class="card b-amber"><div class="bar"></div><span class="num">FAILURE MODE 03</span>
+        <h4>Buying the agent, skipping the context</h4>
+        <p>An agent over an undocumented physical schema is a very fast way to produce confident wrong answers. The semantic layer is unglamorous, hard to fund and non-negotiable. If the roadmap has it in "phase later", the roadmap is wrong.</p>
+      </article>
+      <article class="card b-amber"><div class="bar"></div><span class="num">FAILURE MODE 04</span>
+        <h4>Treating it as a technology programme</h4>
+        <p>The practitioner data ranks organisational blockers above technical debt. If nobody owns customer data, no architecture fixes it. Ownership, decision rights and decommission accountability are Phase 0 deliverables, not change-management garnish.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="cta-band rv">
+      <div class="eyebrow" style="justify-content:center">Free consultation</div>
+      <h2>Where would this land in your estate?</h2>
+      <p class="lede">Every platform is different — the pipeline count, the legacy tooling, the state of governance, the appetite for autonomy. A 45-minute working session with R2 Digital LLC: we look at your current data engineering footprint, identify where AI leverage is real versus marketing, and sketch a first-90-days sequence. No cost, no obligation.</p>
+      <div class="cta-actions">
+        <button class="btn lg" data-open-modal>Request a free consultation</button>
+        <a class="btn ghost lg" href="mailto:contact@r2digital.com">Email us directly</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REFERENCES ================= -->
+<section id="references">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">Further Reading</div>
+      <h2>More from R2 Digital LLC</h2>
+      <p class="lede">This piece is part of a series on building the AI-first enterprise. Each stands alone; together they cover strategy, investment, master data and now the engineering foundation.</p>
+    </div>
+
+    <div class="related rv" style="margin-bottom:clamp(2.5rem,1.5rem + 3vw,4rem)">
+      <a class="rel" href="https://ravikrali.github.com/blogAIStrategy" target="_blank" rel="noopener">
+        <span class="k">Strategy</span>
+        <h4>The Enterprise AI Strategy</h4>
+        <p>How to set AI direction that survives contact with an operating model — priorities, sequencing and the decisions leadership actually has to make.</p>
+        <span class="go">Read →</span>
+      </a>
+      <a class="rel" href="https://ravikrali.github.com/blogAIInvestmentGuide" target="_blank" rel="noopener">
+        <span class="k">Investment</span>
+        <h4>The AI Investment Guide</h4>
+        <p>Where the money goes, what returns look like, and how to build a business case for AI that holds up past the first budget cycle.</p>
+        <span class="go">Read →</span>
+      </a>
+      <a class="rel" href="https://ravikrali.github.com/MDM-AI-Strategy" target="_blank" rel="noopener">
+        <span class="k">Master Data</span>
+        <h4>The AI-Native MDM Thesis</h4>
+        <p>Why traditional master data management is failing the AI-first enterprise, and what an AI-native MDM architecture looks like.</p>
+        <span class="go">Read →</span>
+      </a>
+    </div>
+
+    <div class="sec-head rv" style="margin-bottom:1.2rem">
+      <div class="eyebrow">Sources</div>
+      <h3 style="font-size:var(--f-h3)">External references used on this page</h3>
+      <p class="sub">Published February–July 2026 unless noted. Vendor sources are marked; their benchmarks are self-reported and should be read as directional.</p>
+    </div>
+
+    <div class="refs rv">
+      <a class="ref" href="https://www.gartner.com/en/newsroom/press-releases/2026-03-11-gartner-announces-top-predictions-for-data-and-analytics-in-2026" target="_blank" rel="noopener"><span class="n">01</span><span><b>Gartner Announces Top Predictions for Data and Analytics in 2026</b><small>gartner.com · analyst</small></span></a>
+      <a class="ref" href="https://www.gartner.com/en/documents/8168229" target="_blank" rel="noopener"><span class="n">02</span><span><b>Agent-Ready Data Will Reshape Data Management System Market Share by 2027</b><small>gartner.com · analyst research note</small></span></a>
+      <a class="ref" href="https://atlan.com/know/gartner/key-takeaways-from-gartner-da-summit-2026/" target="_blank" rel="noopener"><span class="n">03</span><span><b>Gartner D&amp;A Summit 2026 — context layer vs. intelligence layer takeaways</b><small>atlan.com · vendor summary of analyst event</small></span></a>
+      <a class="ref" href="https://www.gartner.com/en/articles/hype-cycle-for-agentic-ai" target="_blank" rel="noopener"><span class="n">04</span><span><b>2026 Hype Cycle for Agentic AI</b><small>gartner.com · analyst</small></span></a>
+      <a class="ref" href="https://www.databricks.com/blog/lakeflow-new-era-agentic-data-engineering" target="_blank" rel="noopener"><span class="n">05</span><span><b>Lakeflow: A new era of agentic data engineering (June 2026)</b><small>databricks.com · vendor</small></span></a>
+      <a class="ref" href="https://www.snowflake.com/en/blog/ai-smart-pipelines-whats-new/" target="_blank" rel="noopener"><span class="n">06</span><span><b>AI Data Engineering: New Smart Pipelines in Snowflake (June 2026)</b><small>snowflake.com · vendor</small></span></a>
+      <a class="ref" href="https://community.fabric.microsoft.com/t5/Fabric-Updates-Blog/Fabric-June-2026-Feature-Summary/ba-p/5190690" target="_blank" rel="noopener"><span class="n">07</span><span><b>Microsoft Fabric June 2026 Feature Summary — agent-authorable Data Factory skills</b><small>microsoft.com · vendor</small></span></a>
+      <a class="ref" href="https://www.getdbt.com/resources/state-of-analytics-engineering-2026" target="_blank" rel="noopener"><span class="n">08</span><span><b>2026 State of Analytics Engineering Report (363 respondents)</b><small>getdbt.com · vendor-run practitioner survey</small></span></a>
+      <a class="ref" href="https://www.prnewswire.com/news-releases/new-dbt-labs-report-finds-ai-driven-acceleration-is-outpacing-trust-and-governance-302741246.html" target="_blank" rel="noopener"><span class="n">09</span><span><b>dbt Labs: AI-driven acceleration is outpacing trust and governance</b><small>prnewswire.com · vendor release</small></span></a>
+      <a class="ref" href="https://joereis.github.io/practical_data_data_eng_survey/" target="_blank" rel="noopener"><span class="n">10</span><span><b>2026 State of Data Engineering Survey (1,101 respondents)</b><small>Practical Data Community · independent practitioner survey</small></span></a>
+      <a class="ref" href="https://www.accenture.com/us-en/insights/ai-data/ai-ready-data" target="_blank" rel="noopener"><span class="n">11</span><span><b>AI-Ready Data for Advanced AI — the 7% "data reinventors" finding</b><small>accenture.com · consultancy research</small></span></a>
+      <a class="ref" href="https://www.mckinsey.com/capabilities/mckinsey-technology/our-insights/mckinsey-global-tech-agenda-2026" target="_blank" rel="noopener"><span class="n">12</span><span><b>McKinsey Global Tech Agenda 2026 — data and AI foundations</b><small>mckinsey.com · consultancy research</small></span></a>
+      <a class="ref" href="https://www.deloitte.com/us/en/what-we-do/capabilities/applied-artificial-intelligence/content/state-of-ai-in-the-enterprise.html" target="_blank" rel="noopener"><span class="n">13</span><span><b>Deloitte — State of AI in the Enterprise, 2026</b><small>deloitte.com · consultancy research</small></span></a>
+      <a class="ref" href="https://www.forrester.com/blogs/the-forrester-wave-data-quality-solutions-q1-2026/" target="_blank" rel="noopener"><span class="n">14</span><span><b>The Forrester Wave™: Data Quality Solutions, Q1 2026</b><small>forrester.com · analyst</small></span></a>
+      <a class="ref" href="https://www.dataversity.net/articles/data-management-trends/" target="_blank" rel="noopener"><span class="n">15</span><span><b>Data Management Trends in 2026: Moving Beyond Awareness to Action</b><small>dataversity.net · industry commentary</small></span></a>
+      <a class="ref" href="https://www.cloudera.com/blog/business/navigating-the-future-of-data-and-ai-key-takeaways-from-gartner-d-and-a-2026.html" target="_blank" rel="noopener"><span class="n">16</span><span><b>Key takeaways from Gartner D&amp;A Summit 2026</b><small>cloudera.com · vendor summary</small></span></a>
+      <a class="ref" href="https://www.maia.ai/resources/news/matillion-launches-maias-migration-agent" target="_blank" rel="noopener"><span class="n">17</span><span><b>Migration Agent: autonomous migration for 14 legacy ETL platforms (March 2026)</b><small>maia.ai / Matillion · vendor</small></span></a>
+      <a class="ref" href="https://www.databricks.com/blog/introducing-databricks-genai-partner-accelerators-data-engineering-migration" target="_blank" rel="noopener"><span class="n">18</span><span><b>GenAI partner accelerators for data engineering &amp; migration</b><small>databricks.com · vendor</small></span></a>
+      <a class="ref" href="https://www.abhs.in/blog/53-percent-engineering-time-pipeline-maintenance-ai-infra-reckoning-2026" target="_blank" rel="noopener"><span class="n">19</span><span><b>Secondary analysis of the Fivetran and dbt 2026 datasets — the 53% maintenance figure</b><small>abhs.in · independent analysis, not primary data</small></span></a>
+      <a class="ref" href="https://atlan.com/know/context-layer-for-ai-agents/" target="_blank" rel="noopener"><span class="n">20</span><span><b>Context layer for AI agents — enterprise guide, incl. agent-accuracy comparison</b><small>atlan.com · vendor (commercially interested)</small></span></a>
+      <a class="ref" href="https://enterprise-knowledge.com/what-is-the-difference-between-a-semantic-layer-and-a-context-layer/" target="_blank" rel="noopener"><span class="n">21</span><span><b>Semantic layer vs. context layer; knowledge graph vs. context graph</b><small>enterprise-knowledge.com · consultancy</small></span></a>
+      <a class="ref" href="https://montecarlo.ai/blog-what-is-data-observability" target="_blank" rel="noopener"><span class="n">22</span><span><b>What is data observability — the five pillars</b><small>montecarlo.ai · vendor</small></span></a>
+      <a class="ref" href="https://www.hpcwire.com/bigdatawire/2026/04/15/dbt-labs-report-72-of-data-teams-use-ai-71-fear-bad-data-data-systems-cant-keep-up/" target="_blank" rel="noopener"><span class="n">23</span><span><b>72% of data teams use AI; 71% fear bad data — report coverage</b><small>bigdatawire.com · trade press</small></span></a>
+      <a class="ref" href="https://www.pointfive.co/blog/snowflake-and-databricks-summits-2026-what-actually-matters" target="_blank" rel="noopener"><span class="n">24</span><span><b>Snowflake and Databricks Summits 2026: what actually matters</b><small>pointfive.co · vendor commentary</small></span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <div class="brand" style="margin-bottom:.7rem">
+        <span class="brand-mark">R2</span>
+        <span class="brand-txt"><b>R2 Digital LLC</b><span>Data · AI · Transformation</span></span>
+      </div>
+      <small>Data &amp; AI architecture, master data and enterprise transformation.<br>Written by Ravi Rali · July 2026 · Views are the author's own.</small>
+    </div>
+    <div class="foot-links">
+      <a href="#summary">Executive summary</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#references">References</a>
+      <a href="mailto:contact@r2digital.com">contact@r2digital.com</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= MODAL ================= -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mtitle">
+  <div class="modal-in">
+    <button class="modal-x" data-close-modal aria-label="Close">✕</button>
+    <div class="eyebrow">R2 Digital LLC</div>
+    <h3 id="mtitle">Free consultation</h3>
+    <p class="sub" style="margin-bottom:1.4rem">Tell us about your data engineering estate and what you are trying to unlock. We reply to every enquiry within two business days.</p>
+    <div class="ok-msg" id="okmsg">Thank you — your request has been sent. We reply to every enquiry within two business days.</div>
+    <div class="err-msg" id="errmsg">Something went wrong sending your request. Please try again, or email us directly.</div>
+    <form id="cform" novalidate>
+      <div class="field">
+        <label for="f-name">Your name</label>
+        <input type="text" id="f-name" name="name" required placeholder="Jane Doe" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="f-email">Email address</label>
+        <input type="email" id="f-email" name="email" required placeholder="you@company.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="f-msg">How can we help? (up to 500 words)</label>
+        <textarea id="f-msg" name="message" required placeholder="Current data platform and tooling, approximate pipeline count, biggest pain today, what you're trying to achieve with AI…"></textarea>
+        <div class="counter" id="counter"><span id="wc">0 / 500 words</span><span id="wnote">tell us what you're solving for</span></div>
+      </div>
+      <div style="display:flex;gap:.7rem;flex-wrap:wrap">
+        <button type="submit" class="btn lg" id="submitbtn" style="flex:1;justify-content:center;min-width:180px">Send consultation request</button>
+        <button type="button" class="btn ghost lg" data-close-modal>Cancel</button>
+      </div>
+      <p class="formnote">Your message is sent straight to <b>contact@r2digital.com</b> — no email app opens and no copy-paste needed. You'll get a confirmation email, and we reply within two business days.</p>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s,c){return (c||document).querySelector(s)};
+  var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+
+  /* ---- scroll progress ---- */
+  var prog=$("#prog");
+  function onScroll(){
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    prog.style.width=(h>0?(window.scrollY/h)*100:0)+"%";
+  }
+  window.addEventListener("scroll",onScroll,{passive:true}); onScroll();
+
+  /* ---- scroll spy ---- */
+  var links=$$("#navlinks a");
+  var secs=links.map(function(a){return document.getElementById(a.getAttribute("href").slice(1))}).filter(Boolean);
+  if("IntersectionObserver" in window && secs.length){
+    var spy=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(l){l.classList.toggle("on",l.getAttribute("href")==="#"+e.target.id)});
+        }
+      });
+    },{rootMargin:"-45% 0px -50% 0px"});
+    secs.forEach(function(s){spy.observe(s)});
+  }
+
+  /* ---- reveal on scroll ---- */
+  var rvs=$$(".rv");
+  function revealAll(){ rvs.forEach(function(el){el.classList.add("in")}); }
+  if("IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+    },{rootMargin:"0px 0px -8% 0px",threshold:.06});
+    rvs.forEach(function(el){io.observe(el)});
+    // Safety net: content must never be permanently invisible because an
+    // observer callback did not fire (background tab, reduced-motion, oddball engine).
+    setTimeout(function(){ if(!document.querySelector(".rv.in")) revealAll(); },1800);
+  } else { revealAll(); }
+  window.addEventListener("beforeprint",revealAll);
+
+  /* ---- mobile drawer ---- */
+  var burger=$("#burger"), drawer=$("#drawer");
+  burger.addEventListener("click",function(){
+    var open=drawer.classList.toggle("open");
+    burger.setAttribute("aria-expanded",open?"true":"false");
+    burger.textContent=open?"✕":"☰";
+  });
+  $$("#drawer a").forEach(function(a){a.addEventListener("click",function(){
+    drawer.classList.remove("open"); burger.textContent="☰"; burger.setAttribute("aria-expanded","false");
+  })});
+
+  /* ---- accordion ---- */
+  $$(".acc-item").forEach(function(item,i){
+    var btn=$(".acc-btn",item);
+    if(i===0) item.classList.add("open");
+    btn.addEventListener("click",function(){
+      var wasOpen=item.classList.contains("open");
+      $$(".acc-item").forEach(function(x){x.classList.remove("open")});
+      if(!wasOpen) item.classList.add("open");
+    });
+  });
+
+  /* ---- modal ---- */
+  var modal=$("#modal"), lastFocus=null;
+  function openModal(){
+    lastFocus=document.activeElement;
+    drawer.classList.remove("open"); burger.textContent="☰"; burger.setAttribute("aria-expanded","false");
+    modal.classList.add("open");
+    document.body.style.overflow="hidden";
+    setTimeout(function(){$("#f-name").focus()},60);
+  }
+  function closeModal(){
+    modal.classList.remove("open");
+    document.body.style.overflow="";
+    if(lastFocus) lastFocus.focus();
+  }
+  $$("[data-open-modal]").forEach(function(b){b.addEventListener("click",openModal)});
+  $$("[data-close-modal]").forEach(function(b){b.addEventListener("click",closeModal)});
+  modal.addEventListener("click",function(e){ if(e.target===modal) closeModal(); });
+  document.addEventListener("keydown",function(e){
+    if(e.key==="Escape"&&modal.classList.contains("open")) closeModal();
+  });
+
+  /* ---- word counter ---- */
+  var ta=$("#f-msg"), wc=$("#wc"), counter=$("#counter"), wnote=$("#wnote");
+  var LIMIT=500;
+  function words(s){ return s.trim()? s.trim().split(/\s+/).length : 0; }
+  function updateCount(){
+    var n=words(ta.value);
+    wc.textContent=n+" / "+LIMIT+" words";
+    var over=n>LIMIT;
+    counter.classList.toggle("over",over);
+    wnote.textContent = over ? ("please trim "+(n-LIMIT)+" words") : "tell us what you're solving for";
+  }
+  ta.addEventListener("input",updateCount); updateCount();
+
+  /* ---- direct send via FormSubmit ---- */
+  // Submissions POST to FormSubmit, which emails contact@r2digital.com AND sends the
+  // sender an automatic confirmation. FIRST DEPLOY: the very first submission triggers a
+  // one-time activation email to contact@r2digital.com — click its link once and the form is live.
+  var FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/contact@r2digital.com";
+
+  var AUTORESPONSE =
+    "Hi,\n\n" +
+    "Thank you for reaching out to R2 Digital LLC. We have received your consultation request " +
+    "and will get back to you at the earliest — typically within two business days.\n\n" +
+    "In the meantime, feel free to reply to this email with anything else you'd like us to " +
+    "review ahead of the session.\n\n" +
+    "Warm regards,\n" +
+    "R2 Digital LLC · Data & AI Strategy";
+
+  var okmsg=$("#okmsg"), errmsg=$("#errmsg"), submitBtn=$("#submitbtn"),
+      nameEl=$("#f-name"), emailEl=$("#f-email"), toast=$("#toast");
+  var toastTimer=null;
+
+  function showToast(text){
+    toast.textContent = text;
+    toast.classList.add("show");
+    if(toastTimer) clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){ toast.classList.remove("show"); }, 10000);
+  }
+  function invalidEmail(v){ return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  $("#cform").addEventListener("submit",function(e){
+    e.preventDefault();
+    okmsg.classList.remove("show"); errmsg.classList.remove("show");
+
+    var name=nameEl.value.trim(), email=emailEl.value.trim(), msg=ta.value.trim();
+    if(!name){ nameEl.focus(); nameEl.style.borderColor="#FF6B7A"; return; }
+    nameEl.style.borderColor="";
+    if(invalidEmail(email)){ emailEl.focus(); emailEl.style.borderColor="#FF6B7A"; return; }
+    emailEl.style.borderColor="";
+    if(!msg){ ta.focus(); return; }
+    if(words(msg)>LIMIT){ ta.focus(); return; }
+
+    var payload={
+      name: name,
+      email: email,
+      message: msg,
+      _subject: "Free consultation request — AI-Powered Data Engineering",
+      _template: "table",
+      _autoresponse: AUTORESPONSE,
+      _captcha: "false",
+      _honey: ""
+    };
+
+    var orig=submitBtn.textContent;
+    submitBtn.disabled=true; submitBtn.textContent="Sending…";
+
+    fetch(FORMSUBMIT_ENDPOINT,{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body:JSON.stringify(payload)
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var ok = data && (data.success===true || data.success==="true");
+      if(ok){
+        $("#cform").reset(); updateCount();
+        closeModal();
+        showToast("✓ Request received — a confirmation email is on its way. We'll be in touch shortly.");
+      } else {
+        errmsg.textContent = (data && data.message) ? data.message :
+          "Something went wrong sending your request. Please try again, or email us directly.";
+        errmsg.classList.add("show");
+      }
+    })
+    .catch(function(){
+      errmsg.textContent="Network error — please check your connection and try again.";
+      errmsg.classList.add("show");
+    })
+    .finally(function(){
+      submitBtn.disabled=false; submitBtn.textContent=orig;
+    });
+  });
+
+  /* ---- service worker ---- */
+  if("serviceWorker" in navigator){
+    window.addEventListener("load",function(){
+      navigator.serviceWorker.register("sw.js").catch(function(){});
+    });
+  }
+})();
+</script>
+
+
+</body>
+</html>

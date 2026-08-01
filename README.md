@@ -52,14 +52,21 @@ imported, so the page stays a single self-contained file.
   scale. Orange is treated as a signal, not a background: it carries the AI/agent plane,
   CTAs, links and the roadmap's climax phase. Accent fills always take white text; links
   step one along the ramp (`#8A3810` light, `#D9713F` dark) to hold contrast.
-- **Current state vs. target state** — every before/after pair on the page reads the same
-  way: the legacy side is a desaturated slate (`--legacy`) and the AI-native side is green
-  (`--target`, `#1A7F5A` light / `#2FA274` dark) as a tint, not a fill. Applies to the
-  Executive Summary from→to blocks and the Redesign accordion's AI-native panels.
-  Because green now means "target state", the roadmap's ongoing phase no longer uses it —
-  it repeats the accent as a dashed rail instead, reading as "same destination, no end
-  date". Remaining supporting hues (steel, gold, crimson) only separate categories in
-  diagrams.
+- **Two halves** — the page turns colour at section 07. Sections 01–06 diagnose the
+  current state and carry the brand accent; from *Where AI Attaches* to the end, the
+  emphasis colour becomes the target-state green (`--target`, `#1A7F5A` light /
+  `#2FA274` dark) — eyebrows, agent planes, rails, chips, diagram accents and the
+  roadmap all follow. Implemented by re-pointing `--accent` on those six section roots,
+  so every descendant inherits it without per-rule overrides.
+- **Two things stay orange** on purpose: the primary CTA (`--brand`) — an action, not a
+  narrative state, so it still pops against the green half and matches the sticky nav —
+  and the footer brand lockup.
+- **Current state vs. target state** — every before/after pair reads the same way: the
+  legacy side is a desaturated slate (`--legacy`), the AI-native side is `--target` as a
+  tint, not a fill. Roadmap phases run slate → steel → gold → solid green (agent-ready)
+  → dashed green (ongoing); the dash carries "no end date" so the last two phases share
+  a colour without reading as one step. Supporting hues (steel, gold, crimson) only
+  separate categories in diagrams.
 - **Type** — Space Grotesk (display) + Inter (body) + the system mono stack for labels,
   on the design system's fluid 1.20 scale. The top menu runs at `1.14rem` and the nav
   logomark at 51px, so the horizontal menu needs ~1380px; below that it collapses into

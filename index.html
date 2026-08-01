@@ -84,7 +84,8 @@
   --steel:#72A9D0; --gold:#E2AC4A; --crimson:#DE5A63;
   --ok:#4FB795; --ok-soft:#A9E3CE; --crimson-soft:#F2B6BA;
   --legacy:#8CA3BD; --legacy-soft:#C2D2E4;   /* "the old way" — deliberately desaturated */
-  --target:#2FA274; --target-soft:#7FD3AE;   /* "the way it works now" — the AI-native side */
+  --target:#2FA274; --target-2:#4FB795; --target-soft:#7FD3AE;  /* the AI-native / target state */
+  --brand:#C04F15; --brand-2:#D9713F;        /* the action colour — CTAs keep it everywhere */
   --link:#D9713F; --link-hover:#E89066;      /* one ramp step up from the accent: AA on dark */
   --focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 40%,transparent);
   --shadow-md:0 8px 24px rgba(0,0,0,.45);
@@ -104,7 +105,8 @@
   --steel:#1C5077; --gold:#8A6608; --crimson:#B0323C;
   --ok:#1A7F5A; --ok-soft:#125B41; --crimson-soft:#8E2730;
   --legacy:#47698A; --legacy-soft:#0E3D67;
-  --target:#1A7F5A; --target-soft:#0F6B4B;
+  --target:#1A7F5A; --target-2:#12704E; --target-soft:#0F6B4B;
+  --brand:#A64312; --brand-2:#8A3810;
   --link:#8A3810; --link-hover:#6E2A08;
   --focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 35%,transparent);
   --shadow-md:0 8px 24px rgba(0, 35, 70,.10);
@@ -206,10 +208,10 @@ h2{font-size:var(--f-h2);margin-bottom:.85rem}
   font-family:var(--font-body);font-size:.85rem;font-weight:500;
   padding:.62rem 1.1rem;border-radius:var(--r-m);
   transition:transform var(--dur-fast) var(--ease-standard),box-shadow var(--dur-fast) var(--ease-standard),background var(--dur-fast) var(--ease-standard);
-  background:var(--accent);color:var(--on-accent);white-space:nowrap;
-  box-shadow:0 10px 30px -14px color-mix(in srgb,var(--accent) 90%,transparent);
+  background:var(--brand);color:var(--on-accent);white-space:nowrap;
+  box-shadow:0 10px 30px -14px color-mix(in srgb,var(--brand) 90%,transparent);
 }
-.btn:hover{transform:translateY(-1px);background:var(--accent-2);box-shadow:0 14px 34px -14px color-mix(in srgb,var(--accent) 95%,transparent);text-decoration:none;color:var(--on-accent)}
+.btn:hover{transform:translateY(-1px);background:var(--brand-2);box-shadow:0 14px 34px -14px color-mix(in srgb,var(--brand) 95%,transparent);text-decoration:none;color:var(--on-accent)}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2);box-shadow:none}
 .btn.ghost:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink);border-color:var(--accent)}
 .btn.lg{font-size:.95rem;padding:.85rem 1.5rem}
@@ -310,6 +312,23 @@ h1 .g{background:linear-gradient(110deg,var(--accent) 0%,var(--accent-2) 55%,var
   .h-core{font-size:24px}
   .h-full,.h-sub{display:none}
   .h-short{display:inline}
+}
+
+/* ============ SECTION 07 → END: THE TARGET-STATE HALF ============
+   Sections 01–06 diagnose the current state and carry the brand accent.
+   From "Where AI Attaches" onward the page describes where the platform is
+   going, so the emphasis colour becomes the target-state green — eyebrows,
+   agent planes, rails, chips, diagram accents and the roadmap all follow.
+   Only two things stay orange: the primary CTA (an action, not a narrative
+   state) and the footer brand lockup. */
+#leverage,#architecture,#redesign,#roadmap,#contact,#references{
+  --accent:var(--target);
+  --accent-2:var(--target-2);
+  --accent-soft:var(--target-soft);
+  --agent:var(--target);
+  --link:var(--target-2);
+  --link-hover:var(--target-soft);
+  --focus-ring:0 0 0 3px color-mix(in srgb,var(--target) 40%,transparent);
 }
 
 /* ============ CARDS / GRIDS ============ */

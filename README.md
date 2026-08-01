@@ -50,10 +50,16 @@ imported, so the page stays a single self-contained file.
   inlined as SVG in the nav and footer; `R2-favicon.svg` for the tab.
 - **Colour** — ink `#002346` / accent `#A64312` (`#C04F15` on dark), with a cool neutral
   scale. Orange is treated as a signal, not a background: it carries the AI/agent plane,
-  CTAs, links and the roadmap's climax phase. Supporting hues (steel, gold, crimson,
-  desaturated "legacy" slate, success green) are used only to separate meaning in
-  diagrams. Accent fills always take white text; links step one along the ramp
-  (`#8A3810` light, `#D9713F` dark) to hold contrast.
+  CTAs, links and the roadmap's climax phase. Accent fills always take white text; links
+  step one along the ramp (`#8A3810` light, `#D9713F` dark) to hold contrast.
+- **Current state vs. target state** — every before/after pair on the page reads the same
+  way: the legacy side is a desaturated slate (`--legacy`) and the AI-native side is green
+  (`--target`, `#1A7F5A` light / `#2FA274` dark) as a tint, not a fill. Applies to the
+  Executive Summary from→to blocks and the Redesign accordion's AI-native panels.
+  Because green now means "target state", the roadmap's ongoing phase no longer uses it —
+  it repeats the accent as a dashed rail instead, reading as "same destination, no end
+  date". Remaining supporting hues (steel, gold, crimson) only separate categories in
+  diagrams.
 - **Type** — Space Grotesk (display) + Inter (body) + the system mono stack for labels,
   on the design system's fluid 1.20 scale. The top menu runs at `1.14rem` and the nav
   logomark at 51px, so the horizontal menu needs ~1380px; below that it collapses into

@@ -1,6 +1,6 @@
-# Data Engineering, Rebuilt by AI — R2 Digital LLC
+# Data Engineering, Rebuilt by AI — R2 Digital
 
-A single-page progressive web app presenting R2 Digital LLC's point of view on how AI is
+A single-page progressive web app presenting R2 Digital's point of view on how AI is
 transforming data engineering, and what an AI-powered DE platform looks like inside an
 AI-first enterprise data architecture.
 
@@ -48,13 +48,16 @@ imported, so the page stays a single self-contained file.
 
 - **Identity** — the orbital logomark (white ring, orange core, orbiting satellites),
   inlined as SVG in the nav and footer; `R2-favicon.svg` for the tab.
-- **Colour** — ink `#0B3041` / accent `#C04F15` (`#E0703A` on dark), with a cool neutral
+- **Colour** — ink `#002346` / accent `#A64312` (`#C04F15` on dark), with a cool neutral
   scale. Orange is treated as a signal, not a background: it carries the AI/agent plane,
   CTAs, links and the roadmap's climax phase. Supporting hues (steel, gold, crimson,
   desaturated "legacy" slate, success green) are used only to separate meaning in
-  diagrams.
+  diagrams. Accent fills always take white text; links step one along the ramp
+  (`#8A3810` light, `#D9713F` dark) to hold contrast.
 - **Type** — Space Grotesk (display) + Inter (body) + the system mono stack for labels,
-  on the design system's fluid 1.20 scale.
+  on the design system's fluid 1.20 scale. The top menu runs at `1.14rem` and the nav
+  logomark at 51px, so the horizontal menu needs ~1380px; below that it collapses into
+  the drawer, which carries all eleven sections in full.
 - **Themes** — ships light and dark, driven by `data-theme` on `<html>`. Dark is the
   default marketing look; light is the reading look. The choice persists in
   `localStorage` under `r2-theme` and falls back to the OS preference.

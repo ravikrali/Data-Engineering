@@ -1,8 +1,8 @@
-/* R2 Digital LLC — Data Engineering, Rebuilt by AI
+/* R2 Digital — Data Engineering, Rebuilt by AI
    Offline-capable service worker: cache-first for the app shell,
    network-first for navigations so content updates are picked up. */
 
-var CACHE = "r2-dataeng-v2";
+var CACHE = "r2-dataeng-v3";
 var SHELL = [
   "./",
   "./index.html",

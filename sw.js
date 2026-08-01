@@ -2,14 +2,15 @@
    Offline-capable service worker: cache-first for the app shell,
    network-first for navigations so content updates are picked up. */
 
-var CACHE = "r2-dataeng-v1";
+var CACHE = "r2-dataeng-v2";
 var SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./icon-192.png",
   "./icon-512.png",
-  "./og.png"
+  "./og.png",
+  "./R2-favicon.svg"
 ];
 
 self.addEventListener("install", function (e) {

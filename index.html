@@ -6,9 +6,11 @@
 <title>Data Engineering, Rebuilt by AI — R2 Digital LLC</title>
 <meta name="description" content="How AI is transforming Data Engineering: the gaps in traditional DE, the competencies and tooling map, an AI-powered DE reference architecture for the AI-first enterprise, and a phased migration roadmap. A point of view from R2 Digital LLC.">
 <meta name="author" content="Ravi Rali · R2 Digital LLC">
-<meta name="theme-color" content="#070B14">
+<meta name="theme-color" content="#081E28" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#EEF0F4" media="(prefers-color-scheme: light)">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon-192.png">
+<link rel="icon" href="R2-favicon.svg" type="image/svg+xml">
+<link rel="icon" href="icon-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="canonical" href="https://ravikrali.github.io/Data-Engineering/">
 <meta property="og:title" content="Data Engineering, Rebuilt by AI — R2 Digital LLC">
@@ -23,61 +25,123 @@
 <meta name="twitter:image" content="https://ravikrali.github.io/Data-Engineering/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ============ TOKENS ============ */
+/* ============================================================
+   R2 DIGITAL — DESIGN TOKENS
+   Bound to brand/tokens.css (R2 Design System v1.0).
+   Palette derives from the orbital logomark: cool ink + one warm
+   signal orange. Ships light + dark, driven by data-theme.
+   ============================================================ */
 :root{
-  --bg:#070B14; --bg-2:#0A0F1C;
-  --surface:#0E1523; --surface-2:#141E31; --surface-3:#1B2740;
-  --line:rgba(255,255,255,.085); --line-2:rgba(255,255,255,.16);
-  --ink:#E9EFF8; --ink-2:#C3D0E2; --muted:#8397B4; --faint:#5E7191;
-  --teal:#2DD4BF; --blue:#5B9BFF; --amber:#F5B544; --rose:#FF6B7A; --violet:#A78BFA;
-  --ok:#34D399;
-  --r-s:8px; --r-m:14px; --r-l:22px;
-  --nav-h:64px;
-  --maxw:1240px;
-  --f-xs:clamp(.70rem,.66rem + .18vw,.79rem);
-  --f-s:clamp(.80rem,.75rem + .22vw,.92rem);
-  --f-b:clamp(.94rem,.88rem + .28vw,1.06rem);
-  --f-l:clamp(1.06rem,.98rem + .42vw,1.28rem);
-  --f-h3:clamp(1.16rem,1.0rem + .8vw,1.6rem);
-  --f-h2:clamp(1.6rem,1.15rem + 2.1vw,3.0rem);
-  --f-h1:clamp(2.1rem,1.3rem + 3.9vw,4.6rem);
-  --sp:clamp(1rem,.6rem + 1.6vw,2rem);
+  /* ---------- brand core (from the logo) ---------- */
+  --r2-ink:#0B3041; --r2-orange:#C04F15; --r2-orange-bright:#E0703A;
+  --r2-steel:#506E7B; --r2-mist:#9EADB4; --r2-silver:#D6DDE0;
+
+  /* ---------- type ---------- */
+  --font-display:'Space Grotesk',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-body:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-mono:ui-monospace,'SFMono-Regular','JetBrains Mono',Consolas,monospace;
+
+  /* fluid scale, 1.20 ratio, clamped 320 -> 1240px */
+  --step--2:clamp(.6944rem,.66rem + .17vw,.7813rem);
+  --step--1:clamp(.8333rem,.79rem + .22vw,.9375rem);
+  --step-0:clamp(1rem,.95rem + .27vw,1.125rem);
+  --step-1:clamp(1.2rem,1.13rem + .36vw,1.35rem);
+  --step-2:clamp(1.44rem,1.34rem + .49vw,1.62rem);
+  --step-3:clamp(1.728rem,1.60rem + .66vw,1.944rem);
+  --step-4:clamp(2.0736rem,1.90rem + .88vw,2.3328rem);
+  --step-5:clamp(2.4883rem,2.25rem + 1.17vw,2.7994rem);
+  --display:clamp(2.8rem,1.9rem + 4.2vw,4.6rem);
+  --tracking-caps:.18em;
+
+  /* page-level aliases used through this document */
+  --f-xs:var(--step--2); --f-s:var(--step--1); --f-b:var(--step-0);
+  --f-l:var(--step-1); --f-h3:var(--step-2); --f-h2:var(--step-4);
+  --f-h1:var(--display);
+
+  /* ---------- geometry ---------- */
+  --r-s:8px; --r-m:12px; --r-l:18px; --r-xl:28px;
+  --nav-h:64px; --maxw:1180px;
+  --sp:clamp(1rem,.5rem + 2.5vw,2rem);
   --sec-y:clamp(3.5rem,2rem + 7vw,7.5rem);
+
+  /* ---------- motion ---------- */
+  --dur-fast:150ms; --dur-base:240ms; --dur-slow:360ms;
+  --ease-standard:cubic-bezier(.2,0,.2,1);
+  --ease-breathe:cubic-bezier(.45,0,.55,1);
+}
+
+/* ---------- SEMANTIC — DARK (default: the marketing look) ---------- */
+:root,:root[data-theme="dark"]{
+  --bg:#081E28; --bg-2:#0A2430;
+  --surface:#0F2A38; --surface-2:#123240; --surface-3:#17404F;
+  --line:#1E3D4C; --line-2:#2C5A6E;
+  --ink:#EAF1F4; --ink-2:#C6D5DC; --muted:#9EADB4; --faint:#6E8791;
+  --accent:#E0703A; --accent-2:#EC9268; --accent-soft:#F6C4AB;
+  --on-accent:#0B1A22;
+  --agent:#E0703A;                 /* the AI plane carries the brand signal */
+  --steel:#79ADC6; --gold:#E2AC4A; --crimson:#DE5A63;
+  --ok:#4FB795; --ok-soft:#A9E3CE; --crimson-soft:#F2B6BA;
+  --legacy:#8FA6B0; --legacy-soft:#C6D5DC;   /* "the old way" — deliberately desaturated */
+  --focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 40%,transparent);
+  --shadow-md:0 8px 24px rgba(0,0,0,.45);
+  --shadow-lg:0 18px 44px rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+
+/* ---------- SEMANTIC — LIGHT (the reading look) ---------- */
+:root[data-theme="light"]{
+  --bg:#EEF0F4; --bg-2:#F5F7FA;
+  --surface:#FFFFFF; --surface-2:#F5F7FA; --surface-3:#EEF0F4;
+  --line:#E1E6F0; --line-2:#C3CDD3;
+  --ink:#0B3041; --ink-2:#1D485B; --muted:#506E7B; --faint:#7A929B;
+  --accent:#C04F15; --accent-2:#A5410F; --accent-soft:#8F380D;
+  --on-accent:#FFFFFF;
+  --agent:#C04F15;
+  --steel:#2C5A6E; --gold:#8A6608; --crimson:#B0323C;
+  --ok:#1A7F5A; --ok-soft:#125B41; --crimson-soft:#8E2730;
+  --legacy:#506E7B; --legacy-soft:#1D485B;
+  --focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 35%,transparent);
+  --shadow-md:0 8px 24px rgba(11,48,65,.10);
+  --shadow-lg:0 18px 44px rgba(11,48,65,.14);
+  color-scheme:light;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:var(--nav-h);-webkit-text-size-adjust:100%}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 body{
   margin:0;background:var(--bg);color:var(--ink);
-  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
-  font-size:var(--f-b);line-height:1.65;font-weight:300;
+  font-family:var(--font-body);
+  font-size:var(--f-b);line-height:1.6;font-weight:400;
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  transition:background var(--dur-slow) var(--ease-standard),color var(--dur-slow) var(--ease-standard);
 }
+/* ambient wash — orange stays a signal, so it is held to a whisper here */
 body::before{
   content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
-    radial-gradient(900px 620px at 78% -8%,rgba(45,212,191,.10),transparent 62%),
-    radial-gradient(760px 520px at 4% 12%,rgba(91,155,255,.10),transparent 60%),
-    radial-gradient(700px 500px at 50% 108%,rgba(167,139,250,.07),transparent 60%);
+    radial-gradient(900px 620px at 78% -8%,color-mix(in srgb,var(--accent) 9%,transparent),transparent 62%),
+    radial-gradient(760px 520px at 4% 12%,color-mix(in srgb,var(--steel) 9%,transparent),transparent 60%),
+    radial-gradient(700px 500px at 50% 108%,color-mix(in srgb,var(--accent) 4%,transparent),transparent 60%);
 }
-h1,h2,h3,h4,h5{font-family:"Space Grotesk",sans-serif;font-weight:600;line-height:1.1;letter-spacing:-.02em;margin:0}
+h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:600;line-height:1.08;letter-spacing:-.02em;margin:0}
+h1,h2{font-weight:700}
 p{margin:0 0 1em}
-a{color:var(--teal);text-decoration:none}
-a:hover{text-decoration:underline}
-.mono{font-family:"IBM Plex Mono",monospace}
-:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-2);text-decoration:underline}
+.mono{font-family:var(--font-mono)}
+:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--r-s)}
 
 /* ============ LAYOUT ============ */
 .wrap{width:min(100% - 2*var(--sp),var(--maxw));margin-inline:auto;position:relative;z-index:1}
 section{padding-block:var(--sec-y);position:relative;z-index:1}
 .sec-head{max-width:76ch;margin-bottom:clamp(2rem,1rem + 3vw,3.5rem)}
 .eyebrow{
-  font-family:"IBM Plex Mono",monospace;font-size:var(--f-xs);letter-spacing:.20em;
-  text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:.7rem;margin-bottom:1.1rem;
+  font-family:var(--font-display);font-weight:600;font-size:var(--f-s);letter-spacing:var(--tracking-caps);
+  text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.7rem;margin-bottom:1.1rem;
 }
-.eyebrow::before{content:"";width:26px;height:1px;background:var(--teal);opacity:.7;flex:none}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--accent);opacity:.7;flex:none}
 h2{font-size:var(--f-h2);margin-bottom:.85rem}
 .lede{font-size:var(--f-l);color:var(--ink-2);font-weight:300;line-height:1.55}
 .sub{color:var(--muted);font-size:var(--f-s)}
@@ -85,126 +149,136 @@ h2{font-size:var(--f-h2);margin-bottom:.85rem}
 /* ============ NAV ============ */
 .nav{
   position:sticky;top:0;z-index:100;height:var(--nav-h);
-  background:rgba(7,11,20,.72);backdrop-filter:blur(18px) saturate(160%);
+  background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(18px) saturate(160%);
   -webkit-backdrop-filter:blur(18px) saturate(160%);
   border-bottom:1px solid var(--line);
 }
 .nav-in{height:100%;display:flex;align-items:center;gap:1.2rem}
 .brand{display:flex;align-items:center;gap:.65rem;flex:none;text-decoration:none;color:var(--ink)}
 .brand:hover{text-decoration:none}
-.brand-mark{
-  width:32px;height:32px;border-radius:9px;flex:none;
-  background:linear-gradient(135deg,var(--teal),var(--blue));
-  display:grid;place-items:center;font-family:"Space Grotesk",sans-serif;
-  font-weight:700;font-size:.85rem;color:#06121A;letter-spacing:-.04em;
-  box-shadow:0 0 0 1px rgba(45,212,191,.3),0 6px 20px -6px rgba(45,212,191,.5);
-}
+/* the orbital logomark — the only place the badge gradient appears */
+.brand-mark{width:34px;height:34px;flex:none;display:block;border-radius:var(--r-s)}
 .brand-txt{display:flex;flex-direction:column;line-height:1.1}
-.brand-txt b{font-family:"Space Grotesk",sans-serif;font-size:.95rem;font-weight:600;letter-spacing:-.01em}
-.brand-txt span{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.16em;color:var(--faint);text-transform:uppercase}
+.brand-txt b{font-family:var(--font-display);font-size:.95rem;font-weight:700;letter-spacing:-.01em}
+.brand-txt span{font-family:var(--font-display);font-size:.56rem;font-weight:500;letter-spacing:var(--tracking-caps);color:var(--accent);text-transform:uppercase}
+
+/* theme toggle */
+.themebtn{
+  flex:none;background:transparent;border:1px solid var(--line-2);color:var(--ink-2);
+  width:34px;height:34px;border-radius:var(--r-s);cursor:pointer;display:grid;place-items:center;
+  transition:color var(--dur-fast) var(--ease-standard),border-color var(--dur-fast) var(--ease-standard),background var(--dur-fast) var(--ease-standard);
+}
+.themebtn:hover{color:var(--accent);border-color:var(--accent)}
+.themebtn svg{width:16px;height:16px;display:block}
+.themebtn .i-sun{display:none}
+:root[data-theme="light"] .themebtn .i-sun{display:block}
+:root[data-theme="light"] .themebtn .i-moon{display:none}
 
 .nav-links{display:flex;gap:.15rem;margin-left:auto;overflow-x:auto;scrollbar-width:none;mask-image:linear-gradient(90deg,transparent,#000 12px,#000 calc(100% - 12px),transparent)}
 .nav-links::-webkit-scrollbar{display:none}
 .nav-links a{
-  font-size:.76rem;color:var(--muted);padding:.42rem .55rem;border-radius:7px;white-space:nowrap;
+  font-size:.76rem;color:var(--muted);padding:.42rem .55rem;border-radius:var(--r-s);white-space:nowrap;
   transition:color .2s,background .2s;font-weight:400;
 }
-.nav-links a:hover{color:var(--ink);background:rgba(255,255,255,.05);text-decoration:none}
-.nav-links a.on{color:var(--teal);background:rgba(45,212,191,.11)}
+.nav-links a:hover{color:var(--ink);background:color-mix(in srgb,var(--ink) 5%,transparent);text-decoration:none}
+.nav-links a.on{color:var(--accent);background:color-mix(in srgb,var(--accent) 11%,transparent)}
 .nav-cta{flex:none;margin-left:.4rem}
-@media(max-width:1180px){.nav-links{display:none}}
+.themebtn{margin-left:.45rem}
+.burger{margin-left:.45rem}
+@media(max-width:1180px){.nav-links{display:none}.themebtn{margin-left:auto}}
 @media(max-width:720px){.btn.nav-cta{display:none}}
 @media(max-width:400px){.brand-txt span{display:none}.brand-txt b{font-size:.88rem}}
 
 .btn{
   display:inline-flex;align-items:center;gap:.5rem;border:0;cursor:pointer;
-  font-family:"IBM Plex Sans",sans-serif;font-size:.83rem;font-weight:500;
-  padding:.62rem 1.05rem;border-radius:9px;transition:transform .18s,box-shadow .18s,background .18s;
-  background:linear-gradient(135deg,var(--teal),#22B8A6);color:#04161B;white-space:nowrap;
-  box-shadow:0 6px 22px -10px rgba(45,212,191,.85);
+  font-family:var(--font-body);font-size:.85rem;font-weight:500;
+  padding:.62rem 1.1rem;border-radius:var(--r-m);
+  transition:transform var(--dur-fast) var(--ease-standard),box-shadow var(--dur-fast) var(--ease-standard),background var(--dur-fast) var(--ease-standard);
+  background:var(--accent);color:var(--on-accent);white-space:nowrap;
+  box-shadow:0 10px 30px -14px color-mix(in srgb,var(--accent) 90%,transparent);
 }
-.btn:hover{transform:translateY(-1px);box-shadow:0 10px 30px -10px rgba(45,212,191,.95);text-decoration:none}
-.btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line-2);box-shadow:none}
-.btn.ghost:hover{background:rgba(255,255,255,.05);color:var(--ink)}
+.btn:hover{transform:translateY(-1px);background:var(--accent-2);box-shadow:0 14px 34px -14px color-mix(in srgb,var(--accent) 95%,transparent);text-decoration:none;color:var(--on-accent)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2);box-shadow:none}
+.btn.ghost:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink);border-color:var(--accent)}
 .btn.lg{font-size:.95rem;padding:.85rem 1.5rem}
 
-.burger{display:none;margin-left:auto;background:transparent;border:1px solid var(--line-2);border-radius:8px;width:38px;height:34px;cursor:pointer;color:var(--ink-2);align-items:center;justify-content:center}
+.burger{display:none;margin-left:auto;background:transparent;border:1px solid var(--line-2);border-radius:var(--r-s);width:38px;height:34px;cursor:pointer;color:var(--ink-2);align-items:center;justify-content:center}
 @media(max-width:1180px){.burger{display:flex}}
 .drawer{
-  position:fixed;inset:var(--nav-h) 0 0 0;z-index:99;background:rgba(7,11,20,.97);
+  position:fixed;inset:var(--nav-h) 0 0 0;z-index:99;background:color-mix(in srgb,var(--bg) 97%,transparent);
   backdrop-filter:blur(20px);padding:1.5rem var(--sp);overflow-y:auto;
   transform:translateY(-8px);opacity:0;pointer-events:none;transition:.25s;
 }
 .drawer.open{transform:none;opacity:1;pointer-events:auto}
 .drawer a{display:block;padding:.8rem 0;border-bottom:1px solid var(--line);color:var(--ink-2);font-size:1rem}
-.drawer a:hover{color:var(--teal);text-decoration:none}
-.prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal),var(--blue));z-index:101;width:0}
+.drawer a:hover{color:var(--accent);text-decoration:none}
+.prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--steel));z-index:101;width:0}
 
 /* ============ HERO ============ */
 .hero{padding-top:clamp(3rem,2rem + 6vw,6.5rem);padding-bottom:clamp(3rem,2rem + 5vw,6rem);min-height:calc(100svh - var(--nav-h));display:flex;align-items:center}
 .hero-grid{display:grid;gap:clamp(2rem,1rem + 4vw,4rem);grid-template-columns:1fr}
 @media(min-width:1000px){.hero-grid{grid-template-columns:1.1fr .9fr;align-items:center}}
 .tag{
-  display:inline-flex;align-items:center;gap:.55rem;font-family:"IBM Plex Mono",monospace;
-  font-size:var(--f-xs);letter-spacing:.13em;text-transform:uppercase;color:var(--teal);
-  border:1px solid rgba(45,212,191,.32);background:rgba(45,212,191,.07);
+  display:inline-flex;align-items:center;gap:.55rem;font-family:var(--font-mono);
+  font-size:var(--f-xs);letter-spacing:.13em;text-transform:uppercase;color:var(--accent);
+  border:1px solid color-mix(in srgb,var(--accent) 32%,transparent);background:color-mix(in srgb,var(--accent) 7%,transparent);
   padding:.36rem .8rem;border-radius:999px;margin-bottom:1.5rem;
 }
-.tag .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2.4s infinite}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(45,212,191,.5)}50%{opacity:.6;box-shadow:0 0 0 6px rgba(45,212,191,0)}}
+.tag .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 50%,transparent)}50%{opacity:.6;box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 0%,transparent)}}
 h1{font-size:var(--f-h1);letter-spacing:-.035em;margin-bottom:1.25rem}
-h1 .g{background:linear-gradient(120deg,var(--teal) 10%,var(--blue) 55%,var(--violet) 95%);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1 .g{background:linear-gradient(110deg,var(--accent) 0%,var(--accent-2) 55%,var(--accent) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p.lede{max-width:60ch;margin-bottom:1.8rem}
 .byline{display:flex;align-items:center;gap:.7rem;margin:-.2rem 0 1.5rem}
-.by-av{width:34px;height:34px;border-radius:50%;flex:none;background:linear-gradient(135deg,var(--blue),var(--violet));display:grid;place-items:center;font-family:"Space Grotesk";font-weight:700;font-size:.8rem;color:#0A0F1C}
+.by-av{width:34px;height:34px;border-radius:50%;flex:none;background:radial-gradient(circle at 50% 42%,#FFFFFF 0%,#D6DDE0 18%,#9EADB4 46%,#506E7B 74%,#0B3041 100%);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:.78rem;color:#FFFFFF;text-shadow:0 1px 2px rgba(11,48,65,.55)}
 .by-txt{font-size:.85rem;color:var(--muted)}
 .by-txt b{color:var(--ink);font-weight:500}
 .hero-cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:2.2rem}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden}
 .stat{background:var(--surface);padding:1.05rem .95rem}
-.stat b{display:block;font-family:"Space Grotesk",sans-serif;font-size:clamp(1.35rem,1rem + 1.5vw,2rem);font-weight:700;color:var(--teal);letter-spacing:-.03em;line-height:1}
+.stat b{display:block;font-family:var(--font-display);font-size:clamp(1.35rem,1rem + 1.5vw,2rem);font-weight:700;color:var(--accent);letter-spacing:-.03em;line-height:1}
 .stat span{display:block;font-size:.71rem;color:var(--muted);margin-top:.45rem;line-height:1.35}
-.stat cite{display:block;font-family:"IBM Plex Mono",monospace;font-size:.58rem;color:var(--faint);font-style:normal;margin-top:.35rem;letter-spacing:.04em}
+.stat cite{display:block;font-family:var(--font-mono);font-size:.58rem;color:var(--faint);font-style:normal;margin-top:.35rem;letter-spacing:.04em}
 
 /* hero visual — animated pipeline */
 .hero-viz{
   border:1px solid var(--line);border-radius:var(--r-l);
-  background:linear-gradient(160deg,var(--surface),rgba(14,21,35,.4));
+  background:linear-gradient(160deg,var(--surface),color-mix(in srgb,var(--surface) 40%,transparent));
   padding:1.3rem;position:relative;overflow:hidden;
 }
-.hero-viz::after{content:"";position:absolute;inset:0;background:radial-gradient(400px 300px at 100% 0,rgba(45,212,191,.10),transparent 65%);pointer-events:none}
-.viz-title{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center}
-.viz-title em{font-style:normal;color:var(--teal)}
+.hero-viz::after{content:"";position:absolute;inset:0;background:radial-gradient(400px 300px at 100% 0,color-mix(in srgb,var(--accent) 10%,transparent),transparent 65%);pointer-events:none}
+.viz-title{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center}
+.viz-title em{font-style:normal;color:var(--accent)}
 .layer{
-  border:1px solid var(--line);border-radius:11px;padding:.66rem .8rem;margin-bottom:.42rem;
+  border:1px solid var(--line);border-radius:var(--r-m);padding:.66rem .8rem;margin-bottom:.42rem;
   background:var(--surface-2);display:flex;align-items:center;gap:.7rem;
   transition:transform .25s,border-color .25s;
 }
 .layer:hover{transform:translateX(4px);border-color:var(--line-2)}
-.layer .ic{width:26px;height:26px;border-radius:7px;flex:none;display:grid;place-items:center;font-size:.68rem;font-family:"IBM Plex Mono",monospace;font-weight:500}
-.layer b{font-family:"Space Grotesk",sans-serif;font-size:.82rem;font-weight:600;display:block}
+.layer .ic{width:26px;height:26px;border-radius:var(--r-s);flex:none;display:grid;place-items:center;font-size:.68rem;font-family:var(--font-mono);font-weight:500}
+.layer b{font-family:var(--font-display);font-size:.82rem;font-weight:600;display:block}
 .layer small{color:var(--muted);font-size:.69rem;display:block;line-height:1.4}
-.c-teal{background:rgba(45,212,191,.13);color:var(--teal);border:1px solid rgba(45,212,191,.28)}
-.c-blue{background:rgba(91,155,255,.13);color:var(--blue);border:1px solid rgba(91,155,255,.28)}
-.c-amber{background:rgba(245,181,68,.13);color:var(--amber);border:1px solid rgba(245,181,68,.28)}
-.c-violet{background:rgba(167,139,250,.13);color:var(--violet);border:1px solid rgba(167,139,250,.28)}
-.c-rose{background:rgba(255,107,122,.13);color:var(--rose);border:1px solid rgba(255,107,122,.28)}
+.c-accent{background:color-mix(in srgb,var(--accent) 13%,transparent);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 28%,transparent)}
+.c-steel{background:color-mix(in srgb,var(--steel) 13%,transparent);color:var(--steel);border:1px solid color-mix(in srgb,var(--steel) 28%,transparent)}
+.c-gold{background:color-mix(in srgb,var(--gold) 13%,transparent);color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 28%,transparent)}
+.c-agent{background:color-mix(in srgb,var(--agent) 13%,transparent);color:var(--agent);border:1px solid color-mix(in srgb,var(--agent) 28%,transparent)}
+.c-crimson{background:color-mix(in srgb,var(--crimson) 13%,transparent);color:var(--crimson);border:1px solid color-mix(in srgb,var(--crimson) 28%,transparent)}
 .flowdot{text-align:center;color:var(--faint);font-size:.72rem;line-height:1;margin:.1rem 0;animation:drip 2.6s infinite}
 @keyframes drip{0%,100%{opacity:.25}50%{opacity:1}}
 .agentrail{
-  margin-top:.7rem;border:1px dashed rgba(167,139,250,.4);border-radius:11px;padding:.6rem .8rem;
-  background:rgba(167,139,250,.06);display:flex;align-items:center;gap:.6rem;
+  margin-top:.7rem;border:1px dashed color-mix(in srgb,var(--agent) 40%,transparent);border-radius:var(--r-m);padding:.6rem .8rem;
+  background:color-mix(in srgb,var(--agent) 6%,transparent);display:flex;align-items:center;gap:.6rem;
 }
-.agentrail b{font-family:"Space Grotesk";font-size:.76rem;color:var(--violet)}
+.agentrail b{font-family:var(--font-display);font-size:.76rem;color:var(--agent)}
 .agentrail small{color:var(--muted);font-size:.67rem;line-height:1.35}
-.spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(167,139,250,.25);border-top-color:var(--violet);animation:sp 1.4s linear infinite;flex:none}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid color-mix(in srgb,var(--agent) 25%,transparent);border-top-color:var(--agent);animation:sp 1.4s linear infinite;flex:none}
 @keyframes sp{to{transform:rotate(360deg)}}
 
 /* hero illustration */
 .hero-art{display:block;width:100%;height:auto;position:relative;z-index:1}
-.h-lbl{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:1.5px;fill:var(--faint)}
-.h-lbl-b{font-family:"Space Grotesk",sans-serif;font-size:14px;font-weight:600;fill:var(--ink-2)}
-.h-core{font-family:"Space Grotesk",sans-serif;font-size:19px;font-weight:700;fill:#061018}
+.h-lbl{font-family:var(--font-mono);font-size:13px;letter-spacing:1.5px;fill:var(--faint)}
+.h-lbl-b{font-family:var(--font-display);font-size:14px;font-weight:600;fill:var(--ink-2)}
+.h-core{font-family:var(--font-display);font-size:19px;font-weight:700;fill:var(--on-accent)}
 .h-stream{fill:none;stroke-width:1.6;stroke-linecap:round}
 .h-fl{stroke-dasharray:6 8;animation:hflow 2.2s linear infinite}
 .h-fl2{stroke-dasharray:2 7;animation:hflow 1.5s linear infinite}
@@ -241,68 +315,68 @@ h1 .g{background:linear-gradient(120deg,var(--teal) 10%,var(--blue) 55%,var(--vi
 .card h4{font-size:1rem;margin-bottom:.5rem}
 .card p{color:var(--ink-2);font-size:var(--f-s);margin-bottom:0}
 .card p + p{margin-top:.7rem}
-.num{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.14em;color:var(--faint);display:block;margin-bottom:.7rem}
-.card .bar{position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--teal);opacity:.65}
-.card.b-blue .bar{background:var(--blue)} .card.b-amber .bar{background:var(--amber)}
-.card.b-rose .bar{background:var(--rose)} .card.b-violet .bar{background:var(--violet)}
-.card .ev{margin-top:.85rem;padding-top:.7rem;border-top:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:.65rem;color:var(--faint);line-height:1.5}
-.card .ev b{color:var(--amber);font-weight:500}
+.num{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.14em;color:var(--faint);display:block;margin-bottom:.7rem}
+.card .bar{position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent);opacity:.65}
+.card.b-steel .bar{background:var(--steel)} .card.b-gold .bar{background:var(--gold)}
+.card.b-crimson .bar{background:var(--crimson)} .card.b-agent .bar{background:var(--agent)}
+.card .ev{margin-top:.85rem;padding-top:.7rem;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:.65rem;color:var(--faint);line-height:1.5}
+.card .ev b{color:var(--gold);font-weight:500}
 
 ul.tick{list-style:none;padding:0;margin:.8rem 0 0;font-size:var(--f-s);color:var(--ink-2)}
 ul.tick li{padding-left:1.3rem;position:relative;margin-bottom:.45rem;line-height:1.5}
-ul.tick li::before{content:"▸";position:absolute;left:0;color:var(--teal);font-size:.8rem;top:.05rem}
-ul.tick.bad li::before{content:"✕";color:var(--rose);font-size:.7rem;top:.1rem}
+ul.tick li::before{content:"▸";position:absolute;left:0;color:var(--accent);font-size:.8rem;top:.05rem}
+ul.tick.bad li::before{content:"✕";color:var(--crimson);font-size:.7rem;top:.1rem}
 
-.sev{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.08em;padding:.16rem .45rem;border-radius:5px;white-space:nowrap;display:inline-block}
-.s-hi{background:rgba(255,107,122,.14);color:var(--rose);border:1px solid rgba(255,107,122,.3)}
-.s-md{background:rgba(245,181,68,.14);color:var(--amber);border:1px solid rgba(245,181,68,.3)}
-.s-lo{background:rgba(52,211,153,.13);color:var(--ok);border:1px solid rgba(52,211,153,.28)}
+.sev{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.08em;padding:.16rem .45rem;border-radius:5px;white-space:nowrap;display:inline-block}
+.s-hi{background:color-mix(in srgb,var(--crimson) 14%,transparent);color:var(--crimson);border:1px solid color-mix(in srgb,var(--crimson) 30%,transparent)}
+.s-md{background:color-mix(in srgb,var(--gold) 14%,transparent);color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+.s-lo{background:color-mix(in srgb,var(--ok) 13%,transparent);color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 28%,transparent)}
 
 /* tool chips */
 .chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.8rem}
 .chip{
-  font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.02em;
-  padding:.2rem .48rem;border-radius:5px;background:rgba(255,255,255,.045);
+  font-family:var(--font-mono);font-size:.62rem;letter-spacing:.02em;
+  padding:.2rem .48rem;border-radius:5px;background:color-mix(in srgb,var(--ink) 4.5%,transparent);
   border:1px solid var(--line);color:var(--muted);white-space:nowrap;
 }
-.chip.ai{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.28);color:#C9B8FF}
+.chip.ai{background:color-mix(in srgb,var(--agent) 10%,transparent);border-color:color-mix(in srgb,var(--agent) 28%,transparent);color:var(--accent-soft)}
 
 /* ============ TABLE ============ */
 .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;min-width:940px;font-size:.8rem}
 th,td{text-align:left;padding:.8rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
 thead th{
-  background:var(--surface-2);font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.76rem;
+  background:var(--surface-2);font-family:var(--font-display);font-weight:600;font-size:.76rem;
   color:var(--ink);position:sticky;top:0;z-index:2;border-bottom:1px solid var(--line-2);
 }
-tbody tr:hover{background:rgba(255,255,255,.022)}
+tbody tr:hover{background:color-mix(in srgb,var(--ink) 2.2%,transparent)}
 td:first-child,th:first-child{position:sticky;left:0;background:var(--surface);z-index:1;border-right:1px solid var(--line);min-width:180px}
 thead th:first-child{background:var(--surface-2);z-index:3}
 tbody tr:hover td:first-child{background:var(--surface-2)}
 td strong{font-weight:500;color:var(--ink)}
 td small{color:var(--muted);display:block;font-size:.72rem;line-height:1.45}
-.scrollhint{font-family:"IBM Plex Mono",monospace;font-size:.62rem;color:var(--faint);margin-top:.6rem;letter-spacing:.08em}
+.scrollhint{font-family:var(--font-mono);font-size:.62rem;color:var(--faint);margin-top:.6rem;letter-spacing:.08em}
 
 /* ============ FROM → TO ============ */
 .fromto-head{display:grid;grid-template-columns:1fr 34px 1fr;align-items:center;margin-bottom:.55rem}
-.ft-lbl{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;padding:.2rem .55rem;border-radius:5px;justify-self:start}
-.ft-from{color:var(--rose);background:rgba(255,107,122,.12);border:1px solid rgba(255,107,122,.3)}
-.ft-to{color:var(--teal);background:rgba(45,212,191,.12);border:1px solid rgba(45,212,191,.3)}
+.ft-lbl{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;padding:.2rem .55rem;border-radius:5px;justify-self:start}
+.ft-from{color:var(--legacy);background:color-mix(in srgb,var(--legacy) 12%,transparent);border:1px solid color-mix(in srgb,var(--legacy) 34%,transparent)}
+.ft-to{color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent)}
 .fromto{display:grid;grid-template-columns:1fr 34px 1fr;align-items:stretch;margin-bottom:.55rem}
 .node{
-  min-width:0;border:1px solid var(--line);border-radius:10px;padding:.65rem .7rem;
+  min-width:0;border:1px solid var(--line);border-radius:var(--r-s);padding:.65rem .7rem;
   background:var(--surface-2);display:flex;flex-direction:column;gap:.28rem;transition:transform .22s,border-color .22s;
 }
-.node.n-rose{background:rgba(255,107,122,.05);border-color:rgba(255,107,122,.18)}
-.node.n-teal{background:rgba(45,212,191,.055);border-color:rgba(45,212,191,.2)}
+.node.n-legacy{background:color-mix(in srgb,var(--legacy) 6%,transparent);border-color:color-mix(in srgb,var(--legacy) 22%,transparent)}
+.node.n-accent{background:color-mix(in srgb,var(--accent) 5.5%,transparent);border-color:color-mix(in srgb,var(--accent) 20%,transparent)}
 .node:hover{transform:translateY(-2px)}
-.node.n-rose:hover{border-color:rgba(255,107,122,.42)}
-.node.n-teal:hover{border-color:rgba(45,212,191,.42)}
-.node b{font-family:"Space Grotesk",sans-serif;font-size:.8rem;font-weight:600;line-height:1.22}
-.node.n-rose b{color:#FFD3D8}
-.node.n-teal b{color:#BFF3EC}
+.node.n-legacy:hover{border-color:color-mix(in srgb,var(--legacy) 45%,transparent)}
+.node.n-accent:hover{border-color:color-mix(in srgb,var(--accent) 42%,transparent)}
+.node b{font-family:var(--font-display);font-size:.8rem;font-weight:600;line-height:1.22}
+.node.n-legacy b{color:var(--legacy-soft)}
+.node.n-accent b{color:var(--accent-soft)}
 .node small{color:var(--muted);font-size:.66rem;line-height:1.4}
-.tarrow{align-self:center;justify-self:center;color:var(--teal);font-size:1.05rem;font-weight:700}
+.tarrow{align-self:center;justify-self:center;color:var(--accent);font-size:1.05rem;font-weight:700}
 @media(max-width:600px){
   .fromto-head{display:none}
   .fromto{grid-template-columns:1fr;gap:.3rem}
@@ -310,30 +384,30 @@ td small{color:var(--muted);display:block;font-size:.72rem;line-height:1.45}
 }
 
 /* ============ ARCH STACK ============ */
-.arch{border:1px solid var(--line);border-radius:var(--r-l);background:linear-gradient(170deg,var(--surface),rgba(10,15,28,.6));padding:clamp(1rem,.6rem + 1.4vw,1.7rem);overflow:hidden}
+.arch{border:1px solid var(--line);border-radius:var(--r-l);background:linear-gradient(170deg,var(--surface),color-mix(in srgb,var(--bg-2) 60%,transparent));padding:clamp(1rem,.6rem + 1.4vw,1.7rem);overflow:hidden}
 .plane{border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);margin-bottom:.5rem;overflow:hidden;transition:border-color .25s}
 .plane:hover{border-color:var(--line-2)}
 .plane-hd{display:flex;align-items:center;gap:.7rem;padding:.7rem .9rem;background:var(--surface-2);border-bottom:1px solid var(--line);flex-wrap:wrap}
-.plane-hd .pn{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;padding:.18rem .45rem;border-radius:5px}
-.plane-hd b{font-family:"Space Grotesk";font-size:.9rem;font-weight:600}
+.plane-hd .pn{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.14em;padding:.18rem .45rem;border-radius:5px}
+.plane-hd b{font-family:var(--font-display);font-size:.9rem;font-weight:600}
 .plane-hd small{color:var(--muted);font-size:.7rem;margin-left:auto;text-align:right}
 .blocks{display:grid;gap:.42rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,175px),1fr));padding:.7rem}
-.blk{border:1px solid var(--line);border-radius:9px;background:var(--surface-2);padding:.55rem .65rem;transition:transform .2s,border-color .2s}
+.blk{border:1px solid var(--line);border-radius:var(--r-s);background:var(--surface-2);padding:.55rem .65rem;transition:transform .2s,border-color .2s}
 .blk:hover{transform:translateY(-2px);border-color:var(--line-2)}
-.blk b{display:block;font-family:"Space Grotesk";font-size:.76rem;font-weight:600;margin-bottom:.15rem}
+.blk b{display:block;font-family:var(--font-display);font-size:.76rem;font-weight:600;margin-bottom:.15rem}
 .blk small{color:var(--muted);font-size:.65rem;line-height:1.4;display:block}
 .arch-arrow{text-align:center;color:var(--faint);font-size:.85rem;line-height:1;margin:.05rem 0 .45rem;animation:drip 3s infinite}
 .rail{
-  border:1px dashed rgba(167,139,250,.42);border-radius:var(--r-m);background:rgba(167,139,250,.05);
+  border:1px dashed color-mix(in srgb,var(--agent) 42%,transparent);border-radius:var(--r-m);background:color-mix(in srgb,var(--agent) 5%,transparent);
   padding:.7rem .9rem;margin-bottom:.5rem;
 }
 .rail-hd{display:flex;align-items:center;gap:.6rem;margin-bottom:.55rem;flex-wrap:wrap}
-.rail-hd b{font-family:"Space Grotesk";font-size:.86rem;color:var(--violet)}
+.rail-hd b{font-family:var(--font-display);font-size:.86rem;color:var(--agent)}
 .rail-hd small{color:var(--muted);font-size:.68rem}
 .rail-items{display:grid;gap:.4rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
-.ragent{border:1px solid rgba(167,139,250,.22);border-radius:8px;background:rgba(167,139,250,.06);padding:.45rem .55rem;transition:transform .2s}
+.ragent{border:1px solid color-mix(in srgb,var(--agent) 22%,transparent);border-radius:var(--r-s);background:color-mix(in srgb,var(--agent) 6%,transparent);padding:.45rem .55rem;transition:transform .2s}
 .ragent:hover{transform:translateY(-2px)}
-.ragent b{display:block;font-family:"Space Grotesk";font-size:.72rem;color:#D6C9FF;font-weight:600}
+.ragent b{display:block;font-family:var(--font-display);font-size:.72rem;color:var(--accent-soft);font-weight:600}
 .ragent small{display:block;color:var(--muted);font-size:.62rem;line-height:1.35}
 
 /* ============ ACCORDION ============ */
@@ -342,12 +416,12 @@ td small{color:var(--muted);display:block;font-size:.72rem;line-height:1.45}
 .acc-item:last-child{border-bottom:0}
 .acc-btn{
   width:100%;background:transparent;border:0;cursor:pointer;text-align:left;color:var(--ink);
-  padding:1rem 1.1rem;display:flex;align-items:center;gap:.8rem;font-family:"Space Grotesk",sans-serif;
+  padding:1rem 1.1rem;display:flex;align-items:center;gap:.8rem;font-family:var(--font-display);
   font-size:.98rem;font-weight:600;transition:background .2s;
 }
 .acc-btn:hover{background:var(--surface-2)}
-.acc-btn .n{font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:var(--faint);flex:none;letter-spacing:.1em}
-.acc-btn .cv{margin-left:auto;flex:none;transition:transform .25s;color:var(--teal);font-size:1.1rem;line-height:1}
+.acc-btn .n{font-family:var(--font-mono);font-size:.66rem;color:var(--faint);flex:none;letter-spacing:.1em}
+.acc-btn .cv{margin-left:auto;flex:none;transition:transform .25s;color:var(--accent);font-size:1.1rem;line-height:1}
 .acc-item.open .acc-btn{background:var(--surface-2)}
 .acc-item.open .cv{transform:rotate(45deg)}
 .acc-body{display:none;padding:0 1.1rem 1.25rem}
@@ -355,69 +429,72 @@ td small{color:var(--muted);display:block;font-size:.72rem;line-height:1.45}
 @keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 .vs{display:grid;gap:.7rem;grid-template-columns:1fr}
 @media(min-width:760px){.vs{grid-template-columns:1fr 1fr}}
-.vs .t{border:1px solid var(--line);border-radius:10px;padding:.85rem .9rem;background:var(--bg-2)}
-.vs .t.old{border-color:rgba(255,107,122,.2);background:rgba(255,107,122,.04)}
-.vs .t.new{border-color:rgba(45,212,191,.22);background:rgba(45,212,191,.05)}
-.vs h5{margin:0 0 .5rem;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
-.vs .t.old h5{color:var(--rose)} .vs .t.new h5{color:var(--teal)}
+.vs .t{border:1px solid var(--line);border-radius:var(--r-s);padding:.85rem .9rem;background:var(--bg-2)}
+.vs .t.old{border-color:color-mix(in srgb,var(--legacy) 24%,transparent);background:color-mix(in srgb,var(--legacy) 5%,transparent)}
+.vs .t.new{border-color:color-mix(in srgb,var(--accent) 22%,transparent);background:color-mix(in srgb,var(--accent) 5%,transparent)}
+.vs h5{margin:0 0 .5rem;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+.vs .t.old h5{color:var(--legacy)} .vs .t.new h5{color:var(--accent)}
 .vs ul{margin:0;padding-left:1.05rem;font-size:.81rem;color:var(--ink-2);line-height:1.55}
 .vs li{margin-bottom:.35rem}
-.impact{margin-top:.75rem;border-left:2px solid var(--amber);padding:.6rem .85rem;background:rgba(245,181,68,.05);border-radius:0 8px 8px 0;font-size:.81rem;color:var(--ink-2)}
-.impact b{color:var(--amber);font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:.25rem}
+.impact{margin-top:.75rem;border-left:2px solid var(--gold);padding:.6rem .85rem;background:color-mix(in srgb,var(--gold) 5%,transparent);border-radius:0 8px 8px 0;font-size:.81rem;color:var(--ink-2)}
+.impact b{color:var(--gold);font-family:var(--font-mono);font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:.25rem}
 
 /* ============ ROADMAP ============ */
 .phases{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr))}
 .phase{border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);padding:1.1rem;position:relative;transition:transform .25s,border-color .25s;overflow:hidden}
 .phase:hover{border-color:var(--line-2);transform:translateY(-3px)}
-.phase::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--teal);opacity:.7}
-.phase.p2::before{background:var(--blue)} .phase.p3::before{background:var(--amber)} .phase.p4::before{background:var(--violet)}
-.phase .ph{font-family:"IBM Plex Mono",monospace;font-size:.61rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.5rem;color:var(--teal)}
-.phase.p2 .ph{color:var(--blue)} .phase.p3 .ph{color:var(--amber)} .phase.p4 .ph{color:var(--violet)}
+/* the roadmap reads as a progression, so the rail climbs from neutral to the
+   brand signal at the agent-ready phase, then settles into steady-state green */
+.phase::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--legacy);opacity:.7}
+.phase.p2::before{background:var(--steel)} .phase.p3::before{background:var(--gold)}
+.phase.p4::before{background:var(--accent);opacity:1} .phase.p5::before{background:var(--ok)}
+.phase .ph{font-family:var(--font-mono);font-size:.61rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.5rem;color:var(--legacy)}
+.phase.p2 .ph{color:var(--steel)} .phase.p3 .ph{color:var(--gold)} .phase.p4 .ph{color:var(--accent)} .phase.p5 .ph{color:var(--ok)}
 .phase h4{font-size:1rem;margin-bottom:.45rem}
 .phase p{font-size:.79rem;color:var(--ink-2);margin-bottom:.6rem}
 .phase .out{border-top:1px solid var(--line);padding-top:.6rem;margin-top:.6rem;font-size:.74rem;color:var(--muted);line-height:1.5}
-.phase .out b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.57rem;letter-spacing:.13em;text-transform:uppercase;color:var(--teal);margin-bottom:.25rem}
-.phase.p2 .out b{color:var(--blue)} .phase.p3 .out b{color:var(--amber)} .phase.p4 .out b{color:var(--violet)}
+.phase .out b{display:block;font-family:var(--font-mono);font-size:.57rem;letter-spacing:.13em;text-transform:uppercase;color:var(--legacy);margin-bottom:.25rem}
+.phase.p2 .out b{color:var(--steel)} .phase.p3 .out b{color:var(--gold)} .phase.p4 .out b{color:var(--accent)} .phase.p5 .out b{color:var(--ok)}
 
 /* timeline strip */
 .tstrip{position:relative;margin:0 0 1.4rem;border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,132px),1fr));overflow:hidden}
-.tseg{min-width:0;display:grid;place-items:center;text-align:center;padding:.8rem .5rem;font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-right:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;transition:color .25s,background .25s}
+.tseg{min-width:0;display:grid;place-items:center;text-align:center;padding:.8rem .5rem;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-right:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;transition:color .25s,background .25s}
 .tseg:last-child{border-right:0}
 @media(min-width:820px){.tstrip{border-radius:999px}.tseg{border-bottom:0}}
 .tseg::before{content:"";position:absolute;inset:0;opacity:.1;transition:opacity .25s}
-.tseg:nth-child(1)::before{background:var(--teal)} .tseg:nth-child(2)::before{background:var(--teal)}
-.tseg:nth-child(3)::before{background:var(--blue)} .tseg:nth-child(4)::before{background:var(--amber)}
-.tseg:nth-child(5)::before{background:var(--violet)}
+.tseg:nth-child(1)::before{background:var(--legacy)} .tseg:nth-child(2)::before{background:var(--steel)}
+.tseg:nth-child(3)::before{background:var(--gold)} .tseg:nth-child(4)::before{background:var(--accent);opacity:.18}
+.tseg:nth-child(5)::before{background:var(--ok)}
 .tseg:hover{color:var(--ink)} .tseg:hover::before{opacity:.22}
 
 /* ============ MISC ============ */
-.caveat{border:1px solid rgba(245,181,68,.24);background:rgba(245,181,68,.05);border-radius:var(--r-m);padding:1rem 1.15rem;font-size:.8rem;color:var(--ink-2);line-height:1.6;margin-top:1.4rem}
-.caveat b{color:var(--amber);font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:.4rem}
+.caveat{border:1px solid color-mix(in srgb,var(--gold) 24%,transparent);background:color-mix(in srgb,var(--gold) 5%,transparent);border-radius:var(--r-m);padding:1rem 1.15rem;font-size:.8rem;color:var(--ink-2);line-height:1.6;margin-top:1.4rem}
+.caveat b{color:var(--gold);font-family:var(--font-mono);font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:.4rem}
 .kpi{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 .kpi div{background:var(--surface);padding:.95rem}
-.kpi b{display:block;font-family:"Space Grotesk";font-size:1.35rem;color:var(--teal);letter-spacing:-.02em;line-height:1}
+.kpi b{display:block;font-family:var(--font-display);font-size:1.35rem;color:var(--accent);letter-spacing:-.02em;line-height:1}
 .kpi span{display:block;font-size:.7rem;color:var(--muted);margin-top:.4rem;line-height:1.4}
 
 /* references */
 .refs{display:grid;gap:.5rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
-.ref{display:flex;gap:.7rem;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:.65rem .8rem;background:var(--surface);transition:border-color .2s,transform .2s;color:var(--ink-2)}
+.ref{display:flex;gap:.7rem;align-items:flex-start;border:1px solid var(--line);border-radius:var(--r-s);padding:.65rem .8rem;background:var(--surface);transition:border-color .2s,transform .2s;color:var(--ink-2)}
 .ref:hover{border-color:var(--line-2);transform:translateX(3px);text-decoration:none}
-.ref .n{font-family:"IBM Plex Mono",monospace;font-size:.62rem;color:var(--faint);flex:none;padding-top:.15rem}
-.ref b{display:block;font-family:"IBM Plex Sans";font-weight:400;font-size:.79rem;color:var(--ink-2);line-height:1.4}
-.ref small{display:block;font-family:"IBM Plex Mono",monospace;font-size:.62rem;color:var(--faint);margin-top:.2rem}
+.ref .n{font-family:var(--font-mono);font-size:.62rem;color:var(--faint);flex:none;padding-top:.15rem}
+.ref b{display:block;font-family:var(--font-body);font-weight:400;font-size:.79rem;color:var(--ink-2);line-height:1.4}
+.ref small{display:block;font-family:var(--font-mono);font-size:.62rem;color:var(--faint);margin-top:.2rem}
 
 /* related posts */
 .related{display:grid;gap:.8rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
 .rel{border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);padding:1.1rem;transition:transform .25s,border-color .25s;display:block;color:var(--ink)}
-.rel:hover{transform:translateY(-3px);border-color:rgba(45,212,191,.4);text-decoration:none;background:var(--surface-2)}
-.rel .k{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem;display:block}
+.rel:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 40%,transparent);text-decoration:none;background:var(--surface-2)}
+.rel .k{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem;display:block}
 .rel h4{font-size:.98rem;margin-bottom:.4rem}
 .rel p{font-size:.76rem;color:var(--muted);margin:0}
-.rel .go{font-family:"IBM Plex Mono",monospace;font-size:.65rem;color:var(--teal);margin-top:.7rem;display:block}
+.rel .go{font-family:var(--font-mono);font-size:.65rem;color:var(--accent);margin-top:.7rem;display:block}
 
 /* CTA band */
-.cta-band{border:1px solid rgba(45,212,191,.26);border-radius:var(--r-l);background:linear-gradient(135deg,rgba(45,212,191,.09),rgba(91,155,255,.06));padding:clamp(1.6rem,1rem + 3vw,3.2rem);text-align:center;position:relative;overflow:hidden}
-.cta-band::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 300px at 50% 0,rgba(45,212,191,.14),transparent 70%);pointer-events:none}
+.cta-band{border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);border-radius:var(--r-l);background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 9%,transparent),color-mix(in srgb,var(--steel) 6%,transparent));padding:clamp(1.6rem,1rem + 3vw,3.2rem);text-align:center;position:relative;overflow:hidden}
+.cta-band::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 300px at 50% 0,color-mix(in srgb,var(--accent) 14%,transparent),transparent 70%);pointer-events:none}
 .cta-band h2{margin-bottom:.7rem}
 .cta-band p{max-width:62ch;margin-inline:auto;color:var(--ink-2)}
 .cta-actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;position:relative}
@@ -427,36 +504,36 @@ footer{border-top:1px solid var(--line);padding:2.5rem 0 3rem;position:relative;
 .foot{display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;justify-content:space-between}
 .foot-links{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.8rem}
 .foot-links a{color:var(--muted)}
-.foot-links a:hover{color:var(--teal)}
+.foot-links a:hover{color:var(--accent)}
 .foot small{color:var(--faint);font-size:.72rem;display:block;line-height:1.6}
 
 /* modal */
-.modal{position:fixed;inset:0;z-index:200;display:none;place-items:center;padding:var(--sp);background:rgba(4,7,13,.78);backdrop-filter:blur(8px)}
+.modal{position:fixed;inset:0;z-index:200;display:none;place-items:center;padding:var(--sp);background:color-mix(in srgb,var(--r2-ink) 62%,transparent);backdrop-filter:blur(8px)}
 .modal.open{display:grid}
 .modal-in{width:min(100%,560px);max-height:90svh;overflow-y:auto;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-l);padding:clamp(1.3rem,1rem + 1.6vw,2.1rem);position:relative;animation:pop .3s cubic-bezier(.2,.9,.3,1.1)}
 @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
-.modal-x{position:absolute;top:.9rem;right:.9rem;background:transparent;border:1px solid var(--line);color:var(--muted);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1rem;line-height:1}
+.modal-x{position:absolute;top:.9rem;right:.9rem;background:transparent;border:1px solid var(--line);color:var(--muted);width:32px;height:32px;border-radius:var(--r-s);cursor:pointer;font-size:1rem;line-height:1}
 .modal-x:hover{color:var(--ink);border-color:var(--line-2)}
 .field{margin-bottom:1rem}
-label{display:block;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
-input,textarea{width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:9px;padding:.7rem .8rem;color:var(--ink);font-family:inherit;font-size:.9rem;font-weight:300;transition:border-color .2s}
-input:focus,textarea:focus{outline:0;border-color:var(--teal)}
+label{display:block;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+input,textarea{width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-s);padding:.7rem .8rem;color:var(--ink);font-family:inherit;font-size:.9rem;font-weight:400;transition:border-color var(--dur-fast) var(--ease-standard),box-shadow var(--dur-fast) var(--ease-standard)}
+input:focus,textarea:focus{outline:0;border-color:var(--accent);box-shadow:var(--focus-ring)}
 textarea{min-height:140px;resize:vertical;line-height:1.6}
-.counter{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.63rem;color:var(--faint);margin-top:.35rem}
-.counter.over{color:var(--rose)}
+.counter{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.63rem;color:var(--faint);margin-top:.35rem}
+.counter.over{color:var(--crimson)}
 .formnote{font-size:.71rem;color:var(--faint);margin-top:1rem;line-height:1.55}
-.ok-msg,.err-msg{display:none;border-radius:9px;padding:.7rem .85rem;font-size:.82rem;margin-bottom:1rem}
-.ok-msg{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);color:#8FEBC8}
-.err-msg{background:rgba(255,107,122,.1);border:1px solid rgba(255,107,122,.3);color:#FFC0C7}
+.ok-msg,.err-msg{display:none;border-radius:var(--r-s);padding:.7rem .85rem;font-size:.82rem;margin-bottom:1rem}
+.ok-msg{background:color-mix(in srgb,var(--ok) 10%,transparent);border:1px solid color-mix(in srgb,var(--ok) 30%,transparent);color:var(--ok-soft)}
+.err-msg{background:color-mix(in srgb,var(--crimson) 10%,transparent);border:1px solid color-mix(in srgb,var(--crimson) 30%,transparent);color:var(--crimson-soft)}
 .ok-msg.show,.err-msg.show{display:block}
 .btn[disabled]{opacity:.6;cursor:default;transform:none;box-shadow:none}
 
 /* toast */
 .toast{
   position:fixed;left:50%;bottom:26px;z-index:300;transform:translate(-50%,140%);
-  background:var(--surface-2);border:1px solid rgba(45,212,191,.4);color:var(--ink);
-  padding:.85rem 1.2rem;border-radius:11px;font-size:.85rem;max-width:min(92vw,520px);
-  box-shadow:0 20px 50px -20px rgba(0,0,0,.9);opacity:0;pointer-events:none;
+  background:var(--surface-2);border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);color:var(--ink);
+  padding:.85rem 1.2rem;border-radius:var(--r-m);font-size:.85rem;max-width:min(92vw,520px);
+  box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;
   transition:transform .5s cubic-bezier(.2,.9,.3,1.1),opacity .4s;
 }
 .toast.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
@@ -469,11 +546,21 @@ textarea{min-height:140px;resize:vertical;line-height:1.6}
 /* svg helpers */
 .dash{stroke-dasharray:5 6;animation:flow 1.6s linear infinite}
 @keyframes flow{to{stroke-dashoffset:-22}}
-svg text{font-family:"IBM Plex Sans",sans-serif}
+svg text{font-family:var(--font-body)}
 .svgwrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);padding:1rem}
 .svgwrap svg{display:block;min-width:680px;width:100%;height:auto}
 </style>
-<script>document.documentElement.className+=" js";</script>
+<script>
+/* theme boot — set before first paint so there is no flash */
+(function(){
+  var d=document.documentElement;
+  d.className+=" js";
+  try{
+    var t=localStorage.getItem('r2-theme');
+    d.dataset.theme = t || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  }catch(e){ d.dataset.theme='dark'; }
+})();
+</script>
 </head>
 <body>
 
@@ -481,9 +568,27 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
 
 <nav class="nav">
   <div class="wrap nav-in">
-    <a class="brand" href="#top">
-      <span class="brand-mark">R2</span>
-      <span class="brand-txt"><b>R2 Digital LLC</b><span>Data · AI · Transformation</span></span>
+    <a class="brand" href="#top" aria-label="R2 Digital LLC — home">
+      <svg class="brand-mark" viewBox="0 0 480 480" aria-hidden="true" focusable="false">
+        <defs>
+          <radialGradient id="r2nav" cx="50%" cy="50%" r="72%">
+            <stop offset="0%" stop-color="#FFFFFF"/><stop offset="16%" stop-color="#D6DDE0"/>
+            <stop offset="42%" stop-color="#9EADB4"/><stop offset="72%" stop-color="#506E7B"/>
+            <stop offset="100%" stop-color="#0B3041"/>
+          </radialGradient>
+          <clipPath id="r2navc"><rect width="480" height="480" rx="96"/></clipPath>
+        </defs>
+        <g clip-path="url(#r2navc)">
+          <rect width="480" height="480" fill="url(#r2nav)"/>
+          <g fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="square" opacity=".9">
+            <path d="M-8 486L486 -8"/><path d="M-2 492L492 -2"/><path d="M4 498L498 4"/>
+          </g>
+          <circle cx="240" cy="240" r="150" fill="#FFFFFF"/>
+          <circle cx="240" cy="240" r="75" fill="#C04F15"/>
+          <g fill="#C04F15" class="r2-sat"><circle cx="134" cy="134" r="15"/><circle cx="346" cy="346" r="15"/></g>
+        </g>
+      </svg>
+      <span class="brand-txt"><b>R2 Digital LLC</b><span>AI · Data · Architecture</span></span>
     </a>
     <div class="nav-links" id="navlinks">
       <a href="#signal">Signal</a>
@@ -499,6 +604,10 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
       <a href="#references">References</a>
     </div>
     <button class="btn nav-cta" data-open-modal>Free consultation</button>
+    <button class="themebtn" id="themebtn" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
+    </button>
     <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">☰</button>
   </div>
 </nav>
@@ -516,6 +625,7 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
   <a href="#roadmap">10 — Migration Roadmap</a>
   <a href="#references">References &amp; Reading</a>
   <button class="btn lg" data-open-modal style="width:100%;justify-content:center;margin-top:1.2rem">Free consultation</button>
+  <button class="btn ghost lg" id="themebtn-drawer" type="button" style="width:100%;justify-content:center;margin-top:.6rem">Switch light / dark</button>
 </div>
 
 <header id="top" class="hero">
@@ -548,20 +658,20 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
         <desc id="heroDesc">Structured tables, documents and event streams converge into a governed context core, orbited by autonomous data engineering agents, and served out to analytics, applications and AI agents — all over a trust plane of lineage, observability, evals, policy and cost.</desc>
         <defs>
           <linearGradient id="hCore" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#2DD4BF"/><stop offset="55%" stop-color="#5B9BFF"/><stop offset="100%" stop-color="#A78BFA"/>
+            <stop offset="0%" stop-color="var(--accent-2)"/><stop offset="55%" stop-color="var(--accent)"/><stop offset="100%" stop-color="var(--accent-2)"/>
           </linearGradient>
           <linearGradient id="hIn" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#5B9BFF" stop-opacity=".15"/><stop offset="100%" stop-color="#2DD4BF" stop-opacity=".9"/>
+            <stop offset="0%" stop-color="var(--steel)" stop-opacity=".15"/><stop offset="100%" stop-color="var(--accent)" stop-opacity=".9"/>
           </linearGradient>
           <linearGradient id="hOut" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#2DD4BF" stop-opacity=".9"/><stop offset="100%" stop-color="#A78BFA" stop-opacity=".2"/>
+            <stop offset="0%" stop-color="var(--accent)" stop-opacity=".9"/><stop offset="100%" stop-color="var(--steel)" stop-opacity=".3"/>
           </linearGradient>
           <radialGradient id="hGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#2DD4BF" stop-opacity=".30"/><stop offset="100%" stop-color="#2DD4BF" stop-opacity="0"/>
+            <stop offset="0%" stop-color="var(--accent)" stop-opacity=".30"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
           </radialGradient>
           <filter id="hBlur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="9"/></filter>
           <pattern id="hGrid" width="32" height="32" patternUnits="userSpaceOnUse">
-            <path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity=".035" stroke-width="1"/>
+            <path d="M32 0H0V32" fill="none" stroke="var(--ink)" stroke-opacity=".035" stroke-width="1"/>
           </pattern>
         </defs>
 
@@ -569,22 +679,22 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
         <ellipse cx="352" cy="252" rx="190" ry="170" fill="url(#hGlow)" filter="url(#hBlur)"/>
 
         <!-- sources -->
-        <rect x="30" y="96" width="58" height="48" rx="10" fill="#141E31" stroke="rgba(91,155,255,.4)"/>
-        <g stroke="#5B9BFF" stroke-width="1.4" opacity=".85">
+        <rect x="30" y="96" width="58" height="48" rx="10" fill="var(--surface-2)" stroke="var(--steel)" stroke-opacity=".4"/>
+        <g stroke="var(--steel)" stroke-width="1.4" opacity=".85">
           <line x1="42" y1="112" x2="76" y2="112"/><line x1="42" y1="120" x2="76" y2="120"/>
           <line x1="42" y1="128" x2="76" y2="128"/><line x1="53" y1="106" x2="53" y2="134"/><line x1="65" y1="106" x2="65" y2="134"/>
         </g>
         <text class="h-lbl" x="30" y="162">TABLES · CDC</text>
 
-        <rect x="30" y="228" width="58" height="48" rx="10" fill="#141E31" stroke="rgba(167,139,250,.4)"/>
-        <g fill="none" stroke="#A78BFA" stroke-width="1.4" opacity=".85">
+        <rect x="30" y="228" width="58" height="48" rx="10" fill="var(--surface-2)" stroke="var(--agent)" stroke-opacity=".4"/>
+        <g fill="none" stroke="var(--agent)" stroke-width="1.4" opacity=".85">
           <path d="M50 240h20l8 8v24H50z"/><path d="M70 240v8h8"/>
           <line x1="55" y1="256" x2="73" y2="256"/><line x1="55" y1="263" x2="73" y2="263"/>
         </g>
         <text class="h-lbl" x="30" y="294">DOCUMENTS</text>
 
-        <rect x="30" y="360" width="58" height="48" rx="10" fill="#141E31" stroke="rgba(45,212,191,.4)"/>
-        <path d="M40 384h8l5-11 7 22 6-15 5 4h12" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+        <rect x="30" y="360" width="58" height="48" rx="10" fill="var(--surface-2)" stroke="var(--accent)" stroke-opacity=".4"/>
+        <path d="M40 384h8l5-11 7 22 6-15 5 4h12" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
         <text class="h-lbl" x="30" y="426">EVENTS · IOT</text>
 
         <!-- inbound -->
@@ -599,21 +709,21 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
         <polygon points="428,252 390,317.8 314,317.8 276,252 314,186.2 390,186.2" fill="none" stroke="url(#hCore)" stroke-width="2"/>
         <polygon points="404,252 378,297 326,297 300,252 326,207 378,207" fill="url(#hCore)"/>
         <text class="h-core" x="352" y="259" text-anchor="middle">CONTEXT</text>
-        <text class="h-lbl h-sub" x="352" y="334" text-anchor="middle" fill="#2DD4BF" opacity=".8">SEMANTICS · POLICY</text>
+        <text class="h-lbl h-sub" x="352" y="334" text-anchor="middle" fill="var(--accent)" opacity=".8">SEMANTICS · POLICY</text>
 
         <!-- agent orbit -->
         <g class="h-orbit">
-          <circle cx="352" cy="252" r="124" fill="none" stroke="rgba(167,139,250,.42)" stroke-width="1.2" stroke-dasharray="4 7"/>
-          <g fill="#0E1523" stroke="#A78BFA" stroke-width="1.6">
+          <circle cx="352" cy="252" r="124" fill="none" stroke="var(--muted)" stroke-opacity=".55" stroke-width="1.2" stroke-dasharray="4 7"/>
+          <g fill="var(--surface)" stroke="var(--agent)" stroke-width="1.6">
             <circle cx="476" cy="252" r="9"/><circle cx="390.3" cy="369.9" r="9"/><circle cx="251.7" cy="324.9" r="9"/>
             <circle cx="251.7" cy="179.1" r="9"/><circle cx="390.3" cy="134.1" r="9"/>
           </g>
-          <g fill="#A78BFA">
+          <g fill="var(--agent)">
             <circle cx="476" cy="252" r="3.4"/><circle cx="390.3" cy="369.9" r="3.4"/><circle cx="251.7" cy="324.9" r="3.4"/>
             <circle cx="251.7" cy="179.1" r="3.4"/><circle cx="390.3" cy="134.1" r="3.4"/>
           </g>
         </g>
-        <text class="h-lbl" x="352" y="410" text-anchor="middle" fill="#A78BFA" opacity=".85">AGENT CONTROL PLANE</text>
+        <text class="h-lbl" x="352" y="410" text-anchor="middle" fill="var(--agent)" opacity=".85">AGENT CONTROL PLANE</text>
 
         <!-- outbound -->
         <g class="h-stream" stroke="url(#hOut)">
@@ -622,27 +732,27 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
           <path class="h-fl2" d="M428 264C482 278 502 332 546 348"/>
         </g>
 
-        <rect x="552" y="132" width="58" height="48" rx="10" fill="#141E31" stroke="rgba(45,212,191,.4)"/>
-        <g fill="#2DD4BF" opacity=".9">
+        <rect x="552" y="132" width="58" height="48" rx="10" fill="var(--surface-2)" stroke="var(--accent)" stroke-opacity=".4"/>
+        <g fill="var(--accent)" opacity=".9">
           <rect x="563" y="158" width="7" height="12" rx="2"/><rect x="574" y="150" width="7" height="20" rx="2"/><rect x="585" y="143" width="7" height="27" rx="2"/>
         </g>
         <text class="h-lbl" x="610" y="198" text-anchor="end">ANALYTICS</text>
 
-        <rect x="552" y="228" width="58" height="48" rx="10" fill="#141E31" stroke="rgba(91,155,255,.4)"/>
-        <g fill="none" stroke="#5B9BFF" stroke-width="1.4" opacity=".9">
+        <rect x="552" y="228" width="58" height="48" rx="10" fill="var(--surface-2)" stroke="var(--steel)" stroke-opacity=".4"/>
+        <g fill="none" stroke="var(--steel)" stroke-width="1.4" opacity=".9">
           <rect x="563" y="240" width="36" height="24" rx="3"/><line x1="563" y1="248" x2="599" y2="248"/>
-          <circle cx="568" cy="244" r="1.4" fill="#5B9BFF"/>
+          <circle cx="568" cy="244" r="1.4" fill="var(--steel)"/>
         </g>
         <text class="h-lbl" x="610" y="294" text-anchor="end">APPLICATIONS</text>
 
-        <rect x="552" y="324" width="58" height="48" rx="10" fill="#141E31" stroke="rgba(167,139,250,.45)"/>
-        <polygon points="595,348 588.5,359.3 575.5,359.3 569,348 575.5,336.7 588.5,336.7" fill="none" stroke="#A78BFA" stroke-width="1.5"/>
-        <circle cx="582" cy="348" r="3.2" fill="#A78BFA" class="h-pulse"/>
+        <rect x="552" y="324" width="58" height="48" rx="10" fill="var(--surface-2)" stroke="var(--agent)" stroke-opacity=".45"/>
+        <polygon points="595,348 588.5,359.3 575.5,359.3 569,348 575.5,336.7 588.5,336.7" fill="none" stroke="var(--agent)" stroke-width="1.5"/>
+        <circle cx="582" cy="348" r="3.2" fill="var(--agent)" class="h-pulse"/>
         <text class="h-lbl" x="610" y="390" text-anchor="end">AI AGENTS</text>
 
         <!-- trust rail -->
-        <rect x="30" y="456" width="580" height="34" rx="9" fill="rgba(45,212,191,.06)" stroke="rgba(45,212,191,.32)"/>
-        <circle cx="50" cy="473" r="4" fill="#2DD4BF" class="h-pulse2"/>
+        <rect x="30" y="456" width="580" height="34" rx="9" fill="var(--accent)" fill-opacity=".06" stroke="var(--accent)" stroke-opacity=".32"/>
+        <circle cx="50" cy="473" r="4" fill="var(--accent)" class="h-pulse2"/>
         <text class="h-lbl-b" x="64" y="477">Trust plane</text>
         <text class="h-lbl h-full" x="152" y="477">LINEAGE · OBSERVABILITY · EVALS · POLICY · COST</text>
         <text class="h-lbl h-short" x="220" y="477">LINEAGE · EVALS · POLICY</text>
@@ -667,31 +777,31 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
         <div class="ev"><b>Implication</b> The consumer of your pipeline no longer reads a dashboard. It reads metadata, and it acts.</div>
       </article>
 
-      <article class="card b-violet rv"><div class="bar"></div><span class="num">SIGNAL 02</span>
+      <article class="card b-agent rv"><div class="bar"></div><span class="num">SIGNAL 02</span>
         <h3>The platforms shipped agentic data engineering</h3>
         <p>Databricks positioned <strong>Lakeflow</strong> (June 2026) as "agentic data engineering" — agents that not only build but <em>operate</em> pipelines, with a background ZeroOps agent doing failure detection, root-cause analysis and sandbox-validated fixes. Snowflake's June 2026 release put smart pipelines, natively-hosted dbt projects, column-level lineage in Horizon and a specialised coding agent into the same workflow. Microsoft anchored Fabric on a reframed context layer with agent-authorable Data Factory skills.</p>
         <div class="ev"><b>Implication</b> Agentic DE is now a product category with GA features, not a lab demo.</div>
       </article>
 
-      <article class="card b-rose rv"><div class="bar"></div><span class="num">SIGNAL 03</span>
+      <article class="card b-crimson rv"><div class="bar"></div><span class="num">SIGNAL 03</span>
         <h3>Acceleration outpaced trust</h3>
         <p>dbt Labs' <em>State of Analytics Engineering 2026</em> (363 respondents) found <strong>72% prioritise AI-assisted coding but only 24% prioritise AI-assisted pipeline management</strong> — testing, observability, quality. Meanwhile <strong>71%</strong> name incorrect or hallucinated outputs reaching stakeholders as a top concern, and trust as an organisational objective jumped from 66% to 83% year over year.</p>
         <div class="ev"><b>Implication</b> Teams bought the accelerator and skipped the brakes. This is the defining 2026 risk.</div>
       </article>
 
-      <article class="card b-amber rv"><div class="bar"></div><span class="num">SIGNAL 04</span>
+      <article class="card b-gold rv"><div class="bar"></div><span class="num">SIGNAL 04</span>
         <h3>The foundation is the constraint, not the model</h3>
         <p>Accenture's AI-ready data research finds only <strong>7%</strong> of companies are "data reinventors" while 64% have already moved past pilots — and puts an estimated <strong>4.5 point EBIT margin advantage</strong> on closing that gap. Deloitte and McKinsey land in the same place: legacy data architecture cannot power real-time autonomous AI, and modernisation has to produce a living, organisation-wide backbone rather than another warehouse.</p>
         <div class="ev"><b>Implication</b> The bottleneck moved from model access to data readiness — permanently.</div>
       </article>
 
-      <article class="card b-blue rv"><div class="bar"></div><span class="num">SIGNAL 05</span>
+      <article class="card b-steel rv"><div class="bar"></div><span class="num">SIGNAL 05</span>
         <h3>Unstructured data entered the pipeline</h3>
         <p>Forrester's Q1 2026 Data Quality Wave notes buyers now prioritise platforms that can profile and evaluate logs, images and documents — previously underexplored data types — and that static validation is losing to real-time monitoring and diagnostics. Data quality, observability, governance, privacy, metadata and lineage are consolidating into single platforms.</p>
         <div class="ev"><b>Implication</b> "Data engineering" now includes content engineering. Most teams are not staffed for it.</div>
       </article>
 
-      <article class="card b-rose rv"><div class="bar"></div><span class="num">SIGNAL 06</span>
+      <article class="card b-crimson rv"><div class="bar"></div><span class="num">SIGNAL 06</span>
         <h3>The economics stopped working</h3>
         <p>The 2026 practitioner surveys put the maintenance tax between roughly a quarter and half of capacity depending on how it is measured — a 1,101-respondent survey reports 26% of time simply fighting fires, with modelling pain (90%) driven by pressure to move fast (59%) and unclear ownership (51%). Secondary analysis of the Fivetran and dbt 2026 datasets converges on ~53% of engineering capacity going to maintaining and troubleshooting what already exists. Warehouse and compute spend rose for 57% of teams; team budgets rose for 36%.</p>
         <div class="ev"><b>Implication</b> More headcount cannot close this gap. Only a different operating model can.</div>
@@ -714,40 +824,40 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
       <p class="lede">AI does not make data engineering faster. It inverts six of its founding assumptions. Each inversion removes a constraint that shaped every architecture built between 2010 and 2024 — which is why incremental tuning of the existing stack does not get you there.</p>
     </div>
 
-    <div class="rv" style="border:1px solid var(--line);border-radius:var(--r-l);background:linear-gradient(170deg,var(--surface),rgba(10,15,28,.5));padding:clamp(1rem,.6rem + 1.4vw,1.7rem)">
+    <div class="rv" style="border:1px solid var(--line);border-radius:var(--r-l);background:linear-gradient(170deg,var(--surface),color-mix(in srgb,var(--bg-2) 50%,transparent));padding:clamp(1rem,.6rem + 1.4vw,1.7rem)">
       <div class="fromto-head">
         <span class="ft-lbl ft-from">Traditional DE</span><span></span><span class="ft-lbl ft-to">AI-Native DE</span>
       </div>
 
       <div class="fromto">
-        <div class="node n-rose"><b>Pipelines you write</b><small>Imperative code, hand-tuned, one engineer deep per system</small></div>
+        <div class="node n-legacy"><b>Pipelines you write</b><small>Imperative code, hand-tuned, one engineer deep per system</small></div>
         <div class="tarrow">→</div>
-        <div class="node n-teal"><b>Pipelines you specify</b><small>Declarative intent plus contracts; agents generate, test and deploy the implementation</small></div>
+        <div class="node n-accent"><b>Pipelines you specify</b><small>Declarative intent plus contracts; agents generate, test and deploy the implementation</small></div>
       </div>
       <div class="fromto">
-        <div class="node n-rose"><b>Rules anticipated in advance</b><small>Every schema, mapping and validation encoded before the first record lands</small></div>
+        <div class="node n-legacy"><b>Rules anticipated in advance</b><small>Every schema, mapping and validation encoded before the first record lands</small></div>
         <div class="tarrow">→</div>
-        <div class="node n-teal"><b>Behaviour learned and adapted</b><small>Drift detected, classified and resolved in-flight; rules proposed from observed data, approved by humans</small></div>
+        <div class="node n-accent"><b>Behaviour learned and adapted</b><small>Drift detected, classified and resolved in-flight; rules proposed from observed data, approved by humans</small></div>
       </div>
       <div class="fromto">
-        <div class="node n-rose"><b>Tables as the deliverable</b><small>Meaning lives in Confluence, tickets and the heads of three people</small></div>
+        <div class="node n-legacy"><b>Tables as the deliverable</b><small>Meaning lives in Confluence, tickets and the heads of three people</small></div>
         <div class="tarrow">→</div>
-        <div class="node n-teal"><b>Context as the deliverable</b><small>Semantic layer, ontology and policy are executable artefacts consumed by machines</small></div>
+        <div class="node n-accent"><b>Context as the deliverable</b><small>Semantic layer, ontology and policy are executable artefacts consumed by machines</small></div>
       </div>
       <div class="fromto">
-        <div class="node n-rose"><b>Structured data only</b><small>Rows and columns; documents, images and audio routed around the platform</small></div>
+        <div class="node n-legacy"><b>Structured data only</b><small>Rows and columns; documents, images and audio routed around the platform</small></div>
         <div class="tarrow">→</div>
-        <div class="node n-teal"><b>Multimodal by default</b><small>Extraction, classification and embedding are pipeline stages like any other</small></div>
+        <div class="node n-accent"><b>Multimodal by default</b><small>Extraction, classification and embedding are pipeline stages like any other</small></div>
       </div>
       <div class="fromto">
-        <div class="node n-rose"><b>Batch-anchored freshness</b><small>Nightly windows; real-time bolted on as an exception path</small></div>
+        <div class="node n-legacy"><b>Batch-anchored freshness</b><small>Nightly windows; real-time bolted on as an exception path</small></div>
         <div class="tarrow">→</div>
-        <div class="node n-teal"><b>Continuous by default</b><small>Streaming ingest and incremental compute as the primary path; batch as an optimisation</small></div>
+        <div class="node n-accent"><b>Continuous by default</b><small>Streaming ingest and incremental compute as the primary path; batch as an optimisation</small></div>
       </div>
       <div class="fromto" style="margin-bottom:0">
-        <div class="node n-rose"><b>Humans in every loop</b><small>Engineers on call for pipeline failures; stewards in an unbounded queue</small></div>
+        <div class="node n-legacy"><b>Humans in every loop</b><small>Engineers on call for pipeline failures; stewards in an unbounded queue</small></div>
         <div class="tarrow">→</div>
-        <div class="node n-teal"><b>Humans on the loop</b><small>Agents handle the routine; people set intent, adjudicate the ambiguous, own the outcome</small></div>
+        <div class="node n-accent"><b>Humans on the loop</b><small>Agents handle the routine; people set intent, adjudicate the ambiguous, own the outcome</small></div>
       </div>
     </div>
 
@@ -756,11 +866,11 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
         <h4>What leadership should take away</h4>
         <p>This is a capacity reallocation, not a cost-cutting exercise. Roughly half of data-engineering capacity is currently defensive. AI does not remove that work — it moves most of it below the human threshold, and the value comes entirely from what the freed capacity is pointed at next.</p>
       </article>
-      <article class="card b-amber"><div class="bar"></div>
+      <article class="card b-gold"><div class="bar"></div>
         <h4>What the evidence warns</h4>
         <p>The 2026 data says teams adopted AI for authoring far faster than for verification. Generating pipelines four times faster without a matching lift in testing, lineage and observability produces defects four times faster too. Sequence the trust plane <em>first</em>.</p>
       </article>
-      <article class="card b-violet"><div class="bar"></div>
+      <article class="card b-agent"><div class="bar"></div>
         <h4>What does not change</h4>
         <p>Ownership, stewardship, definitions, controls, authorised sources and change management. Every autonomous capability described on this page is only defensible because a governance framework sits under it. <strong>Modernise the engine; keep the governance.</strong></p>
       </article>
@@ -778,39 +888,39 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
     </div>
 
     <div class="grid g3">
-      <article class="card b-rose rv"><div class="bar"></div><span class="num">GAP 01 <span class="sev s-hi">Severe</span></span>
+      <article class="card b-crimson rv"><div class="bar"></div><span class="num">GAP 01 <span class="sev s-hi">Severe</span></span>
         <h3>The maintenance tax</h3>
         <p>Roughly half of capacity goes to keeping existing pipelines alive; schema drift alone is commonly the single largest maintenance category. Every new pipeline adds permanent liability, so throughput falls as the estate grows. Organisations past ~200 active pipelines report the steepest curve.</p>
       </article>
-      <article class="card b-rose rv"><div class="bar"></div><span class="num">GAP 02 <span class="sev s-hi">Severe</span></span>
+      <article class="card b-crimson rv"><div class="bar"></div><span class="num">GAP 02 <span class="sev s-hi">Severe</span></span>
         <h3>Brittleness by design</h3>
         <p>Imperative pipelines encode assumptions about source structure that the source never agreed to. A renamed column, a changed enum, a new nested field — and the failure surfaces downstream, hours later, as a wrong number rather than an error.</p>
       </article>
-      <article class="card b-amber rv"><div class="bar"></div><span class="num">GAP 03 <span class="sev s-md">High</span></span>
+      <article class="card b-gold rv"><div class="bar"></div><span class="num">GAP 03 <span class="sev s-md">High</span></span>
         <h3>Quality as an afterthought</h3>
         <p>Tests are written for the failures someone already imagined. Coverage clusters on primary keys and null checks; semantic errors — a plausible-looking but wrong value — pass every assertion and reach the stakeholder intact. 71% of practitioners now name exactly this as their top concern.</p>
       </article>
-      <article class="card b-amber rv"><div class="bar"></div><span class="num">GAP 04 <span class="sev s-md">High</span></span>
+      <article class="card b-gold rv"><div class="bar"></div><span class="num">GAP 04 <span class="sev s-md">High</span></span>
         <h3>Metadata that documents instead of executing</h3>
         <p>Catalogs describe assets to humans who mostly do not read them. Lineage is partial and stale. Definitions live in a spreadsheet. None of it is machine-consumable at runtime, so an agent asking "what is net revenue and may I see it?" gets no reliable answer.</p>
       </article>
-      <article class="card b-rose rv"><div class="bar"></div><span class="num">GAP 05 <span class="sev s-hi">Severe</span></span>
+      <article class="card b-crimson rv"><div class="bar"></div><span class="num">GAP 05 <span class="sev s-hi">Severe</span></span>
         <h3>Blind to most enterprise information</h3>
         <p>Contracts, tickets, emails, engineering drawings, call transcripts, policy documents — the majority of what an enterprise knows has never entered the data platform. Traditional DE has no primitive for it, so it was scoped out. AI use cases start there.</p>
       </article>
-      <article class="card b-amber rv"><div class="bar"></div><span class="num">GAP 06 <span class="sev s-md">High</span></span>
+      <article class="card b-gold rv"><div class="bar"></div><span class="num">GAP 06 <span class="sev s-md">High</span></span>
         <h3>Latency ceilings inherited from batch</h3>
         <p>Nightly reload architectures cap freshness at 24 hours no matter how much real-time integration is layered on top. Agents that act — reprice, route, approve, escalate — cannot operate on yesterday's state, and the usual workaround is per-application caches that quietly create new copies of the truth.</p>
       </article>
-      <article class="card b-amber rv"><div class="bar"></div><span class="num">GAP 07 <span class="sev s-md">High</span></span>
+      <article class="card b-gold rv"><div class="bar"></div><span class="num">GAP 07 <span class="sev s-md">High</span></span>
         <h3>Cost that grows faster than value</h3>
         <p>Consumption pricing plus unreviewed pipelines plus full refreshes equals compute spend rising for 57% of teams while budgets rise for 36%. Very few organisations can attribute warehouse spend to a business consumer, so optimisation becomes across-the-board throttling.</p>
       </article>
-      <article class="card b-violet rv"><div class="bar"></div><span class="num">GAP 08 <span class="sev s-md">High</span></span>
+      <article class="card b-agent rv"><div class="bar"></div><span class="num">GAP 08 <span class="sev s-md">High</span></span>
         <h3>Organisational gravity</h3>
         <p>The 2026 practitioner data is blunt: organisational blockers — unclear ownership, absent leadership direction, poor upstream requirements — outweigh technical debt as the top constraint. No platform migration survives contact with an operating model that has no owner for the data.</p>
       </article>
-      <article class="card b-blue rv"><div class="bar"></div><span class="num">GAP 09 <span class="sev s-md">High</span></span>
+      <article class="card b-steel rv"><div class="bar"></div><span class="num">GAP 09 <span class="sev s-md">High</span></span>
         <h3>No context layer</h3>
         <p>Between physical tables and business questions sits a translation layer that exists only in analysts' heads. Without it, both humans and agents reconstruct meaning per query — inconsistently. This is the single most common reason AI pilots pass a demo and fail production.</p>
       </article>
@@ -835,35 +945,35 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
         <div class="chips"><span class="chip">Fivetran</span><span class="chip">Airbyte</span><span class="chip">Debezium</span><span class="chip">Qlik Replicate</span><span class="chip">ADF</span><span class="chip">Lakeflow Connect</span><span class="chip">Snowflake Openflow</span><span class="chip ai">AI: schema-drift agents</span><span class="chip ai">AI: connector synthesis</span></div>
       </article>
 
-      <article class="card b-blue rv"><div class="bar"></div><span class="num">C2 · STORAGE &amp; MODELING</span>
+      <article class="card b-steel rv"><div class="bar"></div><span class="num">C2 · STORAGE &amp; MODELING</span>
         <h3>Where data lives and how it's shaped</h3>
         <p><strong>What it is:</strong> lakehouse/warehouse design, open table formats, partitioning, and the modelling discipline — dimensional, Data Vault, One Big Table, medallion.</p>
         <p><strong>How it's implemented:</strong> bronze/silver/gold zones over an open format; conformed dimensions for BI; Data Vault where source volatility and auditability dominate; increasingly a single storage tier serving BI, ML and retrieval.</p>
         <div class="chips"><span class="chip">Snowflake</span><span class="chip">Databricks</span><span class="chip">BigQuery</span><span class="chip">Redshift</span><span class="chip">Fabric / OneLake</span><span class="chip">Apache Iceberg</span><span class="chip">Delta Lake</span><span class="chip ai">AI: model generation from profiles</span></div>
       </article>
 
-      <article class="card b-violet rv"><div class="bar"></div><span class="num">C3 · TRANSFORMATION &amp; SEMANTICS</span>
+      <article class="card b-agent rv"><div class="bar"></div><span class="num">C3 · TRANSFORMATION &amp; SEMANTICS</span>
         <h3>Turning raw into meaning</h3>
         <p><strong>What it is:</strong> business logic, conformance, derivations, metric definitions — plus the semantic layer that makes those definitions singular.</p>
         <p><strong>How it's implemented:</strong> ELT in SQL/Python inside the warehouse, version-controlled with tests and CI; a metrics/semantic layer over the gold zone; historically a bespoke stored-procedure estate nobody wants to touch.</p>
         <div class="chips"><span class="chip">dbt</span><span class="chip">Spark / PySpark</span><span class="chip">Snowpark</span><span class="chip">SQLMesh</span><span class="chip">Cube</span><span class="chip">AtScale</span><span class="chip">Coalesce</span><span class="chip ai">AI: NL → tested models</span><span class="chip ai">AI: legacy logic extraction</span></div>
       </article>
 
-      <article class="card b-amber rv"><div class="bar"></div><span class="num">C4 · ORCHESTRATION</span>
+      <article class="card b-gold rv"><div class="bar"></div><span class="num">C4 · ORCHESTRATION</span>
         <h3>Making it run, in order, on time</h3>
         <p><strong>What it is:</strong> dependency graphs, scheduling, retries, backfills, SLAs and the on-call rota that sits behind them.</p>
         <p><strong>How it's implemented:</strong> a DAG scheduler owning cross-system dependencies; data-aware triggers replacing cron where maturity allows; environment promotion via CI/CD. A fifth of teams still run with no orchestrator at all.</p>
         <div class="chips"><span class="chip">Airflow</span><span class="chip">Dagster</span><span class="chip">Prefect</span><span class="chip">Lakeflow Jobs</span><span class="chip">ADF</span><span class="chip">Argo</span><span class="chip">Control-M</span><span class="chip ai">AI: ZeroOps repair agents</span></div>
       </article>
 
-      <article class="card b-rose rv"><div class="bar"></div><span class="num">C5 · QUALITY &amp; OBSERVABILITY</span>
+      <article class="card b-crimson rv"><div class="bar"></div><span class="num">C5 · QUALITY &amp; OBSERVABILITY</span>
         <h3>Knowing it's right — and knowing first</h3>
         <p><strong>What it is:</strong> validation, profiling, freshness/volume/schema monitoring, incident management, reconciliation to source.</p>
         <p><strong>How it's implemented:</strong> assertion tests in the transformation layer, an observability platform on top for anomaly detection and lineage-based triage, DQ scorecards for the business, and a severity/escalation model.</p>
         <div class="chips"><span class="chip">Great Expectations</span><span class="chip">Soda</span><span class="chip">Monte Carlo</span><span class="chip">Anomalo</span><span class="chip">Bigeye</span><span class="chip">dbt tests</span><span class="chip">IDQ</span><span class="chip ai">AI: learned expectations</span><span class="chip ai">AI: semantic validation</span></div>
       </article>
 
-      <article class="card b-blue rv"><div class="bar"></div><span class="num">C6 · GOVERNANCE, METADATA &amp; SECURITY</span>
+      <article class="card b-steel rv"><div class="bar"></div><span class="num">C6 · GOVERNANCE, METADATA &amp; SECURITY</span>
         <h3>Trust, control and provenance</h3>
         <p><strong>What it is:</strong> catalog, lineage, glossary, ownership, access control, masking, retention, sovereignty and audit.</p>
         <p><strong>How it's implemented:</strong> a catalog federated across platforms; RBAC/ABAC with tag-based policy; column masking and tokenisation for regulated attributes; a stewardship workflow with approval chains and impact analysis.</p>
@@ -877,14 +987,14 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
         <div class="chips"><span class="chip">Kafka</span><span class="chip">Confluent</span><span class="chip">Flink</span><span class="chip">Kinesis</span><span class="chip">Pulsar</span><span class="chip">Materialize</span><span class="chip">Spark Structured Streaming</span><span class="chip ai">AI: streaming enrichment</span></div>
       </article>
 
-      <article class="card b-violet rv"><div class="bar"></div><span class="num">C8 · AI &amp; UNSTRUCTURED DATA ENGINEERING</span>
+      <article class="card b-agent rv"><div class="bar"></div><span class="num">C8 · AI &amp; UNSTRUCTURED DATA ENGINEERING</span>
         <h3>The branch that barely existed in 2022</h3>
         <p><strong>What it is:</strong> document parsing, chunking, embedding, vector indexing, retrieval evaluation, feature engineering and serving, prompt/context assembly, eval pipelines.</p>
         <p><strong>How it's implemented:</strong> a parsing and extraction tier over the document estate; embeddings written to a vector index governed alongside tables; a feature store for online/offline parity; retrieval quality measured with the same rigour as pipeline SLAs.</p>
         <div class="chips"><span class="chip">Feast</span><span class="chip">Tecton</span><span class="chip">pgvector</span><span class="chip">Pinecone</span><span class="chip">LanceDB</span><span class="chip">Ray</span><span class="chip">MLflow</span><span class="chip ai">AI: extraction &amp; classification</span><span class="chip ai">AI: eval harnesses</span></div>
       </article>
 
-      <article class="card b-amber rv"><div class="bar"></div><span class="num">C9 · DATAOPS, PLATFORM &amp; FINOPS</span>
+      <article class="card b-gold rv"><div class="bar"></div><span class="num">C9 · DATAOPS, PLATFORM &amp; FINOPS</span>
         <h3>Running data engineering as a product</h3>
         <p><strong>What it is:</strong> CI/CD, environments, IaC, testing strategy, release management, self-service enablement, cost attribution and unit economics.</p>
         <p><strong>How it's implemented:</strong> Git-based promotion with automated tests; infrastructure as code; a golden-path template so domain teams ship without a platform ticket; showback/chargeback by consumer.</p>
@@ -994,7 +1104,7 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
 
     <div class="arch rv" style="margin-bottom:1.5rem">
       <div class="plane">
-        <div class="plane-hd"><span class="pn c-blue">AS-BUILT</span><b>Layered topology — Landing → Staging → Base Objects → Views</b><small>MDM / DQ suite on managed RDS · Collibra governance</small></div>
+        <div class="plane-hd"><span class="pn c-steel">AS-BUILT</span><b>Layered topology — Landing → Staging → Base Objects → Views</b><small>MDM / DQ suite on managed RDS · Collibra governance</small></div>
         <div class="blocks">
           <div class="blk"><b>Landing</b><small>Source-shaped tables · truncate &amp; load daily · zero transformation, by design</small></div>
           <div class="blk"><b>Staging</b><small>Cleansing, DQ rules, reference lookups · 1-to-1 mappings</small></div>
@@ -1006,7 +1116,7 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
       </div>
       <div class="arch-arrow">▼</div>
       <div class="plane">
-        <div class="plane-hd"><span class="pn c-amber">AS-BUILT</span><b>Eight enterprise integration patterns</b><small>Batch · real-time · asynchronous</small></div>
+        <div class="plane-hd"><span class="pn c-gold">AS-BUILT</span><b>Eight enterprise integration patterns</b><small>Batch · real-time · asynchronous</small></div>
         <div class="blocks">
           <div class="blk"><b>1 · Source extracts</b><small>Batch daily — the workhorse</small></div>
           <div class="blk"><b>2 · Downstream writes</b><small>Batch to warehouse &amp; marts</small></div>
@@ -1021,27 +1131,27 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
     </div>
 
     <div class="grid g2">
-      <article class="card b-rose rv"><div class="bar"></div><span class="num">TELL 01</span>
+      <article class="card b-crimson rv"><div class="bar"></div><span class="num">TELL 01</span>
         <h3>The cache fallback is the architecture confessing</h3>
         <p>The design carried a documented alternative: if performance or availability became an issue, deploy a local data cache on every consuming application, refreshed at low latency. That is a correct engineering answer — and simultaneously an admission that a batch-anchored hub cannot reliably serve real-time reads at enterprise concurrency. In the AI-native design real-time resolution is the primary path, and the cache disappears along with the copies of truth it created.</p>
       </article>
-      <article class="card b-rose rv"><div class="bar"></div><span class="num">TELL 02</span>
+      <article class="card b-crimson rv"><div class="bar"></div><span class="num">TELL 02</span>
         <h3>"Truncate and load daily" was deliberate — and it set the ceiling</h3>
         <p>Full daily reloads in landing and staging kept the platform decoupled from volatile source systems. Entirely reasonable at the time. It also fixed the freshness ceiling at 24 hours regardless of how much real-time integration sat on top. Streaming CDC into an open table format removes the constraint without giving up the decoupling — this is the single highest-leverage change in most legacy estates.</p>
       </article>
-      <article class="card b-amber rv"><div class="bar"></div><span class="num">TELL 03</span>
+      <article class="card b-gold rv"><div class="bar"></div><span class="num">TELL 03</span>
         <h3>The trust framework was the right idea, statically configured</h3>
         <p>Per-source, per-column trust factors were genuinely ahead of their time — the conceptual ancestor of learned survivorship. But the weights were set by hand in workshops and rarely revisited. The AI-native version keeps the concept and makes the weights <em>observed</em>: measured against outcomes, recalibrated continuously, explainable per attribute.</p>
       </article>
-      <article class="card b-amber rv"><div class="bar"></div><span class="num">TELL 04</span>
+      <article class="card b-gold rv"><div class="bar"></div><span class="num">TELL 04</span>
         <h3>Six tools, five consoles, one engineer</h3>
         <p>Hub console, data director, DQ analyst, DQ developer, admin console, address standardisation — plus catalog and BI. Each is competent; collectively they demand a specialist per console and make cross-tool root-cause analysis a manual craft. A single agent-mediated cockpit over the same estate is an operating-model change, not a UI preference.</p>
       </article>
-      <article class="card b-blue rv"><div class="bar"></div><span class="num">TELL 05</span>
+      <article class="card b-steel rv"><div class="bar"></div><span class="num">TELL 05</span>
         <h3>The governance model survives intact</h3>
         <p>Guiding principles, a target operating model spanning consumers, capabilities, technology, process, governance and roles, a versioned business-rules artefact with impact analysis, defined authorised sources, and a documented chain of accountability for change. None of this is made obsolete by AI. It is precisely the control framework that makes autonomous pipelines defensible to an auditor. <strong>Modernise the engine; keep the governance.</strong></p>
       </article>
-      <article class="card b-violet rv"><div class="bar"></div><span class="num">TELL 06</span>
+      <article class="card b-agent rv"><div class="bar"></div><span class="num">TELL 06</span>
         <h3>The delivery model was already right</h3>
         <p>Domain-by-domain shippable increments, prioritised by business value, with a proof of concept preceding the MVP. That sequencing maps almost one-for-one onto the phased migration later on this page. Organisations that already run data work this way migrate fastest — the hard organisational muscle is already built.</p>
       </article>
@@ -1067,81 +1177,81 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
       <svg viewBox="0 0 1000 460" role="img" aria-label="Leverage map: pipeline stages with AI agents above and pain points below, over a trust plane">
         <defs>
           <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#5B9BFF"/><stop offset="50%" stop-color="#2DD4BF"/><stop offset="100%" stop-color="#A78BFA"/>
+            <stop offset="0%" stop-color="var(--steel)"/><stop offset="50%" stop-color="var(--accent)"/><stop offset="100%" stop-color="var(--agent)"/>
           </linearGradient>
           <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill="#2DD4BF"/>
+            <path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/>
           </marker>
         </defs>
 
-        <text x="16" y="26" fill="#8397B4" font-size="11" letter-spacing="2.4">AGENT CONTROL PLANE</text>
-        <rect x="14" y="36" width="972" height="74" rx="12" fill="rgba(167,139,250,.06)" stroke="rgba(167,139,250,.42)" stroke-dasharray="6 5"/>
+        <text x="16" y="26" fill="var(--muted)" font-size="11" letter-spacing="2.4">AGENT CONTROL PLANE</text>
+        <rect x="14" y="36" width="972" height="74" rx="12" fill="var(--agent)" fill-opacity=".06" stroke="var(--agent)" stroke-opacity=".42" stroke-dasharray="6 5"/>
 
-        <g font-size="11.5" fill="#D6C9FF" font-weight="500">
-          <rect x="30" y="52" width="172" height="42" rx="8" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
-          <text x="42" y="70">Connector agent</text><text x="42" y="86" fill="#8397B4" font-size="10">drift · backfill · new source</text>
-          <rect x="220" y="52" width="172" height="42" rx="8" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
-          <text x="232" y="70">Modelling agent</text><text x="232" y="86" fill="#8397B4" font-size="10">profile → schema → DDL</text>
-          <rect x="410" y="52" width="172" height="42" rx="8" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
-          <text x="422" y="70">Transformation agent</text><text x="422" y="86" fill="#8397B4" font-size="10">intent → tested SQL</text>
-          <rect x="600" y="52" width="172" height="42" rx="8" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
-          <text x="612" y="70">ZeroOps agent</text><text x="612" y="86" fill="#8397B4" font-size="10">detect · RCA · sandbox fix</text>
-          <rect x="790" y="52" width="176" height="42" rx="8" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
-          <text x="802" y="70">Context agent</text><text x="802" y="86" fill="#8397B4" font-size="10">semantics · policy · docs</text>
+        <g font-size="11.5" fill="var(--accent-soft)" font-weight="500">
+          <rect x="30" y="52" width="172" height="42" rx="8" fill="var(--agent)" fill-opacity=".1" stroke="var(--agent)" stroke-opacity=".3"/>
+          <text x="42" y="70">Connector agent</text><text x="42" y="86" fill="var(--muted)" font-size="10">drift · backfill · new source</text>
+          <rect x="220" y="52" width="172" height="42" rx="8" fill="var(--agent)" fill-opacity=".1" stroke="var(--agent)" stroke-opacity=".3"/>
+          <text x="232" y="70">Modelling agent</text><text x="232" y="86" fill="var(--muted)" font-size="10">profile → schema → DDL</text>
+          <rect x="410" y="52" width="172" height="42" rx="8" fill="var(--agent)" fill-opacity=".1" stroke="var(--agent)" stroke-opacity=".3"/>
+          <text x="422" y="70">Transformation agent</text><text x="422" y="86" fill="var(--muted)" font-size="10">intent → tested SQL</text>
+          <rect x="600" y="52" width="172" height="42" rx="8" fill="var(--agent)" fill-opacity=".1" stroke="var(--agent)" stroke-opacity=".3"/>
+          <text x="612" y="70">ZeroOps agent</text><text x="612" y="86" fill="var(--muted)" font-size="10">detect · RCA · sandbox fix</text>
+          <rect x="790" y="52" width="176" height="42" rx="8" fill="var(--agent)" fill-opacity=".1" stroke="var(--agent)" stroke-opacity=".3"/>
+          <text x="802" y="70">Context agent</text><text x="802" y="86" fill="var(--muted)" font-size="10">semantics · policy · docs</text>
         </g>
 
-        <g stroke="#A78BFA" stroke-width="1.2" opacity=".55" class="dash">
+        <g stroke="var(--agent)" stroke-width="1.2" opacity=".55" class="dash">
           <line x1="116" y1="110" x2="116" y2="176"/><line x1="306" y1="110" x2="306" y2="176"/>
           <line x1="496" y1="110" x2="496" y2="176"/><line x1="686" y1="110" x2="686" y2="176"/>
           <line x1="878" y1="110" x2="878" y2="176"/>
         </g>
 
-        <text x="16" y="166" fill="#8397B4" font-size="11" letter-spacing="2.4">PIPELINE</text>
+        <text x="16" y="166" fill="var(--muted)" font-size="11" letter-spacing="2.4">PIPELINE</text>
         <g>
-          <rect x="30" y="176" width="172" height="60" rx="10" fill="#141E31" stroke="rgba(255,255,255,.16)"/>
-          <text x="46" y="204" fill="#E9EFF8" font-size="13.5" font-weight="600">Ingest</text>
-          <text x="46" y="222" fill="#8397B4" font-size="10.5">CDC · API · files · events</text>
-          <rect x="220" y="176" width="172" height="60" rx="10" fill="#141E31" stroke="rgba(255,255,255,.16)"/>
-          <text x="236" y="204" fill="#E9EFF8" font-size="13.5" font-weight="600">Store &amp; model</text>
-          <text x="236" y="222" fill="#8397B4" font-size="10.5">open table format</text>
-          <rect x="410" y="176" width="172" height="60" rx="10" fill="#141E31" stroke="rgba(255,255,255,.16)"/>
-          <text x="426" y="204" fill="#E9EFF8" font-size="13.5" font-weight="600">Transform</text>
-          <text x="426" y="222" fill="#8397B4" font-size="10.5">conform · derive · enrich</text>
-          <rect x="600" y="176" width="172" height="60" rx="10" fill="#141E31" stroke="rgba(255,255,255,.16)"/>
-          <text x="616" y="204" fill="#E9EFF8" font-size="13.5" font-weight="600">Operate</text>
-          <text x="616" y="222" fill="#8397B4" font-size="10.5">schedule · SLA · incident</text>
-          <rect x="790" y="176" width="176" height="60" rx="10" fill="#141E31" stroke="rgba(255,255,255,.16)"/>
-          <text x="806" y="204" fill="#E9EFF8" font-size="13.5" font-weight="600">Serve</text>
-          <text x="806" y="222" fill="#8397B4" font-size="10.5">BI · API · tools · retrieval</text>
+          <rect x="30" y="176" width="172" height="60" rx="10" fill="var(--surface-2)" stroke="var(--ink)" stroke-opacity=".16"/>
+          <text x="46" y="204" fill="var(--ink)" font-size="13.5" font-weight="600">Ingest</text>
+          <text x="46" y="222" fill="var(--muted)" font-size="10.5">CDC · API · files · events</text>
+          <rect x="220" y="176" width="172" height="60" rx="10" fill="var(--surface-2)" stroke="var(--ink)" stroke-opacity=".16"/>
+          <text x="236" y="204" fill="var(--ink)" font-size="13.5" font-weight="600">Store &amp; model</text>
+          <text x="236" y="222" fill="var(--muted)" font-size="10.5">open table format</text>
+          <rect x="410" y="176" width="172" height="60" rx="10" fill="var(--surface-2)" stroke="var(--ink)" stroke-opacity=".16"/>
+          <text x="426" y="204" fill="var(--ink)" font-size="13.5" font-weight="600">Transform</text>
+          <text x="426" y="222" fill="var(--muted)" font-size="10.5">conform · derive · enrich</text>
+          <rect x="600" y="176" width="172" height="60" rx="10" fill="var(--surface-2)" stroke="var(--ink)" stroke-opacity=".16"/>
+          <text x="616" y="204" fill="var(--ink)" font-size="13.5" font-weight="600">Operate</text>
+          <text x="616" y="222" fill="var(--muted)" font-size="10.5">schedule · SLA · incident</text>
+          <rect x="790" y="176" width="176" height="60" rx="10" fill="var(--surface-2)" stroke="var(--ink)" stroke-opacity=".16"/>
+          <text x="806" y="204" fill="var(--ink)" font-size="13.5" font-weight="600">Serve</text>
+          <text x="806" y="222" fill="var(--muted)" font-size="10.5">BI · API · tools · retrieval</text>
         </g>
         <g stroke="url(#lg1)" stroke-width="2" marker-end="url(#ah)" class="dash">
           <line x1="202" y1="206" x2="214" y2="206"/><line x1="392" y1="206" x2="404" y2="206"/>
           <line x1="582" y1="206" x2="594" y2="206"/><line x1="772" y1="206" x2="784" y2="206"/>
         </g>
 
-        <g stroke="#FF6B7A" stroke-width="1.2" opacity=".45" stroke-dasharray="3 4">
+        <g stroke="var(--crimson)" stroke-width="1.2" opacity=".45" stroke-dasharray="3 4">
           <line x1="116" y1="236" x2="116" y2="286"/><line x1="306" y1="236" x2="306" y2="286"/>
           <line x1="496" y1="236" x2="496" y2="286"/><line x1="686" y1="236" x2="686" y2="286"/>
           <line x1="878" y1="236" x2="878" y2="286"/>
         </g>
 
-        <text x="16" y="278" fill="#8397B4" font-size="11" letter-spacing="2.4">TODAY'S PAIN</text>
-        <g font-size="10.5" fill="#FFD3D8">
-          <rect x="30" y="286" width="172" height="56" rx="8" fill="rgba(255,107,122,.07)" stroke="rgba(255,107,122,.28)"/>
+        <text x="16" y="278" fill="var(--muted)" font-size="11" letter-spacing="2.4">TODAY'S PAIN</text>
+        <g font-size="10.5" fill="var(--crimson-soft)">
+          <rect x="30" y="286" width="172" height="56" rx="8" fill="var(--crimson)" fill-opacity=".07" stroke="var(--crimson)" stroke-opacity=".28"/>
           <text x="42" y="306">Schema drift breaks</text><text x="42" y="322">runs; backfills manual</text>
-          <rect x="220" y="286" width="172" height="56" rx="8" fill="rgba(255,107,122,.07)" stroke="rgba(255,107,122,.28)"/>
+          <rect x="220" y="286" width="172" height="56" rx="8" fill="var(--crimson)" fill-opacity=".07" stroke="var(--crimson)" stroke-opacity=".28"/>
           <text x="232" y="306">Modelling debt; no</text><text x="232" y="322">owner; slow to change</text>
-          <rect x="410" y="286" width="172" height="56" rx="8" fill="rgba(255,107,122,.07)" stroke="rgba(255,107,122,.28)"/>
+          <rect x="410" y="286" width="172" height="56" rx="8" fill="var(--crimson)" fill-opacity=".07" stroke="var(--crimson)" stroke-opacity=".28"/>
           <text x="422" y="306">Undocumented logic</text><text x="422" y="322">locked in legacy tools</text>
-          <rect x="600" y="286" width="172" height="56" rx="8" fill="rgba(255,107,122,.07)" stroke="rgba(255,107,122,.28)"/>
+          <rect x="600" y="286" width="172" height="56" rx="8" fill="var(--crimson)" fill-opacity=".07" stroke="var(--crimson)" stroke-opacity=".28"/>
           <text x="612" y="306">On-call firefighting;</text><text x="612" y="322">slow root-cause</text>
-          <rect x="790" y="286" width="176" height="56" rx="8" fill="rgba(255,107,122,.07)" stroke="rgba(255,107,122,.28)"/>
+          <rect x="790" y="286" width="176" height="56" rx="8" fill="var(--crimson)" fill-opacity=".07" stroke="var(--crimson)" stroke-opacity=".28"/>
           <text x="802" y="306">No shared meaning;</text><text x="802" y="322">agents misread data</text>
         </g>
 
-        <rect x="14" y="366" width="972" height="70" rx="12" fill="rgba(45,212,191,.05)" stroke="rgba(45,212,191,.32)"/>
-        <text x="30" y="392" fill="#2DD4BF" font-size="12.5" font-weight="600">TRUST PLANE — the precondition, not the finishing touch</text>
-        <g font-size="10.8" fill="#8397B4">
+        <rect x="14" y="366" width="972" height="70" rx="12" fill="var(--accent)" fill-opacity=".05" stroke="var(--accent)" stroke-opacity=".32"/>
+        <text x="30" y="392" fill="var(--accent)" font-size="12.5" font-weight="600">TRUST PLANE — the precondition, not the finishing touch</text>
+        <g font-size="10.8" fill="var(--muted)">
           <text x="30" y="414">Column-level lineage</text>
           <text x="180" y="414">· Observability &amp; SLAs</text>
           <text x="340" y="414">· Evals for every AI-executed step</text>
@@ -1152,27 +1262,27 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
     </div>
 
     <div class="grid g3 rv" style="margin-top:1.4rem">
-      <article class="card b-violet"><div class="bar"></div><span class="num">HIGHEST LEVERAGE</span>
+      <article class="card b-agent"><div class="bar"></div><span class="num">HIGHEST LEVERAGE</span>
         <h4>1 · Legacy logic archaeology</h4>
         <p>Parsing decades of ETL metadata to recover business rules is the task AI does dramatically better than people, and it unblocks every modernisation programme. Vendors now ship migration agents converting 14+ legacy platforms into warehouse-native pipelines; the value is less the code generation than the <em>comprehension</em>.</p>
       </article>
-      <article class="card b-violet"><div class="bar"></div><span class="num">HIGHEST LEVERAGE</span>
+      <article class="card b-agent"><div class="bar"></div><span class="num">HIGHEST LEVERAGE</span>
         <h4>2 · Autonomous incident response</h4>
         <p>Detection, correlation across lineage, hypothesis, sandbox-validated fix, human approval. This is where the maintenance tax actually lives, and it is the capability with the clearest published implementations today.</p>
       </article>
-      <article class="card b-violet"><div class="bar"></div><span class="num">HIGHEST LEVERAGE</span>
+      <article class="card b-agent"><div class="bar"></div><span class="num">HIGHEST LEVERAGE</span>
         <h4>3 · Unstructured-to-structured extraction</h4>
         <p>Turning contracts, tickets and documents into governed tables and retrievable context creates data assets that simply did not exist before. It is the only item on this list that increases the surface area of the platform rather than reducing its cost.</p>
       </article>
-      <article class="card b-amber"><div class="bar"></div><span class="num">LOWER LEVERAGE THAN CLAIMED</span>
+      <article class="card b-gold"><div class="bar"></div><span class="num">LOWER LEVERAGE THAN CLAIMED</span>
         <h4>Watch: pure code generation</h4>
         <p>Generating SQL faster is the most adopted and least differentiating use. Writing the model was rarely the bottleneck — agreeing what it should mean and proving it is right were. Optimising the easy step magnifies the hard one.</p>
       </article>
-      <article class="card b-amber"><div class="bar"></div><span class="num">LOWER LEVERAGE THAN CLAIMED</span>
+      <article class="card b-gold"><div class="bar"></div><span class="num">LOWER LEVERAGE THAN CLAIMED</span>
         <h4>Watch: NL-to-SQL over raw tables</h4>
         <p>Ungrounded natural-language querying against a physical schema produces confident, wrong answers. It is only viable on top of a semantic layer — which is the actual investment.</p>
       </article>
-      <article class="card b-rose"><div class="bar"></div><span class="num">GUARDRAIL</span>
+      <article class="card b-crimson"><div class="bar"></div><span class="num">GUARDRAIL</span>
         <h4>Autonomy needs an approval boundary</h4>
         <p>Define, per pipeline, what an agent may do unattended (retry, re-infer schema, re-run a partition), what needs approval (logic change, contract change, permission change), and what is never automated (data deletion, policy override, production access grants). Write it down before, not after.</p>
       </article>
@@ -1204,7 +1314,7 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
       </div>
 
       <div class="plane">
-        <div class="plane-hd"><span class="pn c-blue">L1</span><b>Source &amp; ingestion plane</b><small>continuous by default · batch as an optimisation</small></div>
+        <div class="plane-hd"><span class="pn c-steel">L1</span><b>Source &amp; ingestion plane</b><small>continuous by default · batch as an optimisation</small></div>
         <div class="blocks">
           <div class="blk"><b>Log-based CDC</b><small>Operational databases, sub-minute</small></div>
           <div class="blk"><b>Event streaming</b><small>Direct-to-lakehouse writes, seconds</small></div>
@@ -1216,7 +1326,7 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
       <div class="arch-arrow">▼</div>
 
       <div class="plane">
-        <div class="plane-hd"><span class="pn c-teal">L2</span><b>Multimodal storage plane</b><small>one open format · one governance boundary</small></div>
+        <div class="plane-hd"><span class="pn c-accent">L2</span><b>Multimodal storage plane</b><small>one open format · one governance boundary</small></div>
         <div class="blocks">
           <div class="blk"><b>Open table format</b><small>Iceberg / Delta — ACID, time travel, engine-neutral</small></div>
           <div class="blk"><b>Object &amp; content store</b><small>Source documents retained with provenance</small></div>
@@ -1228,7 +1338,7 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
       <div class="arch-arrow">▼</div>
 
       <div class="plane">
-        <div class="plane-hd"><span class="pn c-violet">L3</span><b>Processing &amp; transformation plane</b><small>declarative · incremental · model-assisted</small></div>
+        <div class="plane-hd"><span class="pn c-agent">L3</span><b>Processing &amp; transformation plane</b><small>declarative · incremental · model-assisted</small></div>
         <div class="blocks">
           <div class="blk"><b>Declarative pipelines</b><small>Define the result; the engine plans the execution</small></div>
           <div class="blk"><b>Unified batch + stream</b><small>One definition, two execution modes</small></div>
@@ -1240,7 +1350,7 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
       <div class="arch-arrow">▼</div>
 
       <div class="plane">
-        <div class="plane-hd"><span class="pn c-amber">L4</span><b>Context &amp; semantic plane</b><small>the layer most enterprises are missing</small></div>
+        <div class="plane-hd"><span class="pn c-gold">L4</span><b>Context &amp; semantic plane</b><small>the layer most enterprises are missing</small></div>
         <div class="blocks">
           <div class="blk"><b>Semantic model</b><small>Entities, metrics, dimensions — one definition of "revenue"</small></div>
           <div class="blk"><b>Ontology / knowledge graph</b><small>How things relate; supports multi-hop questions</small></div>
@@ -1252,7 +1362,7 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
       <div class="arch-arrow">▼</div>
 
       <div class="plane">
-        <div class="plane-hd"><span class="pn c-teal">L5</span><b>Serving plane</b><small>humans, applications and agents as first-class consumers</small></div>
+        <div class="plane-hd"><span class="pn c-accent">L5</span><b>Serving plane</b><small>humans, applications and agents as first-class consumers</small></div>
         <div class="blocks">
           <div class="blk"><b>SQL &amp; BI</b><small>Governed metrics, not ad-hoc redefinition</small></div>
           <div class="blk"><b>Data product APIs</b><small>Versioned, entitled, metered</small></div>
@@ -1262,14 +1372,14 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
         </div>
       </div>
 
-      <div class="rail" style="border-color:rgba(45,212,191,.42);background:rgba(45,212,191,.05);margin-top:.5rem;margin-bottom:0">
-        <div class="rail-hd"><b style="color:var(--teal)">Trust plane</b><small>every layer emits evidence · nothing autonomous ships without it</small></div>
+      <div class="rail" style="border-color:color-mix(in srgb,var(--accent) 42%,transparent);background:color-mix(in srgb,var(--accent) 5%,transparent);margin-top:.5rem;margin-bottom:0">
+        <div class="rail-hd"><b style="color:var(--accent)">Trust plane</b><small>every layer emits evidence · nothing autonomous ships without it</small></div>
         <div class="rail-items">
-          <div class="ragent" style="border-color:rgba(45,212,191,.22);background:rgba(45,212,191,.06)"><b style="color:#BFF3EC">Lineage</b><small>Column-level, end to end</small></div>
-          <div class="ragent" style="border-color:rgba(45,212,191,.22);background:rgba(45,212,191,.06)"><b style="color:#BFF3EC">Observability</b><small>Freshness, volume, schema, distribution</small></div>
-          <div class="ragent" style="border-color:rgba(45,212,191,.22);background:rgba(45,212,191,.06)"><b style="color:#BFF3EC">Evals</b><small>Accuracy of every AI-executed step</small></div>
-          <div class="ragent" style="border-color:rgba(45,212,191,.22);background:rgba(45,212,191,.06)"><b style="color:#BFF3EC">Audit</b><small>Who/what changed data, and why</small></div>
-          <div class="ragent" style="border-color:rgba(45,212,191,.22);background:rgba(45,212,191,.06)"><b style="color:#BFF3EC">Cost</b><small>Unit economics per data product</small></div>
+          <div class="ragent" style="border-color:color-mix(in srgb,var(--accent) 22%,transparent);background:color-mix(in srgb,var(--accent) 6%,transparent)"><b style="color:var(--accent-soft)">Lineage</b><small>Column-level, end to end</small></div>
+          <div class="ragent" style="border-color:color-mix(in srgb,var(--accent) 22%,transparent);background:color-mix(in srgb,var(--accent) 6%,transparent)"><b style="color:var(--accent-soft)">Observability</b><small>Freshness, volume, schema, distribution</small></div>
+          <div class="ragent" style="border-color:color-mix(in srgb,var(--accent) 22%,transparent);background:color-mix(in srgb,var(--accent) 6%,transparent)"><b style="color:var(--accent-soft)">Evals</b><small>Accuracy of every AI-executed step</small></div>
+          <div class="ragent" style="border-color:color-mix(in srgb,var(--accent) 22%,transparent);background:color-mix(in srgb,var(--accent) 6%,transparent)"><b style="color:var(--accent-soft)">Audit</b><small>Who/what changed data, and why</small></div>
+          <div class="ragent" style="border-color:color-mix(in srgb,var(--accent) 22%,transparent);background:color-mix(in srgb,var(--accent) 6%,transparent)"><b style="color:var(--accent-soft)">Cost</b><small>Unit economics per data product</small></div>
         </div>
       </div>
     </div>
@@ -1283,14 +1393,14 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
       <svg viewBox="0 0 1000 430" role="img" aria-label="AI-first enterprise data architecture: data foundation, context, intelligence and experience layers with a governance spine">
         <defs>
           <linearGradient id="lg2" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0%" stop-color="#5B9BFF" stop-opacity=".22"/><stop offset="100%" stop-color="#A78BFA" stop-opacity=".22"/>
+            <stop offset="0%" stop-color="var(--steel)" stop-opacity=".22"/><stop offset="100%" stop-color="var(--agent)" stop-opacity=".22"/>
           </linearGradient>
         </defs>
 
-        <rect x="14" y="14" width="150" height="402" rx="12" fill="rgba(245,181,68,.06)" stroke="rgba(245,181,68,.35)"/>
-        <text x="34" y="44" fill="#F5B544" font-size="12.5" font-weight="600">Governance</text>
-        <text x="34" y="62" fill="#F5B544" font-size="12.5" font-weight="600">spine</text>
-        <g fill="#8397B4" font-size="10.5">
+        <rect x="14" y="14" width="150" height="402" rx="12" fill="var(--gold)" fill-opacity=".06" stroke="var(--gold)" stroke-opacity=".35"/>
+        <text x="34" y="44" fill="var(--gold)" font-size="12.5" font-weight="600">Governance</text>
+        <text x="34" y="62" fill="var(--gold)" font-size="12.5" font-weight="600">spine</text>
+        <g fill="var(--muted)" font-size="10.5">
           <text x="34" y="96">Ownership &amp;</text><text x="34" y="112">stewardship</text>
           <text x="34" y="144">Risk, privacy,</text><text x="34" y="160">sovereignty</text>
           <text x="34" y="192">AI policy &amp;</text><text x="34" y="208">model risk</text>
@@ -1300,43 +1410,43 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
           <text x="34" y="384">Skills &amp;</text><text x="34" y="400">operating model</text>
         </g>
 
-        <rect x="186" y="14" width="800" height="76" rx="12" fill="rgba(91,155,255,.08)" stroke="rgba(91,155,255,.35)"/>
-        <text x="206" y="40" fill="#5B9BFF" font-size="12.5" font-weight="600">EXPERIENCE LAYER</text>
-        <g fill="#C3D0E2" font-size="11">
+        <rect x="186" y="14" width="800" height="76" rx="12" fill="var(--steel)" fill-opacity=".08" stroke="var(--steel)" stroke-opacity=".35"/>
+        <text x="206" y="40" fill="var(--steel)" font-size="12.5" font-weight="600">EXPERIENCE LAYER</text>
+        <g fill="var(--ink-2)" font-size="11">
           <text x="206" y="62">Business apps</text><text x="330" y="62">· Copilots</text><text x="430" y="62">· Autonomous agents</text><text x="596" y="62">· BI &amp; analytics</text><text x="726" y="62">· Partner &amp; customer products</text>
         </g>
-        <text x="206" y="80" fill="#5E7191" font-size="10">Where value is realised — and the only layer the business sees</text>
+        <text x="206" y="80" fill="var(--faint)" font-size="10">Where value is realised — and the only layer the business sees</text>
 
-        <rect x="186" y="102" width="800" height="80" rx="12" fill="url(#lg2)" stroke="rgba(167,139,250,.4)"/>
-        <text x="206" y="128" fill="#A78BFA" font-size="12.5" font-weight="600">INTELLIGENCE LAYER</text>
-        <g fill="#C3D0E2" font-size="11">
+        <rect x="186" y="102" width="800" height="80" rx="12" fill="url(#lg2)" stroke="var(--agent)" stroke-opacity=".4"/>
+        <text x="206" y="128" fill="var(--agent)" font-size="12.5" font-weight="600">INTELLIGENCE LAYER</text>
+        <g fill="var(--ink-2)" font-size="11">
           <text x="206" y="150">Foundation &amp; fine-tuned models</text><text x="430" y="150">· Agent orchestration</text><text x="588" y="150">· Reasoning &amp; planning</text><text x="748" y="150">· Guardrails &amp; evals</text>
         </g>
-        <text x="206" y="170" fill="#5E7191" font-size="10">Swappable by design — this layer will re-platform every 18 months; nothing below it should</text>
+        <text x="206" y="170" fill="var(--faint)" font-size="10">Swappable by design — this layer will re-platform every 18 months; nothing below it should</text>
 
-        <rect x="186" y="194" width="800" height="80" rx="12" fill="rgba(245,181,68,.08)" stroke="rgba(245,181,68,.45)"/>
-        <text x="206" y="220" fill="#F5B544" font-size="12.5" font-weight="600">CONTEXT LAYER — the strategic control point</text>
-        <g fill="#C3D0E2" font-size="11">
+        <rect x="186" y="194" width="800" height="80" rx="12" fill="var(--gold)" fill-opacity=".08" stroke="var(--gold)" stroke-opacity=".45"/>
+        <text x="206" y="220" fill="var(--gold)" font-size="12.5" font-weight="600">CONTEXT LAYER — the strategic control point</text>
+        <g fill="var(--ink-2)" font-size="11">
           <text x="206" y="242">Semantic model</text><text x="330" y="242">· Ontology / knowledge graph</text><text x="540" y="242">· Data contracts</text><text x="664" y="242">· Policy-as-code</text><text x="800" y="242">· Runtime metadata</text>
         </g>
-        <text x="206" y="262" fill="#5E7191" font-size="10">Owned by the enterprise, not the vendor. This is what makes agent answers consistent and auditable.</text>
+        <text x="206" y="262" fill="var(--faint)" font-size="10">Owned by the enterprise, not the vendor. This is what makes agent answers consistent and auditable.</text>
 
-        <rect x="186" y="286" width="800" height="130" rx="12" fill="rgba(45,212,191,.07)" stroke="rgba(45,212,191,.42)"/>
-        <text x="206" y="312" fill="#2DD4BF" font-size="12.5" font-weight="600">DATA FOUNDATION — the AI-powered data engineering platform</text>
+        <rect x="186" y="286" width="800" height="130" rx="12" fill="var(--accent)" fill-opacity=".07" stroke="var(--accent)" stroke-opacity=".42"/>
+        <text x="206" y="312" fill="var(--accent)" font-size="12.5" font-weight="600">DATA FOUNDATION — the AI-powered data engineering platform</text>
         <g>
-          <rect x="206" y="324" width="172" height="40" rx="8" fill="#141E31" stroke="rgba(255,255,255,.14)"/>
-          <text x="220" y="342" fill="#E9EFF8" font-size="11" font-weight="600">Ingestion plane</text><text x="220" y="357" fill="#8397B4" font-size="9.6">CDC · streams · documents</text>
-          <rect x="392" y="324" width="172" height="40" rx="8" fill="#141E31" stroke="rgba(255,255,255,.14)"/>
-          <text x="406" y="342" fill="#E9EFF8" font-size="11" font-weight="600">Storage plane</text><text x="406" y="357" fill="#8397B4" font-size="9.6">tables · vectors · graph</text>
-          <rect x="578" y="324" width="172" height="40" rx="8" fill="#141E31" stroke="rgba(255,255,255,.14)"/>
-          <text x="592" y="342" fill="#E9EFF8" font-size="11" font-weight="600">Processing plane</text><text x="592" y="357" fill="#8397B4" font-size="9.6">declarative · incremental</text>
-          <rect x="764" y="324" width="200" height="40" rx="8" fill="#141E31" stroke="rgba(255,255,255,.14)"/>
-          <text x="778" y="342" fill="#E9EFF8" font-size="11" font-weight="600">Serving plane</text><text x="778" y="357" fill="#8397B4" font-size="9.6">SQL · APIs · tools · retrieval</text>
+          <rect x="206" y="324" width="172" height="40" rx="8" fill="var(--surface-2)" stroke="var(--ink)" stroke-opacity=".14"/>
+          <text x="220" y="342" fill="var(--ink)" font-size="11" font-weight="600">Ingestion plane</text><text x="220" y="357" fill="var(--muted)" font-size="9.6">CDC · streams · documents</text>
+          <rect x="392" y="324" width="172" height="40" rx="8" fill="var(--surface-2)" stroke="var(--ink)" stroke-opacity=".14"/>
+          <text x="406" y="342" fill="var(--ink)" font-size="11" font-weight="600">Storage plane</text><text x="406" y="357" fill="var(--muted)" font-size="9.6">tables · vectors · graph</text>
+          <rect x="578" y="324" width="172" height="40" rx="8" fill="var(--surface-2)" stroke="var(--ink)" stroke-opacity=".14"/>
+          <text x="592" y="342" fill="var(--ink)" font-size="11" font-weight="600">Processing plane</text><text x="592" y="357" fill="var(--muted)" font-size="9.6">declarative · incremental</text>
+          <rect x="764" y="324" width="200" height="40" rx="8" fill="var(--surface-2)" stroke="var(--ink)" stroke-opacity=".14"/>
+          <text x="778" y="342" fill="var(--ink)" font-size="11" font-weight="600">Serving plane</text><text x="778" y="357" fill="var(--muted)" font-size="9.6">SQL · APIs · tools · retrieval</text>
         </g>
-        <rect x="206" y="374" width="758" height="30" rx="7" fill="rgba(167,139,250,.09)" stroke="rgba(167,139,250,.35)" stroke-dasharray="5 4"/>
-        <text x="220" y="393" fill="#D6C9FF" font-size="10.5">Agent control plane + trust plane — build, operate, prove</text>
+        <rect x="206" y="374" width="758" height="30" rx="7" fill="var(--agent)" fill-opacity=".09" stroke="var(--agent)" stroke-opacity=".35" stroke-dasharray="5 4"/>
+        <text x="220" y="393" fill="var(--accent-soft)" font-size="10.5">Agent control plane + trust plane — build, operate, prove</text>
 
-        <g stroke="#2DD4BF" stroke-width="1.4" opacity=".6" class="dash">
+        <g stroke="var(--accent)" stroke-width="1.4" opacity=".6" class="dash">
           <line x1="586" y1="286" x2="586" y2="274"/><line x1="586" y1="194" x2="586" y2="182"/><line x1="586" y1="102" x2="586" y2="90"/>
         </g>
       </svg>
@@ -1347,11 +1457,11 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
         <h4>Why the context layer is the control point</h4>
         <p>Models will be replaced. Agent frameworks will be replaced. The semantic model, ontology and policy definitions are the assets that compound — and they are the only part of the stack a vendor cannot supply for you, because they encode how <em>your</em> business defines itself.</p>
       </article>
-      <article class="card b-blue"><div class="bar"></div>
+      <article class="card b-steel"><div class="bar"></div>
         <h4>Why open formats matter more now</h4>
         <p>When four engines — SQL, streaming, ML, retrieval — read the same data, engine-neutral storage stops being an ideological preference and becomes a cost and consistency requirement. It is also the cheapest available insurance against platform consolidation.</p>
       </article>
-      <article class="card b-amber"><div class="bar"></div>
+      <article class="card b-gold"><div class="bar"></div>
         <h4>Why the trust plane comes first</h4>
         <p>Every autonomy claim on this page depends on being able to answer: what did the agent change, on what evidence, and how do we know it was right? Build lineage, observability and evals before delegating anything. The 2026 data shows this is where most teams are underinvested.</p>
       </article>
@@ -1607,7 +1717,7 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
         <div class="out"><b>Exit criteria</b>Legacy platform switched off and licences released; autonomy boundaries documented per pipeline; agent consumption governed and metered.</div>
       </article>
 
-      <article class="phase p4">
+      <article class="phase p5">
         <div class="ph">Phase 4 · Ongoing</div>
         <h4>Operating model</h4>
         <p>The permanent change. Data engineers move from pipeline authors to platform and context owners. Stewards move from queue-clearing to adjudicating the genuinely ambiguous. Evals, cost and quality get a governance cadence with the same seriousness as financial close.</p>
@@ -1622,13 +1732,13 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
 
     <div class="grid g4 rv">
       <article class="card"><div class="bar"></div><span class="num">WS 1</span><h4>Discovery &amp; inventory</h4><p>Automated harvesting of pipelines, schedules, dependencies, consumption and cost. Produces the graph everything else is planned against.</p></article>
-      <article class="card b-blue"><div class="bar"></div><span class="num">WS 2</span><h4>Platform &amp; landing zone</h4><p>Lakehouse, open table format, networking, identity, environments, IaC, CI/CD, golden-path templates.</p></article>
-      <article class="card b-violet"><div class="bar"></div><span class="num">WS 3</span><h4>Conversion factory</h4><p>Agent-assisted extraction of legacy logic, generation of native pipelines, and automated parity testing at scale.</p></article>
-      <article class="card b-amber"><div class="bar"></div><span class="num">WS 4</span><h4>Trust plane</h4><p>Lineage, observability, learned quality monitors, eval harnesses for every AI-executed step, audit logging.</p></article>
+      <article class="card b-steel"><div class="bar"></div><span class="num">WS 2</span><h4>Platform &amp; landing zone</h4><p>Lakehouse, open table format, networking, identity, environments, IaC, CI/CD, golden-path templates.</p></article>
+      <article class="card b-agent"><div class="bar"></div><span class="num">WS 3</span><h4>Conversion factory</h4><p>Agent-assisted extraction of legacy logic, generation of native pipelines, and automated parity testing at scale.</p></article>
+      <article class="card b-gold"><div class="bar"></div><span class="num">WS 4</span><h4>Trust plane</h4><p>Lineage, observability, learned quality monitors, eval harnesses for every AI-executed step, audit logging.</p></article>
       <article class="card"><div class="bar"></div><span class="num">WS 5</span><h4>Context layer</h4><p>Semantic model, ontology, data contracts, policy-as-code. Built domain by domain alongside migration — never as a separate later project.</p></article>
-      <article class="card b-rose"><div class="bar"></div><span class="num">WS 6</span><h4>Governance &amp; risk</h4><p>Autonomy boundaries, approval chains, model-risk treatment for AI-in-pipeline, privacy and sovereignty, audit evidence.</p></article>
-      <article class="card b-blue"><div class="bar"></div><span class="num">WS 7</span><h4>People &amp; operating model</h4><p>Role redefinition, skills uplift, incentives, and the decommission accountability that stops the estate doubling.</p></article>
-      <article class="card b-amber"><div class="bar"></div><span class="num">WS 8</span><h4>Value tracking</h4><p>Baseline, instrument and report the measures below monthly. Programmes without a published number lose their funding in year two.</p></article>
+      <article class="card b-crimson"><div class="bar"></div><span class="num">WS 6</span><h4>Governance &amp; risk</h4><p>Autonomy boundaries, approval chains, model-risk treatment for AI-in-pipeline, privacy and sovereignty, audit evidence.</p></article>
+      <article class="card b-steel"><div class="bar"></div><span class="num">WS 7</span><h4>People &amp; operating model</h4><p>Role redefinition, skills uplift, incentives, and the decommission accountability that stops the estate doubling.</p></article>
+      <article class="card b-gold"><div class="bar"></div><span class="num">WS 8</span><h4>Value tracking</h4><p>Baseline, instrument and report the measures below monthly. Programmes without a published number lose their funding in year two.</p></article>
     </div>
 
     <div class="sec-head rv" style="margin-top:clamp(2.5rem,1.5rem + 3vw,4rem);margin-bottom:1.2rem">
@@ -1648,19 +1758,19 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
     </div>
 
     <div class="grid g2 rv" style="margin-top:1.4rem">
-      <article class="card b-rose"><div class="bar"></div><span class="num">FAILURE MODE 01</span>
+      <article class="card b-crimson"><div class="bar"></div><span class="num">FAILURE MODE 01</span>
         <h4>The permanent hybrid</h4>
         <p>Coexistence without a committed decommission date becomes two platforms, two cost lines and two versions of the truth — permanently. Set the legacy exit date in Phase 2, name an accountable executive, and defend it. This is the most common way these programmes fail, and it fails quietly.</p>
       </article>
-      <article class="card b-rose"><div class="bar"></div><span class="num">FAILURE MODE 02</span>
+      <article class="card b-crimson"><div class="bar"></div><span class="num">FAILURE MODE 02</span>
         <h4>Acceleration without verification</h4>
         <p>The 2026 evidence is explicit: adoption of AI authoring is running roughly three times ahead of adoption of AI quality management. Shipping pipelines faster than you can prove them correct converts a productivity story into a trust incident — and trust, once lost with the CFO, takes a year to rebuild.</p>
       </article>
-      <article class="card b-amber"><div class="bar"></div><span class="num">FAILURE MODE 03</span>
+      <article class="card b-gold"><div class="bar"></div><span class="num">FAILURE MODE 03</span>
         <h4>Buying the agent, skipping the context</h4>
         <p>An agent over an undocumented physical schema is a very fast way to produce confident wrong answers. The semantic layer is unglamorous, hard to fund and non-negotiable. If the roadmap has it in "phase later", the roadmap is wrong.</p>
       </article>
-      <article class="card b-amber"><div class="bar"></div><span class="num">FAILURE MODE 04</span>
+      <article class="card b-gold"><div class="bar"></div><span class="num">FAILURE MODE 04</span>
         <h4>Treating it as a technology programme</h4>
         <p>The practitioner data ranks organisational blockers above technical debt. If nobody owns customer data, no architecture fixes it. Ownership, decision rights and decommission accountability are Phase 0 deliverables, not change-management garnish.</p>
       </article>
@@ -1752,8 +1862,26 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
   <div class="wrap foot">
     <div>
       <div class="brand" style="margin-bottom:.7rem">
-        <span class="brand-mark">R2</span>
-        <span class="brand-txt"><b>R2 Digital LLC</b><span>Data · AI · Transformation</span></span>
+        <svg class="brand-mark" viewBox="0 0 480 480" aria-hidden="true" focusable="false">
+          <defs>
+            <radialGradient id="r2foot" cx="50%" cy="50%" r="72%">
+              <stop offset="0%" stop-color="#FFFFFF"/><stop offset="16%" stop-color="#D6DDE0"/>
+              <stop offset="42%" stop-color="#9EADB4"/><stop offset="72%" stop-color="#506E7B"/>
+              <stop offset="100%" stop-color="#0B3041"/>
+            </radialGradient>
+            <clipPath id="r2footc"><rect width="480" height="480" rx="96"/></clipPath>
+          </defs>
+          <g clip-path="url(#r2footc)">
+            <rect width="480" height="480" fill="url(#r2foot)"/>
+            <g fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="square" opacity=".9">
+              <path d="M-8 486L486 -8"/><path d="M-2 492L492 -2"/><path d="M4 498L498 4"/>
+            </g>
+            <circle cx="240" cy="240" r="150" fill="#FFFFFF"/>
+            <circle cx="240" cy="240" r="75" fill="#C04F15"/>
+            <g fill="#C04F15"><circle cx="134" cy="134" r="15"/><circle cx="346" cy="346" r="15"/></g>
+          </g>
+        </svg>
+        <span class="brand-txt"><b>R2 Digital LLC</b><span>AI · Data · Architecture</span></span>
       </div>
       <small>Data &amp; AI architecture, master data and enterprise transformation.<br>Written by Ravi Rali · July 2026 · Views are the author's own.</small>
     </div>
@@ -1843,6 +1971,17 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
   } else { revealAll(); }
   window.addEventListener("beforeprint",revealAll);
 
+  /* ---- theme toggle (R2 ships light + dark; dark is the default look) ---- */
+  $$("#themebtn,#themebtn-drawer").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var next = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+      document.documentElement.dataset.theme = next;
+      try{ localStorage.setItem("r2-theme", next); }catch(e){}
+      var m=document.querySelector('meta[name="theme-color"]:not([media])');
+      if(m) m.setAttribute("content", next==="light" ? "#EEF0F4" : "#081E28");
+    });
+  });
+
   /* ---- mobile drawer ---- */
   var burger=$("#burger"), drawer=$("#drawer");
   burger.addEventListener("click",function(){
@@ -1931,9 +2070,9 @@ svg text{font-family:"IBM Plex Sans",sans-serif}
     okmsg.classList.remove("show"); errmsg.classList.remove("show");
 
     var name=nameEl.value.trim(), email=emailEl.value.trim(), msg=ta.value.trim();
-    if(!name){ nameEl.focus(); nameEl.style.borderColor="#FF6B7A"; return; }
+    if(!name){ nameEl.focus(); nameEl.style.borderColor="var(--crimson)"; return; }
     nameEl.style.borderColor="";
-    if(invalidEmail(email)){ emailEl.focus(); emailEl.style.borderColor="#FF6B7A"; return; }
+    if(invalidEmail(email)){ emailEl.focus(); emailEl.style.borderColor="var(--crimson)"; return; }
     emailEl.style.borderColor="";
     if(!msg){ ta.focus(); return; }
     if(words(msg)>LIMIT){ ta.focus(); return; }

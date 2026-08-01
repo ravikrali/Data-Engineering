@@ -30,6 +30,7 @@ hero.svg                hero illustration — standalone, animated, self-contain
 hero.png                raster hero (1280x1040) for LinkedIn and slide decks
 manifest.webmanifest    PWA manifest
 sw.js                   service worker — network-first pages, cache-first assets
+R2-favicon.svg          R2 orbital logomark — browser tab / PWA icon
 icon-192.png            PWA icon
 icon-512.png            PWA icon / maskable
 og.png                  1200x630 social preview image
@@ -38,6 +39,25 @@ og.png                  1200x630 social preview image
 
 No build step, no dependencies, no bundler. Web fonts are loaded from Google Fonts;
 everything else is self-contained.
+
+## Branding
+
+Built on the **R2 Digital design system v1.0** (`R2 Digital/brand/` — `tokens.css`,
+`R2-Design-System.md`). The tokens are inlined at the top of `index.html` rather than
+imported, so the page stays a single self-contained file.
+
+- **Identity** — the orbital logomark (white ring, orange core, orbiting satellites),
+  inlined as SVG in the nav and footer; `R2-favicon.svg` for the tab.
+- **Colour** — ink `#0B3041` / accent `#C04F15` (`#E0703A` on dark), with a cool neutral
+  scale. Orange is treated as a signal, not a background: it carries the AI/agent plane,
+  CTAs, links and the roadmap's climax phase. Supporting hues (steel, gold, crimson,
+  desaturated "legacy" slate, success green) are used only to separate meaning in
+  diagrams.
+- **Type** — Space Grotesk (display) + Inter (body) + the system mono stack for labels,
+  on the design system's fluid 1.20 scale.
+- **Themes** — ships light and dark, driven by `data-theme` on `<html>`. Dark is the
+  default marketing look; light is the reading look. The choice persists in
+  `localStorage` under `r2-theme` and falls back to the OS preference.
 
 ## Local preview
 

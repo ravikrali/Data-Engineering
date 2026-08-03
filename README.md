@@ -46,8 +46,12 @@ Built on the **R2 Digital design system v1.0** (`R2 Digital/brand/` — `tokens.
 `R2-Design-System.md`). The tokens are inlined at the top of `index.html` rather than
 imported, so the page stays a single self-contained file.
 
-- **Identity** — the orbital logomark (white ring, orange core, orbiting satellites),
-  inlined as SVG in the nav and footer; `R2-favicon.svg` for the tab.
+- **Identity** — the **secondary logo** (the "R2 / DIGITAL" wordmark badge, Orbitron on
+  the ink gradient) is inlined as SVG in the nav and footer, in its static variant. It
+  carries the name, so the lockup beside it is the tagline only — never the name
+  repeated. The orbital logomark is retained where the wordmark cannot be read:
+  `R2-favicon.svg` for the tab, the square PWA icons, and the OG card. Orbitron is
+  loaded for the logo alone and is not used anywhere else on the page.
 - **Colour** — ink `#002346` / accent `#A64312` (`#C04F15` on dark), with a cool neutral
   scale. Orange is treated as a signal, not a background: it carries the AI/agent plane,
   CTAs, links and the roadmap's climax phase. Accent fills always take white text; links
